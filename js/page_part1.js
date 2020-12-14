@@ -1,17 +1,9 @@
 $(function() {
 	check_params();
-	// console.log(spotify_code);
 });
 
-// create spotify object
 var spotifyAuth = {code: "", accessToken: "", refreshToken: "", expiresIn: 0, isExpired: true};
 var spotifyAuthTimer;
-// var spoitfy = new Object();
-// var spotify_code;
-// var spotify_access_token;
-// var spotify_refresh_token;
-// var spotify_expires_in;
-// var spotify_is_expired;
 
 function check_params() {
 	const queryString = window.location.search;
