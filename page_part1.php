@@ -16,18 +16,20 @@
 	<body>
 
 		<div>
-			<button id="btn_temp" class="margin_bottom" onclick="btn_temp()">Do Something</button>
-
-			<button id="btn_s_auth" class="btn_spotify" onclick="btn_login1()">Authorize Spotify</button>
-			<button id="btn_s_request" class="btn_spotify" onclick="btn_login2()">Request Tokens</button>
-			<button id="btn_s_refresh" class="btn_spotify margin_bottom" onclick="btn_login3()">Refresh Token</button>
-
-			<button id="btn_get_playlists" onclick="btn_login3()">Get Playlists</button>
+			<button id="btn_temp">Do Something</button>
+			<br>
+			<button id="btn_s_auth" class="btn_spotify">Authorize Spotify</button>
+			<button id="btn_s_request" class="btn_spotify">Request Tokens</button>
+			<button id="btn_s_refresh" class="btn_spotify">Refresh Token</button>
+			<br>
+			<button id="btn_get_current_user">Get Current User</button>
+			<button id="btn_get_current_user_playlists">Get Playlists</button>
+			<button id="btn_get_playlist">Get Playlist</button>
+			<br>
 			<button id="btn_save_playlists">Save Playlists</button>
-			<button id="btn_get_playlists_content">Get Playlists' Contents</button>
 		</div>
 		<div>
-
+			<p id="text"></p>
 		</div>
 	</body>
 </html>
