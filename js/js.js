@@ -1,5 +1,6 @@
 var spotify = { accessToken: ""};
 var section = 2;
+let isLocal = false;
 
 $(function() {
 	loadTempData();
@@ -11,7 +12,6 @@ $(function() {
 	if (spotify.accessToken != "") {
 		getMe();
 		getMyPlaylists();
-		printAttempt();
 	}
 });
 
@@ -37,9 +37,8 @@ function saveTempData() {
 }
 
 function loadTempData() {
-	var temp = JSON.parse(localStorage.temp);
-	if (temp.accessToken != "")
-		spotify = temp;
+	if (localStorage.temp != null)
+		spotify = JSON.parse(localStorage.temp);
 }
 
 // API
@@ -47,6 +46,8 @@ function loadTempData() {
 function spotifyAuth() {
 	var client_id = "818359d1ffe44cc8856e83f047b1840a";
 	var redirect_uri = "http://localhost/aspm/index.html";
+	if (!isLocal)
+		redirect_uri = "https://aspm.bahtyr.com";
 	var scope = "user-read-private user-read-email";
 
 	var params = `client_id=${client_id}&response_type=token&redirect_uri=${redirect_uri}&scope=${scope}&show_dialog=true`;
@@ -103,8 +104,8 @@ function printSectionSelection() {
 }
 
 function printUser(name, image) {
-	$(".user img").attr("src", image).removeClass("is-hidden");
-	$(".user p").text(name);
+	$(".header.user img").attr("src", image).removeClass("is-hidden");
+	$(".header.user p").text(name);
 }
 
 function printAttempt(data) {
@@ -113,14 +114,26 @@ function printAttempt(data) {
 
 	for (i in data) {
 		var holder = $($.parseHTML(template));
+		
 		holder.find("img").attr("src", data[i]["images"][0]["url"]);
+		
 		let name = data[i]["name"];
 		if (name.length > 25)
 			name = name.substr(0, 25) + "...";
 		holder.find("p span").text(name);
+
 		if (data[i]["public"])
 			holder.addClass("is-public");
 		else holder.removeClass("is-public");
+		
+		list.push(holder);
+	}
+
+	// add empty elements at the of the grid to properly align the last row of tiles
+	for (let i = 0; i < 6; i++) {
+		var holder = $($.parseHTML(template));
+		holder.html("");
+		holder.addClass("is-filler");
 		list.push(holder);
 	}
 

@@ -6,6 +6,9 @@
 	--spacing-main-left: 50px;
 	--nav-icon-size: 18px;
 	--tile-image-size: 150px;
+	--tile-spacing: 20px;
+	--tile-spacing-negative: -20px;
+
 
 	/* COLORS */
 	--color-green: #267D68;
@@ -94,6 +97,19 @@ main {
 
 .side-wrapper {}
 
+@media only screen
+	and (max-width: 768px) {
+
+	.body-wrapper > * {
+		padding-top: 50px;
+	}
+
+	main {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+}
+
 /*---------------------------------------------------------------------------------------- NAVIGATION */
 
 .nav-wrapper nav + * {
@@ -144,14 +160,60 @@ main {
 	stroke: var(--nav-highlight);
 }
 
+/*---------------------------------------------------------------------------------------- NAVIGATION _ MEDIA */
+
+@media only screen
+	and (max-width: 768px) {
+
+	.nav-wrapper {
+		z-index: 9;
+		padding-top: 0;
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		padding-bottom: safe-area-inset-bottom;
+		background: #fff;
+	}
+
+	.nav-wrapper nav ul {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		/*align-content: center;*/
+		/*align-items: center;*/
+	}
+
+	.nav-wrapper li a { 
+		display: flex; flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 72px;
+		width: calc(100vw/5);
+		text-align: center;
+	}
+
+	.nav-wrapper li a,
+	.nav-wrapper li a svg,
+	.nav-wrapper li a span {
+		min-width: initial;
+		margin: 0;
+		padding: 0;
+	}
+
+	.nav-wrapper nav + * {
+		display: none;
+	}
+}
+
 /*---------------------------------------------------------------------------------------- PROFILE */
 
-.user > * {
+.header.user > * {
 	display: inline-block;
 	vertical-align: middle;
 }
 
-.user img {
+.header.user img {
 	object-fit: cover;
   	border-radius: 50%;
 	height: 42px;
@@ -159,18 +221,32 @@ main {
 	margin-right: 15px;
 }
 
-.user p {
+.header.user p {
 	font-weight: 500;
 	font-size: 18px;
 	cursor: default;
 }
 
+
 /*---------------------------------------------------------------------------------------- ITEM TILE */
+
+.content.user {
+	display: flex;
+	flex-flow: wrap;
+	flex-direction: row;
+	justify-content: space-around;
+	margin-right: var(--tile-spacing-negative);
+}
+
+.item-tile.is-filler {
+	width: var(--tile-image-size);
+	height: 0;
+}
 
 .item-tile {
 	display: inline-block;
-	margin-right: 20px;
-	margin-bottom: 20px;
+	margin-right: var(--tile-spacing);
+	margin-bottom: var(--tile-spacing);
 	vertical-align: top;
 }
 
