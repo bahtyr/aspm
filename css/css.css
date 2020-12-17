@@ -5,6 +5,7 @@
 	--spacing-top-content: 100px;
 	--spacing-main-left: 50px;
 	--nav-icon-size: 18px;
+	--tile-image-size: 150px;
 
 	/* COLORS */
 	--color-green: #267D68;
@@ -18,6 +19,7 @@
 body, p { margin: 0; padding: 0; }
 
 body { 
+	/*background: #000;*/
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
@@ -31,12 +33,43 @@ a:link, a:visited { text-decoration: none; color: #000; }
 	margin: auto;
 }
 
+.is-hidden {
+	visibility: hidden;
+}
+
+.btn-spotify {
+	color: #fff;
+	padding: 11px 32px 9px;
+	background-color: #1db954;
+	min-width: 160px;
+    border-radius: 500px;
+	font-size: 12px;
+    line-height: 1;
+    letter-spacing: 2px;
+	text-transform: uppercase;
+	border: none;
+	-webkit-appearance: none;
+}
+
+
+.btn-spotify:hover {
+	background-color: #1ed760;
+}
+
+.btn-spotify:focus,
+.btn-spotify:active {
+	background-color: #1aa34a;
+	outline: none;
+	box-shadow: none;
+}
+
 /*---------------------------------------------------------------------------------------- BODY */
 
-body {}
+body { }
 
 .body-wrapper {
 	max-width: 1500px;
+	display: flex;
 }
 
 .body-wrapper > * {
@@ -49,7 +82,15 @@ body {}
 	min-width: 150px;
 }
 
-main {}
+main {
+	padding-left: 50px;
+}
+
+.header {}
+
+.content {
+	margin-top: 30px;
+}
 
 .side-wrapper {}
 
@@ -103,18 +144,6 @@ main {}
 	stroke: var(--nav-highlight);
 }
 
-/*---------------------------------------------------------------------------------------- MAIN */
-
-main {
-	padding-left: 100px;
-}
-
-.header {}
-
-.content {
-	margin-top: 30px;
-}
-
 /*---------------------------------------------------------------------------------------- PROFILE */
 
 .user > * {
@@ -141,14 +170,15 @@ main {
 .item-tile {
 	display: inline-block;
 	margin-right: 20px;
-	maring-bottom: 20px;
+	margin-bottom: 20px;
+	vertical-align: top;
 }
 
 .item-tile .img-wrapper {
-	width: 130px;
-	height: 130px;
+	width: var(--tile-image-size);
+	height: var(--tile-image-size);
 	background: #EFEFEF;
-	border-radius: 4%;
+	border-radius: 2px;
 	margin-bottom: 3px;
 	position: relative;
 }
@@ -157,7 +187,19 @@ main {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
-	border-radius: 4%;
+	border-radius: 2px;
+}
+
+.item-tile p {
+	width: var(--tile-image-size);
+	padding: 4px 4px 4px 0;
+	box-sizing: border-box;
+}
+
+.item-tile svg  {
+	fill: #CBCBCB;
+	margin-right: 4px;
+	margin-top: -2.5px;
 }
 
 .item-tile p,
@@ -166,16 +208,7 @@ main {
 	vertical-align: middle;
 }
 
-.item-tile p {
-	margin-left: 4px;
-}
-
-.item-tile svg  {
-	fill: #CBCBCB;
-	display: none;
-}
-
-.item-tile.is-private svg { display: inherit; }
+.item-tile.is-public svg { display: none; }
 
 /* hover */
 
@@ -225,4 +258,31 @@ table td:nth-child(2) { /* bigger title column */
 
 table tr:hover td {
 	background: #F7F7F7;
+}
+
+/*---------------------------------------------------------------------------------------- FULL PAGE COVER */
+
+.full-page-cover {
+	top: 0;
+	left: 0;
+	z-index: 10;
+	position: absolute;
+	display: flex;
+    justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	background: #000;
+}
+
+.full-page-cover > div {
+	display: flex;
+	flex-flow: wrap column;
+    justify-content: center;
+	align-items: center;
+}
+
+.full-page-cover p {
+	color: #fff;
+	margin-bottom: 10px;
 }
