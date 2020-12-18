@@ -30,42 +30,6 @@ ul { list-style: none; padding: 0; margin: 0; }
 
 a:link, a:visited { text-decoration: none; color: #000; }
 
-/*---------------------------------------------------------------------------------------- GENERIC */
-
-.margin-auto {
-	margin: auto;
-}
-
-.is-hidden {
-	visibility: hidden;
-}
-
-.btn-spotify {
-	color: #fff;
-	padding: 11px 32px 9px;
-	background-color: #1db954;
-	min-width: 160px;
-    border-radius: 500px;
-	font-size: 12px;
-    line-height: 1;
-    letter-spacing: 2px;
-	text-transform: uppercase;
-	border: none;
-	-webkit-appearance: none;
-}
-
-
-.btn-spotify:hover {
-	background-color: #1ed760;
-}
-
-.btn-spotify:focus,
-.btn-spotify:active {
-	background-color: #1aa34a;
-	outline: none;
-	box-shadow: none;
-}
-
 /*---------------------------------------------------------------------------------------- BODY */
 
 body { }
@@ -361,4 +325,45 @@ table tr:hover td {
 .full-page-cover p {
 	color: #fff;
 	margin-bottom: 10px;
+}
+
+/*---------------------------------------------------------------------------------------- GENERIC */
+
+.margin-auto {
+	margin: auto;
+}
+
+.is-hidden {
+	visibility: hidden;
+}
+
+.btn-spotify {
+	color: #fff;
+	padding: 11px 32px 9px;
+	background-color: #1db954;
+	min-width: 160px;
+    border-radius: 500px;
+	font-size: 12px;
+    line-height: 1;
+    letter-spacing: 2px;
+	text-transform: uppercase;
+	border: none;
+	-webkit-appearance: none;
+}
+
+
+.btn-spotify:hover {
+	background-color: #1ed760;
+}
+
+.btn-spotify:focus,
+.btn-spotify:active {
+	background-color: #1aa34a;
+	outline: none;
+	box-shadow: none;
+}
+
+.is-gone {
+	display: none !important;
+	display: none;
 }

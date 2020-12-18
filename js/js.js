@@ -1,17 +1,24 @@
-var spotify = { accessToken: ""};
-var section = 2;
-let isLocal = false;
+const isLocal = false;
+//api
+let spotify = { accessToken: ""};
+//page
+let section = 2;
+//playlist
+let playlists;
+let selectedPlaylistID;
 
 $(function() {
-	loadTempData();
+	// loadTempData();
 	check_params();
-	saveTempData();
+	// saveTempData();
 	hideLogin();
 	printSectionSelection();
 
 	if (spotify.accessToken != "") {
 		getMe();
 		getMyPlaylists();
+		listenImagePick();
+		// listenPlaylistClick(); -- called @printPlaylists()
 	}
 });
 
@@ -32,7 +39,7 @@ function check_params() {
 
 function saveTempData() {
 	if (spotify.accessToken != "") {
-		// localStorage.setItem("temp", JSON.stringify(spotify));
+		localStorage.setItem("temp", JSON.stringify(spotify));
 	}
 }
 
@@ -44,13 +51,11 @@ function loadTempData() {
 // API
 
 function spotifyAuth() {
-	var client_id = "818359d1ffe44cc8856e83f047b1840a";
-	var redirect_uri = "http://localhost/aspm/index.html";
-	if (!isLocal)
-		redirect_uri = "https://aspm.bahtyr.com";
-	var scope = "user-read-private user-read-email";
+	const client_id = "818359d1ffe44cc8856e83f047b1840a";
+	const redirect_uri = !isLocal ? "https://aspm.bahtyr.com" : "http://localhost/aspm/index.html";
+	const scope = "user-read-private user-read-email ugc-image-upload playlist-modify-public playlist-modify-private";
 
-	var params = `client_id=${client_id}&response_type=token&redirect_uri=${redirect_uri}&scope=${scope}&show_dialog=true`;
+	const params = `client_id=${client_id}&response_type=token&redirect_uri=${redirect_uri}&scope=${scope}&show_dialog=true`;
 	window.open("https://accounts.spotify.com/authorize?" + params, "_self");
 
 	// Using AJAX method results in a CORS error.
@@ -79,19 +84,98 @@ function getMyPlaylists() {
 		type: "GET",
 		headers: {"Authorization": "Bearer " + spotify.accessToken},
 		success: function(data, textStatus) {
-			console.log("SUCCESS");
-			printAttempt(data["items"]);
+			playlists = data["items"];
+			printPlaylists(playlists);
+		},
+		error: function(textStatus, errorThrown) { }
+	});
+}
+
+function putPlaylistCover(playlistID, imgBase64) {
+	$.ajax({
+		type: "PUT",
+		url: `https://api.spotify.com/v1/playlists/${playlistID}/images`,
+		data: imgBase64,
+		processData: false,
+		contentType: "image/jpeg",
+		headers: {"Authorization": "Bearer " + spotify.accessToken},
+		success: function(data, textStatus) {
+			window.alert("Updated playlist cover.");
 		},
 		error: function(textStatus, errorThrown) {
-			console.log("error?");
-
+			window.alert("Failed to update playlist cover.");
 		}
 	});
 }
 
-// HTML RELATED
+// LISTENERS
+
+function listenPlaylistClick() {
+	//Add listener to playlist items to trigger image picker on click.
+	$(".item-tile").click(function() {
+		let i = $(this).index() - 1; //substract hidden element
+		selectedPlaylistID = playlists[i]["id"];
+		$("#input-image-picker").click();
+	});
+}
+
+function listenImagePick() {
+	//Add listener to image-picker to load the image, validate and update playlist cover.
+	$("#input-image-picker").change(function() { //changing function() to => breaks '$(this)'
+		let f = $(this)[0].files[0];
+		$(this).val(null); //reset file picker
+		// TODO show loading
+		promieFileBase64(f) //read image (to base64)
+			.then(result => {
+				let img = new Image();
+				img.src = result;
+				img.onload = () => { //load image to validate
+					if (validateNewPlaylistImage(f["type"], f["size"], img.width, img.height)) //finally put
+						putPlaylistCover(selectedPlaylistID, result.substr(23));
+				}
+			})
+			.catch(error => {
+				window.alert("Failed to upload selected image.");
+				console.log("Promise failed to read file.");
+				console.log(error);
+			});
+	});
+}
+
+function validateNewPlaylistImage(fileType, fileSize, imgWidth, imgHeight) {
+	let isOK = true;
+	let msg = "Error";
+	const err = {
+		fileType: "Image must be in JPEG format, it is ",
+		fileSize: "File size must be less then 250KB, it is ",
+		imgSize: "Image is too small, it must be at least 300x300, it is "
+	};
+
+	if (fileType.substr(6) != "jpeg") {
+		msg += "\r\n" + err.fileType + fileType.substr(6) + ".";
+		isOK = false; 
+	}
+
+	if (fileSize > 256000) {
+		msg += "\r\n" + err.fileSize + Math.floor(fileSize / 1000) + "KB.";
+		isOK = false;
+	}
+
+	if (imgWidth < 300 && imgHeight < 300) {
+		msg += "\r\n" + err.imgSize + imgWidth + "x" + imgHeight + ".";
+		isOK = false;
+	}
+
+	if (!isOK) 
+		window.alert(msg);
+	return isOK;
+}
+
+// BUTTON ASSIGNMENTS
 
 function btn_login() { spotifyAuth(); }
+
+// HTML MODIFICATIONS
 
 function hideLogin() {
 	if (spotify.accessToken != "")
@@ -108,14 +192,20 @@ function printUser(name, image) {
 	$(".header.user p").text(name);
 }
 
-function printAttempt(data) {
-	var list = [];
-	var template = $(".item-tile")[0].outerHTML;
+function printPlaylists(data) {
+	let list = [];
+	const template = $(".item-tile")[0].outerHTML;
 
 	for (i in data) {
-		var holder = $($.parseHTML(template));
-		
-		holder.find("img").attr("src", data[i]["images"][0]["url"]);
+		let holder = $($.parseHTML(template));
+		holder.removeClass("is-gone");
+
+		if (data[i]["images"].length > 0)
+			holder.find("img").attr("src", data[i]["images"][0]["url"]);
+		else { 
+			holder.find("img").removeAttr("src", "");
+			holder.find("img").addClass("is-hidden");
+		}
 		
 		let name = data[i]["name"];
 		if (name.length > 25)
@@ -125,19 +215,31 @@ function printAttempt(data) {
 		if (data[i]["public"])
 			holder.addClass("is-public");
 		else holder.removeClass("is-public");
-		
+
 		list.push(holder);
 	}
 
 	// add empty elements at the of the grid to properly align the last row of tiles
 	for (let i = 0; i < 6; i++) {
-		var holder = $($.parseHTML(template));
+		let holder = $($.parseHTML(template));
 		holder.html("");
 		holder.addClass("is-filler");
+		holder.removeClass("is-gone");
 		list.push(holder);
 	}
 
-	console.log(list);
-
 	$(".content").append(list);
+
+	listenPlaylistClick();
+}
+
+// FUNCTIONS
+
+function promieFileBase64(file) {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload =  () => resolve(reader.result);
+		reader.onerror = error => reject(error);
+	});
 }
