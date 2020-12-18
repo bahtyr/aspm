@@ -4,7 +4,7 @@ let spotify = { accessToken: ""};
 //page
 let section = 2;
 //playlist
-let playlists;
+let playlists = [];
 let selectedPlaylistID;
 
 $(function() {
@@ -16,7 +16,7 @@ $(function() {
 
 	if (spotify.accessToken != "") {
 		getMe();
-		getMyPlaylists();
+		getMyPlaylists(null);
 		listenImagePick();
 		// listenPlaylistClick(); -- called @printPlaylists()
 	}
@@ -77,15 +77,20 @@ function getMe() {
 	});
 }
 
-function getMyPlaylists() {
+function getMyPlaylists(url) {
+	// url is used to call this playlist again using the "next link" provided in the link
+	// url given by spotify contains params, don't put anything if we are using url param
 	$.ajax({
-		url: "https://api.spotify.com/v1/me/playlists",
-		data: {limit: 50, offset: 0},
+		url: url != null ? url : "https://api.spotify.com/v1/me/playlists",
+		data: url != null ? "" : {limit: 50, offset: 0},
 		type: "GET",
 		headers: {"Authorization": "Bearer " + spotify.accessToken},
 		success: function(data, textStatus) {
-			playlists = data["items"];
-			printPlaylists(playlists);
+			if (data["next"] != null)
+				getMyPlaylists(data["next"]);
+
+			data["items"].forEach(item => playlists.push(item));
+			printPlaylists(data["items"]);
 		},
 		error: function(textStatus, errorThrown) { }
 	});
@@ -193,6 +198,12 @@ function printUser(name, image) {
 }
 
 function printPlaylists(data) {
+	//this function can be called multiple times for the same container
+	//clear existing filler items to append more
+	$(".content .item-tile.is-filler").each(function() {
+		$(this).remove();
+	});
+
 	let list = [];
 	const template = $(".item-tile")[0].outerHTML;
 
