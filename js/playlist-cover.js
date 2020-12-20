@@ -1,6 +1,7 @@
 const isLocal = false;
 //api
 let spotify = { accessToken: ""};
+let user = { name: "", id: ""};
 //page
 let section = 2;
 //playlist
@@ -52,7 +53,7 @@ function loadTempData() {
 
 function spotifyAuth() {
 	const client_id = "818359d1ffe44cc8856e83f047b1840a";
-	const redirect_uri = !isLocal ? "https://aspm.bahtyr.com" : "http://localhost/aspm/index.html";
+	const redirect_uri = !isLocal ? "https://aspm.bahtyr.com/playlist-cover.html" : "http://localhost/aspm/playlist-cover.html";
 	const scope = "user-read-private user-read-email ugc-image-upload playlist-modify-public playlist-modify-private";
 
 	const params = `client_id=${client_id}&response_type=token&redirect_uri=${redirect_uri}&scope=${scope}&show_dialog=true`;
@@ -68,6 +69,7 @@ function getMe() {
 		headers: {"Authorization": "Bearer " + spotify.accessToken},
 		success: function(data, textStatus) {
 			// TODO save temp user
+			user.id = data["id"];
 			printUser(data["display_name"], data["images"][0]["url"]);
 		},
 		error: function(textStatus, errorThrown) {
@@ -89,8 +91,12 @@ function getMyPlaylists(url) {
 			if (data["next"] != null)
 				getMyPlaylists(data["next"]);
 
-			data["items"].forEach(item => playlists.push(item));
-			printPlaylists(data["items"]);
+			let lastItem = (playlists.length > 1) ? playlists.length : 0;
+			data["items"].forEach(item => {
+				if (user.id == item["owner"]["id"])
+					playlists.push(item)
+			});
+			printPlaylists(playlists, lastItem);
 		},
 		error: function(textStatus, errorThrown) { }
 	});
@@ -197,17 +203,20 @@ function printUser(name, image) {
 	$(".header.user p").text(name);
 }
 
-function printPlaylists(data) {
+function printPlaylists(data, offset) {
 	//this function can be called multiple times for the same container
 	//clear existing filler items to append more
 	$(".content .item-tile.is-filler").each(function() {
 		$(this).remove();
 	});
 
+	//remove existing click listeners to not dupe it again
+	$(".content .item-tile").off("click");
+
 	let list = [];
 	const template = $(".item-tile")[0].outerHTML;
 
-	for (i in data) {
+	for (let i = offset; i < data.length; i++) {
 		let holder = $($.parseHTML(template));
 		holder.removeClass("is-gone");
 

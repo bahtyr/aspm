@@ -1,0 +1,242 @@
+/*---------------------------------------------------------------------------------------- RESET */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { font-size:100%; }
+
+ul { list-style: none; padding: 0; margin: 0; }
+
+a:link, a:visited { text-decoration: none; color: #000; }
+
+a > * { display: inline-block; }
+
+/*a { font-size: 0; }*/
+
+/*a span { font-size: 1rem; }*/
+
+/*---------------------------------------------------------------------------------------- VARIABLES */
+
+:root {
+	--page-max-width: 1100px;
+
+	--light-grey-100: #F5F5F5;
+	--light-grey-200: #ECECEC;
+
+
+	--day-white: #f6f8fa;
+	--night-blue: #161d26;
+
+	--yellow-light: #F8F3C6;
+	--yellow-dark: #BDA13E;
+	--red-light: #FED7CE;
+	--red-dark: #A45847;
+	--blue-light: #C0E4F8;
+	--blue-dark: #3F78BB;
+	--purple-light: #E2DFFF;
+	--purple-dark: #7F5C9B;
+	--teal-light: #C5EDE3;
+	--teal-dark: #157481;
+	--orange-light: #FFD5CD;
+	--orange-dark: #F9813A;
+	--pink-light: #FACFDD;
+	--pink-dark: #E1658F;
+	--gray-light: #e8e8e8;
+	--gray-dark: #495464;
+
+
+	/*COLORS */
+
+	--oc-gray-0: #f8f9fa;
+	--oc-gray-1: #f1f3f5;
+	--oc-gray-2: #e9ecef;
+	--oc-gray-3: #dee2e6;
+	--oc-gray-4: #ced4da;
+	--oc-gray-5: #adb5bd;
+	--oc-gray-6: #868e96;
+	--oc-gray-7: #495057;
+	--oc-gray-8: #343a40;
+	--oc-gray-9: #212529;
+}
+
+/*---------------------------------------------------------------------------------------- COLORS */
+
+body {
+	--page-bg: var(--day-white);
+	--site-header-bg: var(--light-grey-100);
+	--site-header-border: var(--light-grey-200);
+}
+
+body.dark {
+	/*--page-bg: var(--night-blue);
+	/*--site-header-bg: #0F1721;*/
+	/*--site-header-border: #08101A;*/
+	--page-bg: var(--oc-gray-9);
+	--site-header-bg: var(--oc-gray-9);
+	--site-header-border: var(--oc-gray-7);
+}
+
+body.dark,
+body.dark a,
+body.dark p {
+	color: var(--oc-gray-0);
+}
+
+a, p {
+	color: var(--oc-gray-8);
+}
+
+body.dark .icon-wrapper.menu svg path { 
+	stroke: var(--oc-gray-2);
+}
+
+
+/*---------------------------------------------------------------------------------------- BODY & ETC */
+
+
+body {
+	background-color: var(--page-bg);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	font-weight: lighter;
+}
+
+body, .site-header {
+	transition: all 300ms ease;
+	-o-transition: all 300ms ease;
+  	-ms-transition: all 300ms ease;
+  	-moz-transition: all 300ms ease;
+  	-webkit-transition: all 300ms ease;
+}
+
+/*---------------------------------------------------------------------------------------- SITE HEADER */
+
+.site-header {
+	height: 36px;
+	width: 100%;
+	background-color: var(--site-header-bg);
+	border-bottom: solid 1px var(--site-header-border);
+	vertical-align: middle;
+	font-size: 0.875rem;
+}
+
+.site-header-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	height: 100%;
+}
+
+.site-header-wrapper .left,
+.site-header-wrapper .right {
+	height: 36px;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+}
+
+/* elements */
+
+.site-title { }
+
+.user-name { }
+
+.login { font-weight: 500; }
+
+.icon-wrapper.menu { 
+	cursor: pointer;
+	display: none;
+}
+
+.icon-wrapper.menu svg path { stroke: var(--oc-gray-7); }
+
+
+/* media */
+
+@media only screen
+	and (max-width: 768px) {
+
+	.site-header-wrapper {
+		/*flex-flow: column;*/
+		flex-wrap: wrap;
+		overflow: hidden;
+	}
+
+	.site-header.is-expanded {
+		height: 72px;
+	}
+
+	.site-header .left,
+	.site-header .right {
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.icon-wrapper.menu { display: initial; }
+	.site-header-wrapper .darkmode-toggle { margin-left: 0; }
+}
+
+/*---------------------------------------------------------------------------------------- DARK MODE TOGGLE */
+/* https://codepen.io/tatimblin/pen/RMjaqb */
+
+.darkmode-toggle {
+	width: 18px;
+	height: 18px;
+	overflow: hidden;
+	margin-left: 15px;
+	cursor: pointer;
+}
+
+.darkmode-toggle .icon-wrapper svg { width: 18px; height: 18px; }
+
+.darkmode-toggle .icon-wrapper.sun svg path { stroke: #C29C12; fill: #C29C12; }
+
+.darkmode-toggle .icon-wrapper.moon svg path { stroke: #283445; fill: #283445; }
+
+.darkmode-toggle .icon-wrapper { transition: all 200ms 300ms ease; }
+
+.darkmode-toggle .icon-wrapper:last-child { transform: translatey(-18px); }
+
+.darkmode-toggle .active { transition-delay: 100ms; }
+
+.darkmode-toggle .active:first-child { transform: translatey(18px); }
+
+.darkmode-toggle .active:last-child { transform: translatey(0); }
+
+
+/*---------------------------------------------------------------------------------------- GENERIC */
+
+.inline > * {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.max-width-page {
+	max-width: var(--page-max-width);
+}
+
+@media only screen
+	and (max-width: 1100px) {
+
+	.site-header {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+.margin-auto {
+	margin: auto;
+}
+
+.is-hidden {
+	visibility: hidden;
+}
+
+.is-gone {
+	display: none !important;
+	display: none;
+}

@@ -1,76 +1,75 @@
 <html>
 	<head>
 		<title>Aspm</title>
-		<link rel="stylesheet" href="./css/css.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="./js/js.js"></script>
+		<script src="./js/base.js"></script>
+		<link rel="stylesheet" href="./css/base.css">
+		<link rel="stylesheet" href="./css/index.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	</head>
 	<body>
-		<input id="input-image-picker" type="file" accept="image/*" style="display:none">
-		<div class="full-page-cover">
-			<div>
-				<p>Log in with Spotify to continue.</p>
-				<button class="btn-spotify" onclick="btn_login()">Log In</button>
+		<div class="site-header">
+			<div class="site-header-wrapper max-width-page margin-auto">
+				<div class="left">
+					<div class="is-filler"></div>
+					<a class="site-title" href="/"><span>A Spotify Playlist Manager</span></a>
+					<div class="icon-wrapper menu"><svg width="16" height="16" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 9H10M2 3H10H2ZM2 6H10H2Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+				</div>
+				<div class="right">
+					<div class="is-filler"></div>
+					<p class="user-name is-gone">Bahtiyar Ceylan</p>
+					<p class="login cursor-pointer">Log In with Spotify</p>
+					<div class="darkmode-toggle">
+						<div class="icon-wrapper sun active">
+							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 12.75C11.0711 12.75 12.75 11.0711 12.75 9C12.75 6.92893 11.0711 5.25 9 5.25C6.92893 5.25 5.25 6.92893 5.25 9C5.25 11.0711 6.92893 12.75 9 12.75Z" fill="black" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 0.75V2.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15.75V17.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.16504 3.16504L4.23004 4.23004" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.77 13.77L14.835 14.835" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M0.75 9H2.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.75 9H17.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.16504 14.835L4.23004 13.77" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.77 4.23004L14.835 3.16504" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						</div>
+						<div class="icon-wrapper moon">
+							<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.7502 9.5925C15.6322 10.8692 15.1531 12.0858 14.3689 13.1001C13.5846 14.1144 12.5278 14.8843 11.3219 15.3199C10.1161 15.7555 8.81116 15.8386 7.55979 15.5596C6.30843 15.2805 5.16242 14.6509 4.25584 13.7443C3.34926 12.8378 2.71962 11.6917 2.4406 10.4404C2.16158 9.18901 2.24471 7.88406 2.68027 6.67822C3.11582 5.47238 3.88579 4.41552 4.90008 3.63131C5.91437 2.8471 7.13102 2.36798 8.40767 2.25C7.66023 3.2612 7.30056 4.50709 7.39407 5.76106C7.48758 7.01503 8.02807 8.19379 8.91722 9.08295C9.80638 9.9721 10.9851 10.5126 12.2391 10.6061C13.4931 10.6996 14.739 10.3399 15.7502 9.5925Z" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="body-wrapper margin-auto">
-			<div class="nav-wrapper">
-				<nav>
-				    <ul>
-				        <li><a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21L15 15L21 21ZM17 10C17 10.9193 16.8189 11.8295 16.4672 12.6788C16.1154 13.5281 15.5998 14.2997 14.9497 14.9497C14.2997 15.5998 13.5281 16.1154 12.6788 16.4672C11.8295 16.8189 10.9193 17 10 17C9.08075 17 8.1705 16.8189 7.32122 16.4672C6.47194 16.1154 5.70026 15.5998 5.05025 14.9497C4.40024 14.2997 3.88463 13.5281 3.53284 12.6788C3.18106 11.8295 3 10.9193 3 10C3 8.14348 3.7375 6.36301 5.05025 5.05025C6.36301 3.7375 8.14348 3 10 3C11.8565 3 13.637 3.7375 14.9497 5.05025C16.2625 6.36301 17 8.14348 17 10Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>find</span></a></li>
-<!-- 				        <li><a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.121 17.804C7.21942 16.6179 9.58958 15.9963 12 16C14.5 16 16.847 16.655 18.879 17.804M15 10C15 10.7956 14.6839 11.5587 14.1213 12.1213C13.5587 12.6839 12.7956 13 12 13C11.2044 13 10.4413 12.6839 9.87868 12.1213C9.31607 11.5587 9 10.7956 9 10C9 9.20435 9.31607 8.44129 9.87868 7.87868C10.4413 7.31607 11.2044 7 12 7C12.7956 7 13.5587 7.31607 14.1213 7.87868C14.6839 8.44129 15 9.20435 15 10ZM21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>profile</span></a></li> -->
-				        <li><a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 7V17C3 17.5304 3.21071 18.0391 3.58579 18.4142C3.96086 18.7893 4.46957 19 5 19H19C19.5304 19 20.0391 18.7893 20.4142 18.4142C20.7893 18.0391 21 17.5304 21 17V9C21 8.46957 20.7893 7.96086 20.4142 7.58579C20.0391 7.21071 19.5304 7 19 7H13L11 5H5C4.46957 5 3.96086 5.21071 3.58579 5.58579C3.21071 5.96086 3 6.46957 3 7V7Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>library</span></a></li>
-				        <li class="is-active"><a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.657 18.657C16.1566 20.1573 14.1217 21.0002 12 21.0002C9.87818 21.0002 7.84329 20.1573 6.34296 18.657C4.84263 17.1567 3.99976 15.1218 3.99976 13C3.99976 10.8782 4.84263 8.84333 6.34296 7.343C6.34296 7.343 6.99996 9 8.99996 10C8.99996 8 9.49996 5 11.986 3C14 5 16.09 5.777 17.656 7.343C18.4001 8.08499 18.9903 8.96674 19.3925 9.93756C19.7948 10.9084 20.0012 11.9491 20 13C20.0014 14.0508 19.7951 15.0915 19.393 16.0623C18.9909 17.0331 18.4009 17.9149 17.657 18.657V18.657Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.879 16.121C10.2274 16.4695 10.6563 16.7268 11.1277 16.8702C11.5991 17.0135 12.0986 17.0386 12.5821 16.9431C13.0655 16.8476 13.5179 16.6345 13.8994 16.3226C14.2809 16.0107 14.5797 15.6096 14.7694 15.1548C14.9591 14.7001 15.0338 14.2056 14.987 13.715C14.9402 13.2245 14.7733 12.753 14.5011 12.3423C14.2288 11.9316 13.8595 11.5943 13.4259 11.3602C12.9923 11.1261 12.5078 11.0024 12.015 11L11 14H9C9 14.768 9.293 15.536 9.879 16.121Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>top tracks</span></a></li>
-				        <li><a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 7V15C8 15.5304 8.21071 16.0391 8.58579 16.4142C8.96086 16.7893 9.46957 17 10 17H16M8 7V5C8 4.46957 8.21071 3.96086 8.58579 3.58579C8.96086 3.21071 9.46957 3 10 3H14.586C14.8512 3.00006 15.1055 3.10545 15.293 3.293L19.707 7.707C19.8946 7.89449 19.9999 8.1488 20 8.414V15C20 15.5304 19.7893 16.0391 19.4142 16.4142C19.0391 16.7893 18.5304 17 18 17H16M8 7H6C5.46957 7 4.96086 7.21071 4.58579 7.58579C4.21071 7.96086 4 8.46957 4 9V19C4 19.5304 4.21071 20.0391 4.58579 20.4142C4.96086 20.7893 5.46957 21 6 21H14C14.5304 21 15.0391 20.7893 15.4142 20.4142C15.7893 20.0391 16 19.5304 16 19V17" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>compare</span></a></li>
-				        <li><a href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 19V6L20 3V16M8 19C8 20.105 6.657 21 5 21C3.343 21 2 20.105 2 19C2 17.895 3.343 17 5 17C6.657 17 8 17.895 8 19ZM20 16C20 17.105 18.657 18 17 18C15.343 18 14 17.105 14 16C14 14.895 15.343 14 17 14C18.657 14 20 14.895 20 16ZM8 10L20 7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>lyrics</span></a></li>
-				    </ul>
-				</nav>
+		<div class="body-wrapper max-width-page margin-auto">
+			<nav>
 				<ul>
-					<li><a href="#" class="compact margin-icon" onclick="btn_login()"><span>log in</span></a></li>
-					<li><a href="#" class="compact margin-icon"><span>dark mode<span></a></li>
+					<li><a href="#">
+						<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 3.5L6.5 7.5L4.5 5.5L1.5 8.5M6.5 3.5H10.5H6.5ZM10.5 3.5V7.5V3.5Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<span>Your Top Tracks & Artists</span>
+					</a></li>
+					<li><a href="/playlist-cover.html">
+						<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 8L4.293 5.707C4.48053 5.51953 4.73484 5.41421 5 5.41421C5.26516 5.41421 5.51947 5.51953 5.707 5.707L8 8M7 7L7.793 6.207C7.98053 6.01953 8.23484 5.91421 8.5 5.91421C8.76516 5.91421 9.01947 6.01953 9.207 6.207L10 7M7 4H7.005M3 10H9C9.26522 10 9.51957 9.89464 9.70711 9.70711C9.89464 9.51957 10 9.26522 10 9V3C10 2.73478 9.89464 2.48043 9.70711 2.29289C9.51957 2.10536 9.26522 2 9 2H3C2.73478 2 2.48043 2.10536 2.29289 2.29289C2.10536 2.48043 2 2.73478 2 3V9C2 9.26522 2.10536 9.51957 2.29289 9.70711C2.48043 9.89464 2.73478 10 3 10Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<span>Update Playlist Covers</span>
+					</a></li>
+					<li><a href="#">
+						<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.114 4.5C4.3885 3.9175 5.129 3.5 6 3.5C7.105 3.5 8 4.1715 8 5C8 5.7 7.361 6.2875 6.497 6.4535C6.226 6.5055 6 6.7235 6 7M6 8.5H6.005M10.5 6C10.5 6.59095 10.3836 7.17611 10.1575 7.72208C9.93131 8.26804 9.59984 8.76412 9.18198 9.18198C8.76412 9.59984 8.26804 9.93131 7.72208 10.1575C7.17611 10.3836 6.59095 10.5 6 10.5C5.40905 10.5 4.82389 10.3836 4.27792 10.1575C3.73196 9.93131 3.23588 9.59984 2.81802 9.18198C2.40016 8.76412 2.06869 8.26804 1.84254 7.72208C1.6164 7.17611 1.5 6.59095 1.5 6C1.5 4.80653 1.97411 3.66193 2.81802 2.81802C3.66193 1.97411 4.80653 1.5 6 1.5C7.19347 1.5 8.33807 1.97411 9.18198 2.81802C10.0259 3.66193 10.5 4.80653 10.5 6Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<span>Find Tracks Without Playlists</span>
+					</a></li>
+					<li><a href="#">
+						<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.50017 1.52759C4.65791 1.62171 3.85935 1.95175 3.19639 2.47971C2.53343 3.00766 2.03301 3.71208 1.75274 4.5119C1.47247 5.31171 1.42372 6.17441 1.61212 7.00071C1.80052 7.827 2.21841 8.58331 2.81768 9.18258C3.41695 9.78185 4.17326 10.1997 4.99955 10.3881C5.82585 10.5765 6.68854 10.5278 7.48836 10.2475C8.28817 9.96724 8.99259 9.46683 9.52055 8.80387C10.0485 8.14091 10.3785 7.34234 10.4727 6.50009H5.50017V1.52759Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.244 4.5001H7.5V1.7561C8.13269 1.98057 8.70733 2.34337 9.18203 2.81807C9.65673 3.29277 10.0195 3.86741 10.244 4.5001V4.5001Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<span>Playlist Genre & Stats</span>
+					</a></li>
+					<li><a href="#">
+						<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 10.5H8.5C8.76522 10.5 9.01957 10.3946 9.20711 10.2071C9.39464 10.0196 9.5 9.76522 9.5 9.5V4.707C9.49997 4.5744 9.44728 4.44725 9.3535 4.3535L6.6465 1.6465C6.55275 1.55273 6.4256 1.50003 6.293 1.5H3.5C3.23478 1.5 2.98043 1.60536 2.79289 1.79289C2.60536 1.98043 2.5 2.23478 2.5 2.5V8M2.5 10.5L3.71975 9.28025L4.9395 8.0605M4.9395 8.0605C5.07835 8.20167 5.24378 8.31394 5.42625 8.39086C5.60871 8.46777 5.80459 8.5078 6.0026 8.50863C6.20061 8.50945 6.39682 8.47107 6.57993 8.39569C6.76303 8.32031 6.92939 8.20942 7.06942 8.06942C7.20945 7.92942 7.32038 7.76309 7.3958 7.58C7.47123 7.39692 7.50966 7.20072 7.50887 7.00271C7.50809 6.8047 7.46811 6.6088 7.39124 6.42632C7.31437 6.24384 7.20213 6.07839 7.061 5.9395C6.77895 5.66195 6.39866 5.50708 6.00296 5.50865C5.60725 5.51021 5.22819 5.66808 4.94835 5.94785C4.66851 6.22763 4.51056 6.60665 4.5089 7.00235C4.50724 7.39806 4.66201 7.77839 4.9395 8.0605Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<span>Find in Playlists</span>
+					</a></li>
+					<li><a href="#">
+						<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 9.5V3L10.5 1.5V8M4.5 9.5C4.5 10.0525 3.8285 10.5 3 10.5C2.1715 10.5 1.5 10.0525 1.5 9.5C1.5 8.9475 2.1715 8.5 3 8.5C3.8285 8.5 4.5 8.9475 4.5 9.5ZM10.5 8C10.5 8.5525 9.8285 9 9 9C8.1715 9 7.5 8.5525 7.5 8C7.5 7.4475 8.1715 7 9 7C9.8285 7 10.5 7.4475 10.5 8ZM4.5 5L10.5 3.5" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<span>Lyrics</span>
+					</a></li>
+					<li><a href="#">
+						<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 10L10.5 8M1.5 2H8H1.5ZM1.5 4H6H1.5ZM1.5 6H6H1.5ZM8.5 4V10V4ZM8.5 10L6.5 8L8.5 10Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+						<span>Playlist Automation</span>
+					</a></li>
+					<li><a href="#">
+						<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 2C5.5 1.73478 5.60536 1.48043 5.79289 1.29289C5.98043 1.10536 6.23478 1 6.5 1C6.76522 1 7.01957 1.10536 7.20711 1.29289C7.39464 1.48043 7.5 1.73478 7.5 2V2.5C7.5 2.63261 7.55268 2.75979 7.64645 2.85355C7.74021 2.94732 7.86739 3 8 3H9.5C9.63261 3 9.75979 3.05268 9.85355 3.14645C9.94732 3.24021 10 3.36739 10 3.5V5C10 5.13261 9.94732 5.25979 9.85355 5.35355C9.75979 5.44732 9.63261 5.5 9.5 5.5H9C8.73478 5.5 8.48043 5.60536 8.29289 5.79289C8.10536 5.98043 8 6.23478 8 6.5C8 6.76522 8.10536 7.01957 8.29289 7.20711C8.48043 7.39464 8.73478 7.5 9 7.5H9.5C9.63261 7.5 9.75979 7.55268 9.85355 7.64645C9.94732 7.74021 10 7.86739 10 8V9.5C10 9.63261 9.94732 9.75979 9.85355 9.85355C9.75979 9.94732 9.63261 10 9.5 10H8C7.86739 10 7.74021 9.94732 7.64645 9.85355C7.55268 9.75979 7.5 9.63261 7.5 9.5V9C7.5 8.73478 7.39464 8.48043 7.20711 8.29289C7.01957 8.10536 6.76522 8 6.5 8C6.23478 8 5.98043 8.10536 5.79289 8.29289C5.60536 8.48043 5.5 8.73478 5.5 9V9.5C5.5 9.63261 5.44732 9.75979 5.35355 9.85355C5.25979 9.94732 5.13261 10 5 10H3.5C3.36739 10 3.24021 9.94732 3.14645 9.85355C3.05268 9.75979 3 9.63261 3 9.5V8C3 7.86739 2.94732 7.74021 2.85355 7.64645C2.75979 7.55268 2.63261 7.5 2.5 7.5H2C1.73478 7.5 1.48043 7.39464 1.29289 7.20711C1.10536 7.01957 1 6.76522 1 6.5C1 6.23478 1.10536 5.98043 1.29289 5.79289C1.48043 5.60536 1.73478 5.5 2 5.5H2.5C2.63261 5.5 2.75979 5.44732 2.85355 5.35355C2.94732 5.25979 3 5.13261 3 5V3.5C3 3.36739 3.05268 3.24021 3.14645 3.14645C3.24021 3.05268 3.36739 3 3.5 3H5C5.13261 3 5.25979 2.94732 5.35355 2.85355C5.44732 2.75979 5.5 2.63261 5.5 2.5V2Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+						<span>More By Others</span>
+					</a></li>
+					<li class="is-hidden"><a href="#"></a></li>
+					<li class="is-hidden"><a href="#"></a></li>
 				</ul>
-			</div>
-			<main>
-				<div class="header user">
-					<img class="is-hidden" src=""><a href="https://aspm.bahtyr.com"><p></p></a>
-					<!-- <img src="https://i.scdn.co/image/ab6775700000ee85224eb1a18feef801a1eacf45"><p>Bahtiyar Ceylan</p> -->
-				</div>
-				<div class="content user">
-					<div class="item-tile is-public is-gone"><div class="img-wrapper"><img src="https://i.scdn.co/image/ab67706c0000da8498ad07b5f42c61424e333e44"></div><p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="12px" height="12px"><path d="M0 0h24v24H0z" fill="none"/><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg><span>Belki</span></p></div>
-				</div>
-				<!-- <div class="header section-top-tracks">
-					<p>Last 4 Weeks</p>
-					<p>Last 6 Months</p>
-					<p>All Time</p>
-				</div>
-				<div class="content">
-					<table>
-						<tr>
-							<th></th>
-						    <th>Title</th>
-						    <th>Artist</th>
-						</tr>
-						<tr>
-							<td>1</td>
-						    <td>Gibi</td>
-						    <td>Hidra</td>
-						</tr>
-						<tr>
-							<td>2</td>
-						    <td>Bu Nasıl Sevgi</td>
-						    <td>Cem Çınar</td>
-						</tr>
-						<tr>
-							<td>3</td>
-						    <td>Whisky and Spice</td>
-						    <td>Yeico X Toni</td>
-						</tr>
-					</table>
-				</div> -->
-			</main>
-			<div class="side-wrapper">
-			</div>
+			</nav>
 		</div>
 	</body>
 </html>
