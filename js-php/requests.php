@@ -87,12 +87,24 @@ function api_request($url, $method, $headers, $parameters, $echo) {
 
 	$context = stream_context_create($options);
 	$result = file_get_contents($url, false, $context);
+
+	$return_ = array();
+
+	// $http_response_header has status code at index 0
+	if(is_array($http_response_header)) {
+		$status = explode(' ', $http_response_header[0]);
+		if(count($status) > 1) //HTTP/1.0 <code> <text>
+ 	    	$return_["status"] = intval($status[1]);
+ 	} else $return_["status"] = 0;
+
+    $return_["content"] = $result;
+	$return_["url"] = $result === false ? $url : ""; // only send URL on error
 	
-	if ($result === false) {
-		echo error_get_last()['message'];
-	} else {
-		if ($echo) echo $result;
-		else return $result;
-	}
+	// echo var_dump($http_response_header); // saving this just in case for future
+	// echo error_get_last()['message']; // saving this just in case for future
+
+	if ($echo) echo json_encode($return_);
+	else return $result;
 }
+
 ?>

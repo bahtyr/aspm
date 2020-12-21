@@ -21,30 +21,36 @@ function requestAuthorization() {
  * 							request is "refrseh", returns spotify.accessToken
  */
 function requestTokens(request) {
-	let data_;
+	let params;
 	if (request == 0)
-		data_ = { request: "tokens", code: spotify.code, redirect_uri: window.location.href.match(/^[^\#\?]+/)[0] };
-	else data_ = { request: "refresh", refresh_token: spotify.refreshToken };
+		params = { request: "tokens", code: spotify.code, redirect_uri: window.location.href.match(/^[^\#\?]+/)[0] };
+	else params = { request: "refresh", refresh_token: spotify.refreshToken };
 
 	$.ajax({
 		method: "GET",
 		url: "./js-php/requests.php",
-		data: data_,
+		data: params,
+		dataType: "json",
 		success: function(data, status) {
-			console.log("this one right");
-			console.log(data);
-			console.log(status);
-			// when we make a REFRESH request, it does not return a refresh token
-			data_ = JSON.parse(data);
-			if (data_["refresh_token"] != null)
-				saveSpotifyAuthData(spotify.code, data_["access_token"], data_["refresh_token"]);
-			else saveSpotifyAuthData(spotify.code, data_["access_token"], spotify.refreshToken);
+			if (data["status"] == 200) { // SUCCESS
 
-			spotifyFlow();
+				const content = JSON.parse(data["content"]);
+
+				// refresh requests don't return refresh token, preserve ours
+				if (content["refresh_token"] != null)
+					saveSpotifyAuthData(spotify.code, content["access_token"], content["refresh_token"]);
+				else saveSpotifyAuthData(spotify.code, content["access_token"], spotify.refreshToken);
+
+				spotifyFlow();
+
+			} else if (data["status"] == 400) { // BAD REQUEST
+				// probably we attempted to request tokens with an expired auth code, nvm this.
+			} else {
+				console.log(data);
+			}
 		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log("Request Failed. " + textStatus);
-		}
+		error: (jqXHR, textStatus, errorThrown) => // this is only for our php requests, it is not the actual response from spotify
+			console.log("PHP Request Failed. " + textStatus)
 	});
 }
 
@@ -55,19 +61,24 @@ function requestCurrentUser() {
 		method: "GET",
 		url: "./js-php/requests.php",
 		data: { request: "get_current_user", access_token: spotify.accessToken},
+		dataType: "json",
 		success: function(data, status) {
-			if (data.length > 10) {
-				data_ = JSON.parse(data);
-				user.name = data_["display_name"];
-				user.image = data_["images"][0]["url"];
-				user.id = data_["id"];
+			if (data["status"] == 200) {
+
+				const content = JSON.parse(data["content"]);
+
+				user.name = content["display_name"];
+				user.image = content["images"][0]["url"];
+				user.id = content["id"];
 				saveUser();
 				printUser();
+
+			} else {
+				console.log(data);
 			}
 		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log("Request Failed. " + textStatus);
-		}
+		error: (jqXHR, textStatus, errorThrown) =>
+			console.log("PHP Request Failed. " + textStatus)
 	});
 }
 
@@ -90,13 +101,14 @@ function spotifyFlow() {
 
 			const timeDiff = Math.floor((Date.now() - spotify.dateInMs) / 1000);
 			if (timeDiff >= 3600)
-				requestTokens(1)
+				requestTokens(1);
 			else setTimeout(() => requestTokens(true), (3600 - timeDiff) * 1000);
 		}
 	}
 
 	// check if we need to read URL params
 	if (spotify.refreshToken == "" && spotify.accessToken == "") {
+
 		const urlParams = new URLSearchParams(window.location.search);
 
 		if(urlParams.has("code")) {
