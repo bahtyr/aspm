@@ -1,5 +1,6 @@
 $(function() {
 	initButtons();
+	spotifyFlow();
 });
 
 function initButtons() {
@@ -10,4 +11,5 @@ function initButtons() {
 	$(".menu").click(function() {
 		$(".site-header").toggleClass('is-expanded');
 	});
+	$(".login").click(() => requestAuthorization());
 }
