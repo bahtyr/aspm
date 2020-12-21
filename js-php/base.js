@@ -12,4 +12,5 @@ function initButtons() {
 		$(".site-header").toggleClass('is-expanded');
 	});
 	$(".login").click(() => requestAuthorization());
+	$(".user-name").dblclick(() => logout());
 }

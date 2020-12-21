@@ -33,11 +33,18 @@ function spotify_get_current_user($access_token) {
 	api_request($url, "GET", $headers, "", true);
 }
 
+function spotify_get_top_tracks_artists($access_token, $type, $time_range) {
+	$url = "https://api.spotify.com/v1/me/top/" . $type;
+	$contents = array('time_range' => $time_range, 'limit' => 20);
+	$headers = "Accept: application/json\r\nContent-type: application/json\r\nAuthorization: Bearer {$access_token}\r\n";
+	api_request($url, "GET", $headers, $contents, true);
+}
+
 // OTHER
 
 function check_getpost() {
 	$client_id = "818359d1ffe44cc8856e83f047b1840a";
-	$client_secret = "0af9b4f2baf84e32a8b379bf3d7eadfa";
+	$client_secret = "6f88deff5e034b28a8bd7c81e67a804d";
 
 	if(isset_get("request")) {
 		if ($_GET["request"] == "auth") 
@@ -51,6 +58,9 @@ function check_getpost() {
 
 		elseif ($_GET["request"] == "get_current_user") 
 			spotify_get_current_user($_GET["access_token"]);
+
+		elseif ($_GET["request"] == "get_top_tracks_artists") 
+			spotify_get_top_tracks_artists($_GET["access_token"], $_GET["type"], $_GET["time_range"]);
 	}
 }
 
@@ -69,7 +79,7 @@ function encode_auth($client_id, $client_secret) { return base64_encode($client_
  * @param String	$parameters 	can be empty
  * @param Boolean	$echo 			TRUE: echo the result, FALSE: return the result
  * @return Object 					returns the result if $echo is FALSE
- */ 
+ */
 function api_request($url, $method, $headers, $parameters, $echo) {
 	$contents = "";
 	$query = http_build_query($parameters);
@@ -98,10 +108,11 @@ function api_request($url, $method, $headers, $parameters, $echo) {
  	} else $return_["status"] = 0;
 
     $return_["content"] = $result;
+	$return_["message"] = $result === false ? $http_response_header[0] : "";
 	$return_["url"] = $result === false ? $url : ""; // only send URL on error
-	
-	// echo var_dump($http_response_header); // saving this just in case for future
-	// echo error_get_last()['message']; // saving this just in case for future
+
+	// $return_["header"] = var_dump($http_response_header); // saving this just in case for future
+	// $return_["message"] = error_get_last()['message']; // saving this just in case for future
 
 	if ($echo) echo json_encode($return_);
 	else return $result;

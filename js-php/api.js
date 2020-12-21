@@ -43,6 +43,8 @@ function requestTokens(request) {
 
 				spotifyFlow();
 
+				console.log(content);
+
 			} else if (data["status"] == 400) { // BAD REQUEST
 				// probably we attempted to request tokens with an expired auth code, nvm this.
 			} else {
@@ -82,6 +84,37 @@ function requestCurrentUser() {
 	});
 }
 
+/** 
+ * @params {int} type 	0: tracks 		1: artists
+ * @params {int} type 	0: short_term	1: long_term
+ */
+function requestTopTracksArtists(type, timeRange) {
+	$.ajax({
+		method: "GET",
+		url: "./js-php/requests.php",
+		data: { request: "get_top_tracks_artists", type: type, time_range: timeRange, access_token: spotify.accessToken},
+		dataType: "json",
+		success: function(data, status) {
+			if (data["status"] == 200) {
+
+				const content = JSON.parse(data["content"]);
+
+				// console.log(type);
+				if (type == "tracks")
+					printPlaylist(content["items"]);
+				else if (type == "artists") {
+					printArtists(content["items"]);
+					// console.log(content["items"]);
+				}
+			} else {
+				console.log(data);
+			}
+		},
+		error: (jqXHR, textStatus, errorThrown) =>
+			console.log("PHP Request Failed. " + textStatus)
+	});
+}
+
 // ---------------------------------------------------------------------------------------- SPOTIFY FLOW
 
 /**
@@ -92,7 +125,7 @@ function requestCurrentUser() {
  */
 function spotifyFlow() {
 	// check local data
-	if (localStorage.spotify != null) {
+	if (localStorage.spotify != null && localStorage.spotify != "") {
 		let spotify_ = JSON.parse(localStorage.spotify);
 
 		// if refreshToken is not empty, other vals are also not empty, we can use it
@@ -127,6 +160,10 @@ function spotifyFlow() {
 	} 
 }
 
+function isLoggedIn() {
+	return spotify.code != "" && spotify.accessToken != "" && spotify.refreshToken != "";
+}
+
 // ---------------------------------------------------------------------------------------- SAVE DATA
 
 function saveSpotifyAuthData(code, accessToken, refreshToken) {
@@ -135,11 +172,23 @@ function saveSpotifyAuthData(code, accessToken, refreshToken) {
 	spotify.refreshToken = refreshToken;
 	spotify.dateInMs = Date.now();
 	localStorage.setItem("spotify", JSON.stringify(spotify));
-	setTimeout(() => requestTokens(true), 3600 * 1000);
+	if (spotify.refreshToken != "")
+		setTimeout(() => requestTokens(true), 3600 * 1000);
 }
 
 function saveUser() {
 	localStorage.setItem("user", JSON.stringify(user));
+}
+
+function logout() {
+	spotify.code = "";
+	spotify.accessToken = "";
+	spotify.refreshToken = "";
+	spotify.dateInMs = 0;
+	localStorage.removeItem("spotify");
+
+	$(".login").removeClass("is-gone");
+	$(".user-name").addClass("is-gone");
 }
 
 
@@ -148,4 +197,110 @@ function saveUser() {
 function printUser() {
 	$(".login").addClass("is-gone");
 	$(".user-name").removeClass("is-gone").text(user.name);
+}
+
+function printPlaylist(items) {
+	let list = [];
+	const template = $("table tr")[1].outerHTML;
+
+	for (let i = 0; i < items.length; i++) {
+		let holder = $($.parseHTML(template));
+		holder.removeClass("is-gone");
+
+		// TREND
+		let random = Math.floor(Math.random() * 4) + 1;
+		if (random < 4)
+			holder.find(`td:nth-child(1) svg:nth-child(${random})`).removeClass("is-gone");
+
+		// NO
+		holder.find("td:nth-child(2)").text(i + 1);
+
+		// IMAGE
+		let imgArrLength = items[i]["album"]["images"].length;
+		if (imgArrLength > 0)
+			holder.find("td:nth-child(3) img").attr("src", items[i]["album"]["images"][imgArrLength - 1]["url"]);
+		else { 
+			holder.find("td:nth-child(3) img").removeAttr("src", "");
+			holder.find("td:nth-child(3) img").addClass("is-hidden");
+		}
+		
+		// TITLE
+		let name = items[i]["name"];
+		if (name.length > 25)
+			name = name.substr(0, 25) + "...";
+		holder.find("td:nth-child(3) span").text(name);
+
+		// ARTISTS
+		// TODO loop artists
+		let artists = items[i]["artists"][0]["name"];
+		if (artists.length > 25)
+			artists = artists.substr(0, 25) + "...";
+		holder.find("td:nth-child(4)").text(artists);
+
+		// ALBUM
+		let album = items[i]["album"]["name"];
+		if (album.length > 25)
+			album = album.substr(0, 25) + "...";
+		holder.find("td:nth-child(5)").text(album);
+
+		list.push(holder);
+	}
+
+	$("table").append(list);
+}
+
+function printArtists(items) {
+	let list = [];
+	const template = $("table tr")[1].outerHTML;
+
+	for (let i = 0; i < items.length; i++) {
+		let holder = $($.parseHTML(template));
+		holder.removeClass("is-gone");
+
+		// TREND
+		let random = Math.floor(Math.random() * 4) + 1;
+		if (random < 4)
+			holder.find(`td:nth-child(1) svg:nth-child(${random})`).removeClass("is-gone");
+
+		// NO
+		holder.find("td:nth-child(2)").text(i + 1);
+
+		// IMAGE
+		let imgArrLength = items[i]["images"].length;
+		if (imgArrLength > 0)
+			holder.find("td:nth-child(3) img").attr("src", items[i]["images"][imgArrLength - 1]["url"]);
+		else { 
+			holder.find("td:nth-child(3) img").removeAttr("src", "");
+			holder.find("td:nth-child(3) img").addClass("is-hidden");
+		}
+		
+		// TITLE
+		let name = items[i]["name"];
+		if (name.length > 25)
+			name = name.substr(0, 25) + "...";
+		holder.find("td:nth-child(3) span").text(name);
+
+		// POPULARITY
+		// TODO loop artists
+		// let artists = items[i]["artists"][0]["name"];
+		// if (artists.length > 25)
+			// artists = artists.substr(0, 25) + "...";
+		holder.find("td:nth-child(4)").text(items[i]["popularity"]);
+
+		// GENRES
+		// let genres = items[i]["genres"];
+		// let genres_ = "";
+		if (items[i]["genres"].length > 0) {
+			// genres.forEach(() => genres_ += genres[i]);
+			// for (i in genres)
+				// genres_ += genres[i];
+			// genres_ = genres_.substring(0, genres_.length - 1);
+			holder.find("td:nth-child(5)").text(items[i]["genres"].join("\r\n"));
+		} else
+			holder.find("td:nth-child(5)").text("");
+
+		list.push(holder);
+	}
+
+	$("table").append(list);
 }
