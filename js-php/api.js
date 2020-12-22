@@ -230,6 +230,11 @@ function logout() {
 	spotify.dateInMs = 0;
 	localStorage.removeItem("spotify");
 
+	user.name = "";
+	user.image = "";
+	user.id = "";
+	localStorage.removeItem("user");
+
 	$(".login").removeClass("is-gone");
 	$(".user-name").addClass("is-gone");
 }
