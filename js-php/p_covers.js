@@ -10,14 +10,10 @@ $(function() {
 				listenImagePicker();
 			})
 			.catch((error) => {});
-
-		// if (isLoaded) {
-			// console.log("helo");
-		// } else console.log('asdf');
 	}
 });
 
-//Add listener to playlist items to trigger image picker on click.
+// Trigger image picker on click.
 function listenPlaylistClick() {
 	$(".image-item").click(function() {
 		let i = $(this).index() - 1; //substract hidden element
@@ -26,7 +22,7 @@ function listenPlaylistClick() {
 	});
 }
 
-//Add listener to image-picker to load the image, validate and update playlist cover.
+// Load a user selected image, validate and update playlist cover.
 function listenImagePicker() {
 	$("#input-image-picker").change(function() {
 		let f = $(this)[0].files[0];
@@ -40,7 +36,6 @@ function listenImagePicker() {
 				img.onload = () => { //load image to validate
 					if (validateNewPlaylistImage(f["type"], f["size"], img.width, img.height)) //finally put
 						putPlaylistCover(selectedPlaylistID, result.substr(23));
-					// {}
 				}
 			})
 			.catch(error => {
@@ -51,6 +46,8 @@ function listenImagePicker() {
 	});
 }
 
+
+// Check if the loaded image meets Spotify's specifications
 function validateNewPlaylistImage(fileType, fileSize, imgWidth, imgHeight) {
 	let isOK = true;
 	let msg = "Error";
@@ -79,7 +76,6 @@ function validateNewPlaylistImage(fileType, fileSize, imgWidth, imgHeight) {
 		window.alert(msg);
 	return isOK;
 }
-
 
 function promieFileBase64(file) {
 	return new Promise((resolve, reject) => {

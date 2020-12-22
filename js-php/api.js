@@ -16,9 +16,9 @@ function requestAuthorization() {
 /**
  * My client is authorized, now request tokens to use in the future requests.
  * 
- * @params {int} request 	0: tokens 1: refresh
- * @result					when request is "tokens", returns spotify.accessToken & spotify.refreshToken
- * 							request is "refrseh", returns spotify.accessToken
+ * @params {int} request 	0: tokens  1: refresh
+ * @result					0: returns spotify.accessToken & spotify.refreshToken
+ * 							1: returns spotify.accessToken
  */
 function requestTokens(request) {
 	let params;
@@ -56,7 +56,7 @@ function requestTokens(request) {
 	});
 }
 
-// ---------------------------------------------------------------------------------------- USER
+// ---------------------------------------------------------------------------------------- OTHER REQUESTS
 
 function requestCurrentUser() {
 	$.ajax({
@@ -233,7 +233,6 @@ function logout() {
 	$(".login").removeClass("is-gone");
 	$(".user-name").addClass("is-gone");
 }
-
 
 // ---------------------------------------------------------------------------------------- HTML
 

@@ -1,9 +1,9 @@
 $(function() {
-	initButtons();
+	initHeaderButtons();
 	spotifyFlow();
 });
 
-function initButtons() {
+function initHeaderButtons() {
 	$(".darkmode-toggle").click(function() {
 		$(".darkmode-toggle .icon-wrapper").toggleClass('active');
 		$('body, .bar').toggleClass('dark');

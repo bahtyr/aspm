@@ -4,43 +4,47 @@ check_getpost();
 
 // AUTHENTICATION
 
-function spotify_authorize($redirect_uri, $client_id, $client_secret) {
+function authorize($redirect_uri, $client_id, $client_secret) {
 	$scopes = "playlist-modify-private playlist-modify-public playlist-read-collaborative playlist-read-private user-follow-read user-library-read user-library-modify user-read-recently-played user-top-read ugc-image-upload";
 	$url = "https://accounts.spotify.com/authorize?"
 		."response_type=code&client_id={$client_id}&client_secret={$client_secret}&redirect_uri={$redirect_uri}&scope={$scopes}";
 	header("Location: {$url}");
 }
 
-function spotify_request_tokens($redirect_uri, $auth_encoded, $code) {
+function request_tokens($redirect_uri, $auth_encoded, $code) {
 	$url = "https://accounts.spotify.com/api/token";
 	$contents = array('grant_type' => 'authorization_code', 'code' => $code, 'redirect_uri' => $redirect_uri);
 	$headers = "Content-type: application/x-www-form-urlencoded\r\nAuthorization: Basic {$auth_encoded}\r\n";
 	api_request($url, "POST", $headers, $contents, true);
 }
 
-function spotify_refresh_tokens($auth_encoded, $refresh_token) {
+function refresh_tokens($auth_encoded, $refresh_token) {
 	$url = "https://accounts.spotify.com/api/token";
 	$contents = array('grant_type' => 'refresh_token', 'refresh_token' => $refresh_token);
 	$headers = "Content-type: application/x-www-form-urlencoded\r\nAuthorization: Basic {$auth_encoded}\r\n";
 	api_request($url, "POST", $headers, $contents, true);
 }
 
-// USER
+// OTHER REQUESTS
 
-function spotify_get_current_user($access_token) {
+function get_current_user_($access_token) {
 	$url = "https://api.spotify.com/v1/me";
 	$headers = "Content-type: application/x-www-form-urlencoded\r\nAuthorization: Bearer {$access_token}\r\n";
 	api_request($url, "GET", $headers, "", true);
 }
 
-function spotify_get_current_user_playlists($access_token) {
+function get_current_user_playlists($access_token) {
 	$url = "https://api.spotify.com/v1/me/playlists";
 	$contents = array('limit' => '50', 'offset' => '0');
 	$headers = "Authorization: Bearer {$access_token}\r\n";
 	api_request_looped($url, "GET", $headers, $contents, 50);
 }
 
-function spotify_get_top_tracks_artists($access_token, $type, $time_range) {
+/**
+ * @param String	$type 				tracks / artists
+ * @param String	$time_range 		short_term / medium_term / long_term
+ */
+function get_top_tracks_artists($access_token, $type, $time_range) {
 	$url = "https://api.spotify.com/v1/me/top/" . $type;
 	$contents = array('time_range' => $time_range, 'limit' => 20);
 	$headers = "Accept: application/json\r\nContent-type: application/json\r\nAuthorization: Bearer {$access_token}\r\n";
@@ -55,22 +59,22 @@ function check_getpost() {
 
 	if(isset_get("request")) {
 		if ($_GET["request"] == "auth") 
-			spotify_authorize($_GET["redirect_uri"], $client_id, $client_secret);
-		
+			authorize($_GET["redirect_uri"], $client_id, $client_secret);
+
 		elseif ($_GET["request"] == "tokens" && isset_get("code")) 
-			spotify_request_tokens($_GET["redirect_uri"], encode_auth($client_id, $client_secret), $_GET["code"]);
+			request_tokens($_GET["redirect_uri"], encode_auth($client_id, $client_secret), $_GET["code"]);
 
 		elseif ($_GET["request"] == "refresh" && isset_get("refresh_token")) 
-			spotify_refresh_tokens(encode_auth($client_id, $client_secret), $_GET["refresh_token"]);
+			refresh_tokens(encode_auth($client_id, $client_secret), $_GET["refresh_token"]);
 
 		elseif ($_GET["request"] == "get_current_user") 
-			spotify_get_current_user($_GET["access_token"]);
+			get_current_user_($_GET["access_token"]);
 
 		elseif ($_GET["request"] == "get_top_tracks_artists") 
-			spotify_get_top_tracks_artists($_GET["access_token"], $_GET["type"], $_GET["time_range"]);
+			get_top_tracks_artists($_GET["access_token"], $_GET["type"], $_GET["time_range"]);
 
 		elseif ($_GET["request"] == "get_current_user_playlists") 
-			spotify_get_current_user_playlists($_GET["access_token"]);
+			get_current_user_playlists($_GET["access_token"]);
 	}
 }
 
@@ -88,7 +92,8 @@ function encode_auth($client_id, $client_secret) { return base64_encode($client_
  * @param String	$headers 		can be empty	
  * @param String	$parameters 	can be empty
  * @param Boolean	$echo 			TRUE: echo the result, FALSE: return the result
- * @return Object 					returns the result if $echo is FALSE
+ * @return 		 					on $echo returns a custom JSON object,
+ * 										else returns an array 
  */
 function api_request($url, $method, $headers, $parameters, $echo) {
 	$contents = "";
@@ -108,26 +113,37 @@ function api_request($url, $method, $headers, $parameters, $echo) {
 	$context = stream_context_create($options);
 	$result = file_get_contents($url, false, $context);
 
+	// create a custom return object
 	$return_ = array();
 
-	// $http_response_header has status code at index 0
+	// get $result's http status from it's header
 	if(is_array($http_response_header)) {
 		$status = explode(' ', $http_response_header[0]);
-		if(count($status) > 1) //HTTP/1.0 <code> <text>
+		if(count($status) > 1)
  	    	$return_["status"] = intval($status[1]);
  	} else $return_["status"] = 0;
 
     $return_["content"] = $result;
+	$return_["url"] = $result === false ? $url : "";
 	$return_["message"] = $result === false ? $http_response_header[0] : "";
-	$return_["url"] = $result === false ? $url : ""; // only send URL on error
-
-	// $return_["header"] = var_dump($http_response_header); // saving this just in case for future
 	// $return_["message"] = error_get_last()['message']; // saving this just in case for future
+	// $return_["header"] = var_dump($http_response_header); // saving this just in case for future
 
 	if ($echo) echo json_encode($return_);
 	else return $return_;
 }
 
+/**
+ * Makes multiple HTTP requests before outputting the results
+ *
+ * @param String	$url
+ * @param String	$method 		GET / POST
+ * @param String	$headers 		can be empty	
+ * @param String	$parameters 	can be empty
+ * @param Boolean	$limit 			Spotify's item limit for the request
+ * @return Object 					uses the same array as in api_request(),
+ * 										however arr["content"] only includes "items"
+ */
 function api_request_looped($url, $method, $headers, $parameters, $limit) {
 	$result = api_request($url, $method, $headers, $parameters, false);
 

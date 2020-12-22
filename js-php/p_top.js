@@ -1,15 +1,10 @@
 $(function() {
-	initButtons_();
-	
-	const urlParams = new URLSearchParams(window.location.search);
-	let type = "tracks";
-	let timeRange = "short_term";
+	initButtons();
 	
 	// read params
-	if(urlParams.has("type"))
-		type = urlParams.get("type");
-	if(urlParams.has("time_range"))
-		timeRange = urlParams.get("time_range");
+	const urlParams = new URLSearchParams(window.location.search);
+	let type = urlParams.has("type") ? urlParams.get("type") : "tracks";
+	let timeRange = urlParams.has("time_range") ? urlParams.get("time_range") : "short_term";
 	
 	// update radio selection
 	if (type == "tracks") {
@@ -18,7 +13,6 @@ $(function() {
 	} else if (type == "artists") {
 		$(".radio-wrapper:nth-child(1) p:nth-child(2)").removeClass("is-active");
 		$(".radio-wrapper:nth-child(1) p:nth-child(3)").addClass("is-active");
-
 		prepareArtistsTable();
 	}
 
@@ -30,7 +24,7 @@ $(function() {
 	}
 });
 
-function initButtons_() {
+function initButtons() {
 	$(".radio-wrapper:nth-child(1) p").click(function() {
 		if ($(this).index() > 0) {
 			let type = "tracks";

@@ -23,7 +23,6 @@ a > * { display: inline-block; }
 	--light-grey-100: #F5F5F5;
 	--light-grey-200: #ECECEC;
 
-
 	--day-white: #f6f8fa;
 	--night-blue: #161d26;
 
@@ -45,7 +44,6 @@ a > * { display: inline-block; }
 	--gray-dark: #495464;
 	--gray2-light: #dee2e6;
 	--gray2-dark: #868e96;
-
 
 	/* COLORS */
 
@@ -90,7 +88,6 @@ a > * { display: inline-block; }
 }
 
 /*---------------------------------------------------------------------------------------- TYPOGRAPHY */
-
 
 /*.font-size-title { font-size: var(--font-size-title); }*/
 /*.font-size-normal { font-size: var(--font-size-normal); }*/
@@ -192,13 +189,12 @@ body, .site-header {
 	align-items: center;
 }
 
-/* elements */
+/* ELEMENTS */
 
-.site-title { }
-
-.user-name { }
-
-.login { font-weight: 500; }
+.login { 
+	font-weight: 500;
+	cursor: pointer;
+}
 
 .icon-wrapper.menu { 
 	cursor: pointer;
@@ -207,11 +203,9 @@ body, .site-header {
 
 .icon-wrapper.menu svg path { stroke: var(--oc-gray-7); }
 
+/* MEDIA */
 
-/* media */
-
-@media only screen
-	and (max-width: 768px) {
+@media only screen and (max-width: 768px) {
 
 	.site-header-wrapper {
 		/*flex-flow: column;*/
@@ -232,6 +226,14 @@ body, .site-header {
 
 	.icon-wrapper.menu { display: initial; }
 	.site-header-wrapper .darkmode-toggle { margin-left: 0; }
+}
+
+@media only screen and (max-width: 1100px) {
+
+	.site-header {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
 }
 
 /*---------------------------------------------------------------------------------------- DARK MODE TOGGLE */
@@ -261,17 +263,7 @@ body, .site-header {
 
 .darkmode-toggle .active:last-child { transform: translatey(0); }
 
-
 /*---------------------------------------------------------------------------------------- GENERIC */
-
-@media only screen
-	and (max-width: 1100px) {
-
-	.site-header {
-		padding-left: 20px;
-		padding-right: 20px;
-	}
-}
 
 .inline > * {
 	display: inline-block;
@@ -288,15 +280,11 @@ body, .site-header {
 
 .max-width-page { max-width: var(--page-max-width); }
 
-.cursor-pointer { cursor: pointer; }
-
 .margin-auto {	margin: auto; }
 
 .is-hidden { visibility: hidden; }
 
-.is-gone {
-	display: none !important;
-}
+.is-gone { display: none; }
 
 /*---------------------------------------------------------------------------------------- PAGE ELEMENTS */
 
@@ -317,9 +305,6 @@ body, .site-header {
 
 .page-title-wrapper svg path { stroke-width: 1.5; }
 
-.page-title {
-}
-
 /* BODY */
 
 .body-wrapper {
@@ -339,10 +324,16 @@ body, .site-header {
 	margin-bottom: 66px;
 }
 
-.actions-wrapper > *:not(:last-child) { margin-right: 90px; }
+@media only screen and (min-width: 768px) {
 
-@media only screen 
-	and (max-width: 768px) {
+	.actions-wrapper > *:not(:last-child) { 
+		margin-right: 90px; 
+		/* I was unable to reset margin to zero on mobile when this was outside of @media */
+	}
+}
+
+@media only screen and (max-width: 768px) {
+
 		.actions-wrapper {
 			flex-flow: column;
 			align-self: center;
@@ -449,7 +440,6 @@ table td:not(:nth-child(3)) {
 	margin-bottom: 3px;
 	position: relative;
 }
-
 
 .image-item img {
 	width: 100%;

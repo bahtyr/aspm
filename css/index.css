@@ -41,10 +41,9 @@ nav ul li a svg {
 	height: 16px;
 }
 
-/* media */
+/* MEDIA */
 
-@media only screen
-	and (max-width: 768px) {
+@media only screen and (max-width: 768px) {
 
 	nav { margin-top: 20px; }
 
@@ -58,7 +57,7 @@ nav ul li a svg {
 	}
 }
 
-/* hover */
+/* HOVER */
 
 nav ul li a:hover::before { opacity: 1; }
 
@@ -74,12 +73,7 @@ nav ul li a::before {
   	transition: opacity 0.3s ease-in-out;
 }
 
-nav ul li a:hover {
-	/*border-radius: 10px;*/
-	/*border-bottom: solid 1px var(--yellow-dark);*/
-}
-
-/* colors */
+/* COLORS */
 
 nav ul li:nth-child(1) { background-color: var(--yellow-light); }
 nav ul li:nth-child(1) a { color: var(--yellow-dark);  }
@@ -112,28 +106,5 @@ nav ul li:nth-child(7) a svg path { stroke: var(--gray-dark); }
 nav ul li:nth-child(8) { background-color: var(--gray2-light); }
 nav ul li:nth-child(8) a { color: var(--gray2-dark);  }
 nav ul li:nth-child(8) a svg path { stroke: var(--gray2-dark); }
-/*
-nav ul li:nth-child(3) { background-color: var(--blue-light); }
-nav ul li:nth-child(3) a { color: var(--blue-dark);  }
-nav ul li:nth-child(3) a svg path { stroke: var(--blue-dark); }
 
-nav ul li:nth-child(4) { background-color: var(--purple-light); }
-nav ul li:nth-child(4) a { color: var(--purple-dark);  }
-nav ul li:nth-child(4) a svg path { stroke: var(--purple-dark); }
-
-nav ul li:nth-child(5) { background-color: var(--teal-light); }
-nav ul li:nth-child(5) a { color: var(--teal-dark);  }
-nav ul li:nth-child(5) a svg path { stroke: var(--teal-dark); }
-
-nav ul li:nth-child(6) { background-color: var(--orange-light); }
-nav ul li:nth-child(6) a { color: var(--orange-dark);  }
-nav ul li:nth-child(6) a svg path { stroke: var(--orange-dark); }
-
-nav ul li:nth-child(7) { background-color: var(--pink-light); }
-nav ul li:nth-child(7) a { color: var(--pink-dark);  }
-nav ul li:nth-child(7) a svg path { stroke: var(--pink-dark); }
-
-nav ul li:nth-child(8) { background-color: var(--gray-light); }
-nav ul li:nth-child(8) a { color: var(--gray-dark);  }
-nav ul li:nth-child(8) a svg path { stroke: var(--gray-dark); }
-*/
+/* previous colors: blue, purple, teal, orange, pink, gray */
