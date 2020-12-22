@@ -1,15 +1,12 @@
 <html>
 	<head>
-		<title>Aspm</title>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script src="./js-php/api.js"></script>
-		<script src="./js-php/base.js"></script>
-		<script src="./js-php/p_covers.js"></script>		
+		<title>Aspm</title>		
 		<link rel="stylesheet" href="./css/base.css">
 		<link rel="stylesheet" href="./css/index.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	</head>
 	<body>
+		<script>if (localStorage.darkMode == 1) document.getElementsByTagName("body")[0].classList.add("dark");</script>
 		<div class="site-header">
 			<div class="site-header-wrapper max-width-page margin-auto">
 				<div class="left">
@@ -49,5 +46,9 @@
 			</main>
 			<input id="input-image-picker" type="file" accept="image/*" class="is-gone">
 		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="./js-php/api.js"></script>
+		<script src="./js-php/base.js"></script>
+		<script src="./js-php/p_covers.js"></script>
 	</body>
 </html>
