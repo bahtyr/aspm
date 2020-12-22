@@ -2,16 +2,19 @@ let playlists;
 let selectedPlaylistID;
 
 $(function() {
-	if (isLoggedIn) {
-		requestCurrentUserPlaylists()
-			.then((result) => {
-				playlists = result;
-				listenPlaylistClick();
-				listenImagePicker();
-			})
-			.catch((error) => {});
-	}
+	if (isLoggedIn()) myTasks();
+	else loginCallback = myTasks;
 });
+
+function myTasks() {
+	requestCurrentUserPlaylists()
+		.then((result) => {
+			playlists = result;
+			listenPlaylistClick();
+			listenImagePicker();
+		})
+		.catch((error) => {});
+}
 
 // Trigger image picker on click.
 function listenPlaylistClick() {
@@ -34,8 +37,11 @@ function listenImagePicker() {
 				let img = new Image();
 				img.src = result;
 				img.onload = () => { //load image to validate
-					if (validateNewPlaylistImage(f["type"], f["size"], img.width, img.height)) //finally put
-						putPlaylistCover(selectedPlaylistID, result.substr(23));
+					if (validateNewPlaylistImage(f["type"], f["size"], img.width, img.height)) {
+						putPlaylistCover(selectedPlaylistID, result.substr(23))
+							.then(() => window.alert("Updated playlist cover."))
+							.catch((error) => window.alert("Failed to update playlist cover."));
+					}
 				}
 			})
 			.catch(error => {
@@ -45,7 +51,6 @@ function listenImagePicker() {
 			});
 	});
 }
-
 
 // Check if the loaded image meets Spotify's specifications
 function validateNewPlaylistImage(fileType, fileSize, imgWidth, imgHeight) {
