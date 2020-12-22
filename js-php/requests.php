@@ -33,6 +33,13 @@ function spotify_get_current_user($access_token) {
 	api_request($url, "GET", $headers, "", true);
 }
 
+function spotify_get_current_user_playlists($access_token) {
+	$url = "https://api.spotify.com/v1/me/playlists";
+	$contents = array('limit' => '50', 'offset' => '0');
+	$headers = "Authorization: Bearer {$access_token}\r\n";
+	api_request_looped($url, "GET", $headers, $contents, 50);
+}
+
 function spotify_get_top_tracks_artists($access_token, $type, $time_range) {
 	$url = "https://api.spotify.com/v1/me/top/" . $type;
 	$contents = array('time_range' => $time_range, 'limit' => 20);
@@ -61,6 +68,9 @@ function check_getpost() {
 
 		elseif ($_GET["request"] == "get_top_tracks_artists") 
 			spotify_get_top_tracks_artists($_GET["access_token"], $_GET["type"], $_GET["time_range"]);
+
+		elseif ($_GET["request"] == "get_current_user_playlists") 
+			spotify_get_current_user_playlists($_GET["access_token"]);
 	}
 }
 
@@ -115,7 +125,35 @@ function api_request($url, $method, $headers, $parameters, $echo) {
 	// $return_["message"] = error_get_last()['message']; // saving this just in case for future
 
 	if ($echo) echo json_encode($return_);
-	else return $result;
+	else return $return_;
+}
+
+function api_request_looped($url, $method, $headers, $parameters, $limit) {
+	$result = api_request($url, $method, $headers, $parameters, false);
+
+	if ($result["status"] != "200") {
+		echo json_encode($result);
+	} else {
+		$json = json_decode($result["content"]);
+		$items = $json -> items;
+		$items_count = $json -> total;
+
+		for ($i = 1; $i < $items_count / $limit; $i++) {
+			$parameters['offset'] = ($limit * $i).'';
+			$result_ = api_request($url, $method, $headers, $parameters, false);
+			
+			if ($result_ === false) {
+				echo json_encode($result_);
+				break;
+			} else {
+				$json = json_decode($result_["content"]);
+				$items = array_merge($items, $json -> items);
+			}
+		}
+
+		$result["content"] = json_encode($items);
+		echo json_encode($result);
+	}
 }
 
 ?>

@@ -18,6 +18,7 @@ a > * { display: inline-block; }
 
 :root {
 	--page-max-width: 1100px;
+	--image-item-width: 150px;
 
 	--light-grey-100: #F5F5F5;
 	--light-grey-200: #ECECEC;
@@ -263,15 +264,6 @@ body, .site-header {
 
 /*---------------------------------------------------------------------------------------- GENERIC */
 
-.inline > * {
-	display: inline-block;
-	vertical-align: middle;
-}
-
-.max-width-page {
-	max-width: var(--page-max-width);
-}
-
 @media only screen
 	and (max-width: 1100px) {
 
@@ -281,21 +273,29 @@ body, .site-header {
 	}
 }
 
-.cursor-pointer {
-	cursor: pointer;
+.inline > * {
+	display: inline-block;
+	vertical-align: middle;
 }
 
-.margin-auto {
-	margin: auto;
+.flex-grid {
+	width: 100%;
+	display: flex;
+	flex-flow: wrap;
+	flex-direction: row;
+	justify-content: space-around;
 }
 
-.is-hidden {
-	visibility: hidden;
-}
+.max-width-page { max-width: var(--page-max-width); }
+
+.cursor-pointer { cursor: pointer; }
+
+.margin-auto {	margin: auto; }
+
+.is-hidden { visibility: hidden; }
 
 .is-gone {
 	display: none !important;
-	display: none;
 }
 
 /*---------------------------------------------------------------------------------------- PAGE ELEMENTS */
@@ -339,7 +339,7 @@ body, .site-header {
 	margin-bottom: 66px;
 }
 
-.actions-wrapper > * { margin-right: 90px; }
+.actions-wrapper > *:not(:last-child) { margin-right: 90px; }
 
 @media only screen 
 	and (max-width: 768px) {
@@ -370,6 +370,8 @@ body, .site-header {
 /* TEXT BUTTON */
 
 .text-button-wrapper { cursor: pointer; }
+
+/*---------------------------------------------------------------------------------------- TABLE */
 
 table {
 	width: 90%;
@@ -425,4 +427,73 @@ table td:not(:nth-child(3)) {
 @media only screen and (max-width: 768px) {
 	table th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)),
 	table td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:nth-child(4)) { display: none; }
+}
+
+/*---------------------------------------------------------------------------------------- IMAGE GRID */
+
+.image-item {
+	margin: 10px;
+	vertical-align: top;
+	text-align: left;
+}
+
+.image-item.is-filler { height: 0; width: var(--image-item-width); }
+
+/* IMAGE */
+
+.image-item .image-wrapper {
+	width: var(--image-item-width);
+	height: var(--image-item-width);
+	background: var(--black-2);
+	border-radius: 2px;
+	margin-bottom: 3px;
+	position: relative;
+}
+
+
+.image-item img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 2px;
+}
+
+/* TEXT */
+
+.image-item p {
+	width: var(--image-item-width);
+	padding: 4px 4px 4px 0;
+	box-sizing: border-box;
+}
+
+.image-item svg  {
+	fill: var(--black-4);
+	margin-right: 4px;
+	margin-top: -2.5px;
+}
+
+.image-item p,
+.image-item svg {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.image-item.is-public svg { display: none; }
+
+/* hover */
+
+.image-item:hover { cursor: pointer; }
+
+.image-item:hover div::before { opacity: 1; }
+
+.image-item div::before {
+	content: '';
+  	position: absolute;
+  	z-index: -1;
+  	width: 100%;
+  	height: 100%;
+  	opacity: 0;
+  	border-radius: 5px;
+  	box-shadow: 0 2px 10px rgba(33, 33, 33, 0.5);
+  	transition: opacity 0.3s ease-in-out;
 }

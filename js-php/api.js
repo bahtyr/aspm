@@ -101,9 +101,9 @@ function requestTopTracksArtists(type, timeRange) {
 
 				// console.log(type);
 				if (type == "tracks")
-					printPlaylist(content["items"]);
+					printTableTracks(content["items"]);
 				else if (type == "artists") {
-					printArtists(content["items"]);
+					printTableArtists(content["items"]);
 					// console.log(content["items"]);
 				}
 			} else {
@@ -112,6 +112,49 @@ function requestTopTracksArtists(type, timeRange) {
 		},
 		error: (jqXHR, textStatus, errorThrown) =>
 			console.log("PHP Request Failed. " + textStatus)
+	});
+}
+
+function requestCurrentUserPlaylists() {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			method: "GET",
+			url: "./js-php/requests.php",
+			data: { request: "get_current_user_playlists", access_token: spotify.accessToken},
+			dataType: "json",
+			success: function(data, status) {
+				if (data["status"] == 200) {
+
+					const content = JSON.parse(data["content"]);
+					printPlaylists(content);
+					resolve(content);
+				} else {
+					console.log(data);
+					reject(false);
+				}
+			},
+			error: (jqXHR, textStatus, errorThrown) => {
+				console.log("PHP Request Failed. " + textStatus);
+				reject(false);
+			}
+		});
+	});
+}
+
+function putPlaylistCover(playlistID, imgBase64) {
+	$.ajax({
+		type: "PUT",
+		url: `https://api.spotify.com/v1/playlists/${playlistID}/images`,
+		data: imgBase64,
+		processData: false,
+		contentType: "image/jpeg",
+		headers: {"Authorization": "Bearer " + spotify.accessToken},
+		success: function(data, textStatus) {
+			window.alert("Updated playlist cover.");
+		},
+		error: function(textStatus, errorThrown) {
+			window.alert("Failed to update playlist cover.");
+		}
 	});
 }
 
@@ -199,7 +242,50 @@ function printUser() {
 	$(".user-name").removeClass("is-gone").text(user.name);
 }
 
-function printPlaylist(items) {
+function printPlaylists(items) {
+	let list = [];
+	const template = $(".image-item")[0].outerHTML;
+
+	for (let i = 0; i < items.length; i++) {
+		let holder = $($.parseHTML(template));
+		holder.removeClass("is-gone");
+
+		// IMAGE
+		let imgArrLength = items[i]["images"].length;
+		if (imgArrLength > 0)
+			holder.find("img").attr("src", items[i]["images"][imgArrLength > 2 ? 1 : 0]["url"]);
+		else { 
+			holder.find("img").removeAttr("src", "");
+			holder.find("img").addClass("is-hidden");
+		}
+		
+		// NAME
+		let name = items[i]["name"];
+		if (name.length > 30)
+			name = name.substr(0, 30) + "...";
+		holder.find("p span").text(name);
+
+		// IS PRIVATE / PUBLIC
+		if (items[i]["public"])
+			holder.addClass("is-public");
+		else holder.removeClass("is-public");
+
+		list.push(holder);
+	}
+
+	// add empty elements at the of the grid to properly align the last row of tiles
+	for (let i = 0; i < 6; i++) {
+		let holder = $($.parseHTML(template));
+		holder.html("");
+		holder.addClass("is-filler");
+		holder.removeClass("is-gone");
+		list.push(holder);
+	}
+
+	$("main").append(list);
+}
+
+function printTableTracks(items) {
 	let list = [];
 	const template = $("table tr")[1].outerHTML;
 
@@ -218,7 +304,7 @@ function printPlaylist(items) {
 		// IMAGE
 		let imgArrLength = items[i]["album"]["images"].length;
 		if (imgArrLength > 0)
-			holder.find("td:nth-child(3) img").attr("src", items[i]["album"]["images"][imgArrLength - 1]["url"]);
+			holder.find("td:nth-child(3) img").attr("src", items[i]["album"]["images"][0]["url"]);
 		else { 
 			holder.find("td:nth-child(3) img").removeAttr("src", "");
 			holder.find("td:nth-child(3) img").addClass("is-hidden");
@@ -249,7 +335,7 @@ function printPlaylist(items) {
 	$("table").append(list);
 }
 
-function printArtists(items) {
+function printTableArtists(items) {
 	let list = [];
 	const template = $("table tr")[1].outerHTML;
 
@@ -281,23 +367,12 @@ function printArtists(items) {
 		holder.find("td:nth-child(3) span").text(name);
 
 		// POPULARITY
-		// TODO loop artists
-		// let artists = items[i]["artists"][0]["name"];
-		// if (artists.length > 25)
-			// artists = artists.substr(0, 25) + "...";
 		holder.find("td:nth-child(4)").text(items[i]["popularity"]);
 
 		// GENRES
-		// let genres = items[i]["genres"];
-		// let genres_ = "";
-		if (items[i]["genres"].length > 0) {
-			// genres.forEach(() => genres_ += genres[i]);
-			// for (i in genres)
-				// genres_ += genres[i];
-			// genres_ = genres_.substring(0, genres_.length - 1);
+		if (items[i]["genres"].length > 0)
 			holder.find("td:nth-child(5)").text(items[i]["genres"].join("\r\n"));
-		} else
-			holder.find("td:nth-child(5)").text("");
+		else holder.find("td:nth-child(5)").text("");
 
 		list.push(holder);
 	}
