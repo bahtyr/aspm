@@ -228,17 +228,20 @@ function getTrends(old, new_, includeItems) {
 			if (includeItems) {}
 			else trend.push(0);
 		else {
+			let exists = false;
+
 			// up / down
 			for (y in old) {
 				if (new_[x]["id"] == old[y]["id"]) {
 					if (includeItems) trend.push([y - x, new_[x]]);
 					else trend.push(y - x);
+					exists = true;
 					break;
 				}
 			}
 
 			// new
-			if (x == trend.length) {
+			if (!exists) {
 				if (includeItems) trend.push([100, new_[x]]);
 				else trend.push(100);
 			}
