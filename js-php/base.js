@@ -177,6 +177,8 @@ function printTableTracks(items) {
 	const template = $("table tr")[1].outerHTML;
 
 	for (let i = 0; i < 20; i++) {
+		if (i == items.length) break;
+
 		let holder = $($.parseHTML(template));
 		holder.removeClass("is-gone");
 
@@ -222,6 +224,8 @@ function printTableArtists(items) {
 	const template = $("table tr")[1].outerHTML;
 
 	for (let i = 0; i < 20; i++) {
+		if (i == items.length) break;
+		
 		let holder = $($.parseHTML(template));
 		holder.removeClass("is-gone");
 

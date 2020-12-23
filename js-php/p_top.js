@@ -95,12 +95,12 @@ function requestWrapper() {
 }
 
 function handleData(data) {
+
 	// trending data needs proccesing, print these first
+
 	if (trending == 0) {
-		if (type == "tracks")
-			printTableTracks(data["items"]);
-		else if (type == "artists")
-			printTableArtists(data["items"]);
+		if (type == "tracks") printTableTracks(data["items"]);
+		else if (type == "artists") printTableArtists(data["items"]);
 	}
 
 	// cookie check for trends
@@ -108,14 +108,14 @@ function handleData(data) {
 	let cookie = parseCookie(timeRange);
 	let trendCookie;
 
-	if ((cookie == null || cookie["is_first"]) && trending == 1){
+	if ((cookie == null || dateDiffInDays(cookie["date"]) < 6) && trending == 1){
 		cookieOther = parseCookie("medium_term");
 		if (cookieOther == null)
 			cookieOther = parseCookie("long_term");
 		if (cookieOther != null)
 			trendCookie = cookieOther;
 	} else if (cookie != null) {
-		if (dateDiffInDays(data) > 6)
+		if (dateDiffInDays(cookie["date"]) > 6)
 			trendCookie = cookie;
 	}
 
@@ -134,20 +134,36 @@ function handleData(data) {
 				arrItems.push(arr[i][1]);
 			}
 
-			if (type == "tracks")
-				printTableTracks(arrItems);
-			else if (type == "artists")
-				printTableArtists(arrTrends);
+			if (type == "tracks") printTableTracks(arrItems);
+			else if (type == "artists") printTableArtists(arrTrends);
 
 			printTrends(arrTrends);
+		}
+	} else {
+		if (trending == 1) {
+			if (type == "tracks") printTableTracks(data["items"]);
+			else if (type == "artists") printTableArtists(data["items"]);
 		}
 	}
 
 	// cookie save time
 	if (cookie != null) {
-		if (dateDiffInDays(data["date"]) > 6)
-			saveCookie(data["items"], false);
-	} else saveCookie(data["items"], true);
+		let dateDiff = dateDiffInDays(cookie["date"]);
+		if (dateDiff > 6 && dateDiff < 14) {
+			saveCookie(`${type}_${timeRange}_temp`, data["items"], Date.now());
+		} else if (dateDiff > 13) {
+			let cookieTemp = parseCookie(`${timeRange}_temp`);
+			if (cookieTemp != null) {
+				saveCookie(`${type}_${timeRange}`, cookie["items"], cookie["date"]);
+				localStorage.removeItem(`${type}_${timeRange}_temp`);
+			} else {
+				saveCookie(`${type}_${timeRange}`, cookie["items"],
+					new Date().setDate(new Date().getDate() - 7));
+			}
+		}
+	} else {
+		saveCookie(`${type}_${timeRange}`, data["items"], Date.now());
+	}
 }
 
 // trend calculation & print
@@ -161,7 +177,8 @@ function getTrends(old, new_, includeItems) {
 
 	for (x in new_) {
 		// same
-		if (new_[x]["id"] == old[x]["id"])
+		if (parseInt(x) < old.length && 
+			new_[x]["id"] == old[x]["id"])
 			if (includeItems) {}
 			else trend.push(0);
 		else {
@@ -219,7 +236,7 @@ function parseCookie(timeRange_) {
 	return cookie == null ? null : JSON.parse(cookie);
 }
 
-function saveCookie(data, isFirst) {
-	localStorage.setItem(`${type}_${timeRange}`, 
-		JSON.stringify({"items": data, "date": Date.now(), "is_first": isFirst}));
+function saveCookie(name, data, date) {
+	localStorage.setItem(name,
+		JSON.stringify({"items": data, "date": date}));
 }

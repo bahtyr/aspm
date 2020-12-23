@@ -46,7 +46,7 @@ function get_current_user_playlists($access_token) {
  */
 function get_top_tracks_artists($access_token, $type, $time_range) {
 	$url = "https://api.spotify.com/v1/me/top/" . $type;
-	$contents = array('time_range' => $time_range, 'limit' => 20);
+	$contents = array('time_range' => $time_range, 'limit' => 50);
 	$headers = "Accept: application/json\r\nContent-type: application/json\r\nAuthorization: Bearer {$access_token}\r\n";
 	api_request($url, "GET", $headers, $contents, true);
 }
