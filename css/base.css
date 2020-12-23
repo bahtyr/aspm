@@ -147,6 +147,14 @@ body.dark .divider {
 	border-color: var(--black-7);
 }
 
+body.dark .sticky-top {
+	/*background-color: var(--oc-gray-6);*/
+}
+
+body.dark .sticky-top p {
+	/*color: var(--oc-gray-9);*/
+}
+
 
 /*---------------------------------------------------------------------------------------- BODY & ETC */
 
