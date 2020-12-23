@@ -176,14 +176,9 @@ function printTableTracks(items) {
 	let list = [];
 	const template = $("table tr")[1].outerHTML;
 
-	for (let i = 0; i < items.length; i++) {
+	for (let i = 0; i < 20; i++) {
 		let holder = $($.parseHTML(template));
 		holder.removeClass("is-gone");
-
-		// TREND
-		let random = Math.floor(Math.random() * 4) + 1;
-		if (random < 4)
-			holder.find(`td:nth-child(1) svg:nth-child(${random})`).removeClass("is-gone");
 
 		// NO
 		holder.find("td:nth-child(2)").text(i + 1);
@@ -226,14 +221,9 @@ function printTableArtists(items) {
 	let list = [];
 	const template = $("table tr")[1].outerHTML;
 
-	for (let i = 0; i < items.length; i++) {
+	for (let i = 0; i < 20; i++) {
 		let holder = $($.parseHTML(template));
 		holder.removeClass("is-gone");
-
-		// TREND
-		let random = Math.floor(Math.random() * 4) + 1;
-		if (random < 4)
-			holder.find(`td:nth-child(1) svg:nth-child(${random})`).removeClass("is-gone");
 
 		// NO
 		holder.find("td:nth-child(2)").text(i + 1);

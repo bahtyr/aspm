@@ -1,19 +1,23 @@
 let type;
 let timeRange;
+let trending;
 
 $(function() {
 	readParams();
 	prepareUI();
 	initButtons();
 
-	if (isLoggedIn()) myTasks();
-	else loginCallback = myTasks;
+	if (isLoggedIn()) requestWrapper();
+	else loginCallback = requestWrapper;
 });
+
+// basics
 
 function readParams() {
 	const urlParams = new URLSearchParams(window.location.search);
 	type = urlParams.has("type") ? urlParams.get("type") : "tracks";
 	timeRange = urlParams.has("time_range") ? urlParams.get("time_range") : "short_term";
+	trending = urlParams.has("trending") ? urlParams.get("trending") : 1;
 }
 
 function prepareUI() {
@@ -25,19 +29,19 @@ function prepareUI() {
 		$(".radio-wrapper:nth-child(1) p:nth-child(3)").addClass("is-active");
 		prepareArtistsTable();
 	}
-}
 
-function initButtons() {
-	$(".radio-wrapper:nth-child(1) p").click(function() {
-		if ($(this).index() > 0) {
-			let type = "tracks";
-			if ($(this).index() == 1)
-				type = "tracks";
-			else if ($(this).index() == 2)
-				type = "artists";
-			window.location.href = window.location.href.match(/^[^\#\?]+/)[0] + "?type=" + type;
-		}
-	})
+	if (trending == 1) {
+		$(".radio-wrapper:nth-child(2) p:nth-child(2)").addClass("is-active");
+	} else if (timeRange == "short_term") {
+		$(".radio-wrapper:nth-child(2) p:nth-child(2)").removeClass("is-active");
+		$(".radio-wrapper:nth-child(2) p:nth-child(3)").addClass("is-active");
+	} else if (timeRange == "medium_term") {
+		$(".radio-wrapper:nth-child(2) p:nth-child(2)").removeClass("is-active");
+		$(".radio-wrapper:nth-child(2) p:nth-child(4)").addClass("is-active");
+	} else if (timeRange == "long_term") {
+		$(".radio-wrapper:nth-child(2) p:nth-child(2)").removeClass("is-active");
+		$(".radio-wrapper:nth-child(2) p:nth-child(5)").addClass("is-active");
+	}
 }
 
 function prepareArtistsTable() {
@@ -49,22 +53,173 @@ function prepareArtistsTable() {
 	$("table .image-wrapper").addClass("artist");
 }
 
-function myRequest(type, time) {
-	requestTopTracksArtists(type, time)
+function initButtons() {
+	$(".radio-wrapper:nth-child(1) p").click(function() {
+		if ($(this).index() > 0) {
+			if ($(this).index() == 1)
+				type = "tracks";
+			else if ($(this).index() == 2)
+				type = "artists";
+			window.location.href = window.location.href.match(/^[^\#\?]+/)[0] + "?type=" + type + "&time_range=" + timeRange + "&trending=" + trending;
+		}
+	});
+
+	$(".radio-wrapper:nth-child(2) p").click(function() {
+		if ($(this).index() > 0) {
+			
+			if ($(this).index() == 1)
+				trending = 1;
+			else trending = 0;
+
+			if ($(this).index() <= 2)
+				timeRange = "short_term";
+			else if ($(this).index() == 3)
+				timeRange = "medium_term";
+			else if ($(this).index() == 4)
+				timeRange = "long_term";
+
+			window.location.href = window.location.href.match(/^[^\#\?]+/)[0] + "?type=" + type + "&time_range=" + timeRange + "&trending=" + trending;
+		}
+	});
+}
+
+// complex
+
+function requestWrapper() {
+	requestTopTracksArtists(type, timeRange)
 		.then((data) => {
 			const content = JSON.parse(data["content"]);
-
-			if (type == "tracks")
-				printTableTracks(content["items"]);
-			else if (type == "artists") {
-				printTableArtists(content["items"]);
-			}
+			handleData(content);
 		})
 		.catch((error) => console.log(error));
 }
 
-function myTasks() {
-	if (type == "tracks")
-		myRequest("tracks", "short_term");
-	else if (type == "artists") myRequest("artists", "short_term");
+function handleData(data) {
+	// trending data needs proccesing, print these first
+	if (trending == 0) {
+		if (type == "tracks")
+			printTableTracks(data["items"]);
+		else if (type == "artists")
+			printTableArtists(data["items"]);
+	}
+
+	// cookie check for trends
+
+	let cookie = parseCookie(timeRange);
+	let trendCookie;
+
+	if ((cookie == null || cookie["is_first"]) && trending == 1){
+		cookieOther = parseCookie("medium_term");
+		if (cookieOther == null)
+			cookieOther = parseCookie("long_term");
+		if (cookieOther != null)
+			trendCookie = cookieOther;
+	} else if (cookie != null) {
+		if (dateDiffInDays(data) > 6)
+			trendCookie = cookie;
+	}
+
+	// trends print time
+
+	if (trendCookie != null) {
+		if (trending == 0) {
+			printTrends(getTrends(trendCookie["items"], data["items"], false));
+		} else {
+			let arr = getTrends(trendCookie["items"], data["items"], true);
+			let arrItems = [];
+			let arrTrends = [];
+
+			for (i in arr) {
+				arrTrends.push(arr[i][0]);
+				arrItems.push(arr[i][1]);
+			}
+
+			if (type == "tracks")
+				printTableTracks(arrItems);
+			else if (type == "artists")
+				printTableArtists(arrTrends);
+
+			printTrends(arrTrends);
+		}
+	}
+
+	// cookie save time
+	if (cookie != null) {
+		if (dateDiffInDays(data["date"]) > 6)
+			saveCookie(data["items"], false);
+	} else saveCookie(data["items"], true);
+}
+
+// trend calculation & print
+
+/**
+ * return		a: [+2, -1, +4]
+ *				b: [[+2, item], [-1, item], [+4, item]]
+ */
+function getTrends(old, new_, includeItems) {
+	let trend = [];
+
+	for (x in new_) {
+		// same
+		if (new_[x]["id"] == old[x]["id"])
+			if (includeItems) {}
+			else trend.push(0);
+		else {
+			// up / down
+			for (y in old) {
+				if (new_[x]["id"] == old[y]["id"]) {
+					if (includeItems) trend.push([y - x, new_[x]]);
+					else trend.push(y - x);
+					break;
+				}
+			}
+
+			// new
+			if (x == trend.length) {
+				if (includeItems) trend.push([100, new_[x]]);
+				else trend.push(100);
+			}
+		}
+	}
+
+	return trend;
+}
+
+function printTrends(arr) {
+	for (let i = 0; i < 20; i++) {
+		let tooltip;
+
+		if (arr[i] == 100) {
+			tooltip = "New";
+			$(`tr:nth-child(${parseInt(i) + 3}) td:nth-child(1) svg:nth-child(3)`).removeClass("is-gone");
+		} else if (arr[i] > 0){
+			tooltip = "+" + arr[i];
+			$(`tr:nth-child(${parseInt(i) + 3}) td:nth-child(1) svg:nth-child(1)`).removeClass("is-gone");
+		} else if (arr[i] < 0) {
+			tooltip = arr[i];
+			$(`tr:nth-child(${parseInt(i) + 3}) td:nth-child(1) svg:nth-child(2)`).removeClass("is-gone");
+		} else if (arr[i] = 0) {
+			// this did not change
+		}
+
+		$(`tr:nth-child(${parseInt(i) + 3}) td:nth-child(1)`).attr("title", tooltip);
+		$(`tr:nth-child(${parseInt(i) + 3}) td:nth-child(2)`).attr("title", tooltip);
+	}
+}
+
+// simple functions
+
+function dateDiffInDays(date) {
+	return Math.floor((Date.now() - date) / 8.64e+7);
+	//
+}
+
+function parseCookie(timeRange_) {
+	let cookie = localStorage.getItem(`${type}_${timeRange_}`);
+	return cookie == null ? null : JSON.parse(cookie);
+}
+
+function saveCookie(data, isFirst) {
+	localStorage.setItem(`${type}_${timeRange}`, 
+		JSON.stringify({"items": data, "date": Date.now(), "is_first": isFirst}));
 }

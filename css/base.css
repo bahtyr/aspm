@@ -84,7 +84,7 @@ a > * { display: inline-block; }
 	--font-color-description: var(--black-6);
 	--font-color-secondary: var(--black-5);
 	--font-color-table-heading: var(--black-4);
-	--font-color-disabled: var(--black-3);
+	
 }
 
 /*---------------------------------------------------------------------------------------- TYPOGRAPHY */
@@ -114,15 +114,18 @@ body {
 	--page-bg: var(--day-white);
 	--site-header-bg: var(--light-grey-100);
 	--site-header-border: var(--light-grey-200);
+
+	/* todo */
+	--font-color-disabled: var(--black-3);
 }
 
 body.dark {
-	/*--page-bg: var(--night-blue);
-	/*--site-header-bg: #0F1721;*/
-	/*--site-header-border: #08101A;*/
 	--page-bg: var(--oc-gray-9);
 	--site-header-bg: var(--oc-gray-9);
 	--site-header-border: var(--oc-gray-7);
+
+	/* todo */
+	--font-color-disabled: var(--black-6);
 }
 
 body.dark,
