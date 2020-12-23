@@ -1,6 +1,7 @@
 let type;
 let timeRange;
 let trending;
+let arrTracks = [];
 
 $(function() {
 	readParams();
@@ -27,6 +28,7 @@ function prepareUI() {
 	} else if (type == "artists") {
 		$(".radio-wrapper:nth-child(1) p:nth-child(2)").removeClass("is-active");
 		$(".radio-wrapper:nth-child(1) p:nth-child(3)").addClass("is-active");
+		$("#btn-create-playlist").addClass("is-hidden");
 		prepareArtistsTable();
 	}
 
@@ -81,9 +83,50 @@ function initButtons() {
 			window.location.href = window.location.href.match(/^[^\#\?]+/)[0] + "?type=" + type + "&time_range=" + timeRange + "&trending=" + trending;
 		}
 	});
+
+	$("#btn-create-playlist").click(() => createPlaylistMaybe());
 }
 
 // complex
+
+function createPlaylistMaybe() {
+	if (type == "artists")
+		return;
+
+	let name;
+	if (trending == 1) name = "Top Tracks - Trending";
+	else if (timeRange == "short_term") name = "Top Tracks - Last Month";
+	else if (timeRange == "medium_term") name = "Top Tracks - Last 6 Months";
+	else if (timeRange == "long_term") name = "Top Tracks - Last Year";
+	else name = "Top Tracks";
+
+	let description;
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	var yyyy = today.getFullYear();
+	today = mm + '/' + dd + '/' + yyyy;
+	description = today;
+
+	postCreatePlaylist(name, description)
+		.then((data) => {
+			let trackURIs = [];
+			for (let i = 0; i < 20; i++) {
+				if (i == arrTracks.length)
+					break;
+				trackURIs.push(arrTracks[i]["uri"]);
+			}
+
+			console.log(name);
+			console.log(description);
+			console.log(trackURIs);
+
+			postAddTracks(data["id"], trackURIs)
+				.then((data) => console.log(data))
+				.catch((error) => console.log(error["responseText"]));
+		})
+		.catch((error) => console.log(error["responseText"]));
+}
 
 function requestWrapper() {
 	requestTopTracksArtists(type, timeRange)
@@ -101,6 +144,8 @@ function handleData(data) {
 	if (trending == 0) {
 		if (type == "tracks") printTableTracks(data["items"]);
 		else if (type == "artists") printTableArtists(data["items"]);
+
+		arrTracks = data["items"];
 	}
 
 	// cookie check for trends
@@ -136,8 +181,9 @@ function handleData(data) {
 
 			if (type == "tracks") printTableTracks(arrItems);
 			else if (type == "artists") printTableArtists(arrTrends);
-
 			printTrends(arrTrends);
+
+			arrTracks = arrItems;
 		}
 	} else {
 		if (trending == 1) {

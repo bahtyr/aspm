@@ -127,3 +127,42 @@ function putPlaylistCover(playlistID, imgBase64) {
 		});
 	});
 }
+
+/*
+ * @result 					Returns playlist object, most important keys are "href", "id".
+ */
+function postCreatePlaylist(name, description) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			method: "POST",
+			url: `https://api.spotify.com/v1/users/${user.id}/playlists`,
+			data: `{"name": "${name}", "description": "${description}", "public": true}`,
+			processData: false,
+			contentType: "application/json",
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, status) => resolve(data),
+			error: (jqXHR, textStatus, errorThrown) => resolve(jqXHR)
+		});
+	});
+}
+
+
+/*
+ * @param {int}				playlistID			Playlist ID.
+ * @param {array[string]}	trackURIs			A list of track URIs in an array.
+ * @result 										Returns snpashot_id in JSON object.
+ */
+function postAddTracks(playlistID, trackURIs) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			method: "POST",
+			url: `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
+			data: `{"uris": ${JSON.stringify(trackURIs)}}`,
+			processData: false,
+			contentType: "application/json",
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, status) => resolve(data),
+			error: (jqXHR, textStatus, errorThrown) => resolve(jqXHR)
+		});
+	});
+}
