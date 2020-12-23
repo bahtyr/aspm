@@ -1,6 +1,7 @@
 let playlists = [];
 let playlistsProtected = []; // Keeps the initial playlist, in case the user turns off all the filters, the list would be empty
 let selectedPlaylistID;
+let selectedPlaylistIndex;
 let showPrivate = true;
 let showPublic = true;
 
@@ -65,6 +66,7 @@ function listenPlaylistClick() {
 	$(".image-item").click(function() {
 		let i = $(this).index() - 1; //substract hidden element
 		selectedPlaylistID = playlists[i]["id"];
+		selectedPlaylistIndex = i;
 		$("#input-image-picker").click();
 	});
 }
@@ -75,7 +77,7 @@ function listenImagePicker() {
 		let f = $(this)[0].files[0];
 		$(this).val(null); //reset file picker
 		
-		// TODO show loading
+		showWarning("Loading your image.", false);
 		promieFileBase64(f) //read image (to base64)
 			.then(result => {
 				let img = new Image();
@@ -83,13 +85,16 @@ function listenImagePicker() {
 				img.onload = () => { //load image to validate
 					if (validateNewPlaylistImage(f["type"], f["size"], img.width, img.height)) {
 						putPlaylistCover(selectedPlaylistID, result.substr(23))
-							.then(() => window.alert("Updated playlist cover."))
-							.catch((error) => window.alert("Failed to update playlist cover."));
+							.then(() => {
+								showWarning("Successfully updated playlist cover.", true);
+								$(`.image-item:nth-child(${selectedPlaylistIndex + 2}) img`).attr("src", result);
+							})
+							.catch((error) => showWarning("Failed to update playlist cover.", true));
 					}
 				}
 			})
 			.catch(error => {
-				window.alert("Failed to upload selected image.");
+				showWarning("Failed to upload selected image.", true);
 				console.log("Promise failed to read file.");
 				console.log(error);
 			});

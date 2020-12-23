@@ -90,6 +90,8 @@ function initButtons() {
 // complex
 
 function createPlaylistMaybe() {
+	showWarning("Creating playlist.", false);
+
 	if (type == "artists")
 		return;
 
@@ -117,15 +119,11 @@ function createPlaylistMaybe() {
 				trackURIs.push(arrTracks[i]["uri"]);
 			}
 
-			console.log(name);
-			console.log(description);
-			console.log(trackURIs);
-
 			postAddTracks(data["id"], trackURIs)
-				.then((data) => console.log(data))
-				.catch((error) => console.log(error["responseText"]));
+				.then((data) => showWarning("Playlist created successfully.", true))
+				.catch((error) => showWarning("Failed to add tracks to the playlist."));
 		})
-		.catch((error) => console.log(error["responseText"]));
+		.catch((error) => showWarning("Failed to create the playlist.", true));
 }
 
 function requestWrapper() {
@@ -134,7 +132,7 @@ function requestWrapper() {
 			const content = JSON.parse(data["content"]);
 			handleData(content);
 		})
-		.catch((error) => console.log(error));
+		.catch((error) => showWarning("An error occured. Please try again.", true));
 }
 
 function handleData(data) {

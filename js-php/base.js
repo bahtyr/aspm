@@ -124,6 +124,15 @@ function isLoggedIn() {
 
 // ---------------------------------------------------------------------------------------- PRINTERS
 
+function showWarning(text, autoHide) {
+	const sticky = $(".sticky-top");
+	const stickyText = $(".sticky-top p");
+	stickyText.text(text);
+	sticky.removeClass("is-hidden");
+	if (autoHide)
+		setTimeout(() =>  sticky.addClass("is-hidden"), 2000);
+}
+
 function printUser() {
 	$(".login").addClass("is-gone");
 	$(".user-name").removeClass("is-gone").text(user.name);

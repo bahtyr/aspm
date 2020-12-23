@@ -158,12 +158,33 @@ body {
 	padding-bottom: 50px;
 }
 
-body, .site-header {
+body, .site-header, .sticky-top {
 	transition: all 300ms ease;
 	-o-transition: all 300ms ease;
   	-ms-transition: all 300ms ease;
   	-moz-transition: all 300ms ease;
   	-webkit-transition: all 300ms ease;
+}
+
+/*---------------------------------------------------------------------------------------- STICKY TOP */
+
+.sticky-top {
+	height: 36px;
+	width: 100%;
+	background-color: var(--black-9);
+	display: flex;
+	align-items: center;
+	position: fixed;
+	top: 0;
+}
+
+.sticky-top p {
+	color: var(--black-2);
+}
+
+.sticky-top.is-hidden {
+	visibility: initial;
+	top: -36px;
 }
 
 /*---------------------------------------------------------------------------------------- SITE HEADER */
