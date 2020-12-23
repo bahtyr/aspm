@@ -142,7 +142,8 @@ body.dark .icon-wrapper.menu svg path {
 	stroke: var(--oc-gray-2);
 }
 
-body.dark th {
+body.dark th,
+body.dark .divider {
 	border-color: var(--black-7);
 }
 
@@ -289,6 +290,12 @@ body, .site-header {
 
 .is-gone { display: none; }
 
+.divider {
+	border-bottom: solid 1px var(--black-1);
+	margin-bottom: 20px;
+	width: 100%;
+}
+
 /*---------------------------------------------------------------------------------------- PAGE ELEMENTS */
 
 /* PAGE TITLE */
@@ -319,13 +326,26 @@ body, .site-header {
 
 /*.body-wrapper > * { width: 100%; }*/
 
+/* DESCRIPTION */
+
+.description-wrapper {
+	margin-bottom: 15px;
+}
+
+.description-wrapper p a {
+	color: var(--blue-dark);
+	/*color: #3F78BB;*/
+}
+
 /* ACTIONS */
 
 .actions-wrapper {
 	display: flex;
 	justify-content: center;
-	margin-bottom: 66px;
+	margin-bottom: 30px;
 }
+
+.actions-wrapper.small-spacing { margin-bottom: 10px; }
 
 @media only screen and (min-width: 768px) {
 

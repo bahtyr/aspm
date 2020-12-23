@@ -98,7 +98,6 @@ function requestCurrentUserPlaylists() {
 				if (data["status"] == 200) {
 
 					const content = JSON.parse(data["content"]);
-					printPlaylists(content);
 					resolve(content);
 				} else {
 					console.log(data);

@@ -1,7 +1,18 @@
-let playlists;
+let playlists = [];
+let playlistsProtected = []; // Keeps the initial playlist, in case the user turns off all the filters, the list would be empty
 let selectedPlaylistID;
+let showPrivate = true;
+let showPublic = true;
 
 $(function() {
+
+	$("#btn-how-to").click(() => {
+		$(".description-wrapper").toggleClass("is-gone");
+		if ($(".description-wrapper").hasClass("is-gone"))
+			$("#btn-how-to p").text("Show How-To");
+		else $("#btn-how-to p").text("Hide How-To");
+	});
+
 	if (isLoggedIn()) myTasks();
 	else loginCallback = myTasks;
 });
@@ -9,11 +20,44 @@ $(function() {
 function myTasks() {
 	requestCurrentUserPlaylists()
 		.then((result) => {
-			playlists = result;
-			listenPlaylistClick();
+			playlistsProtected = result;
+			printPlaylistsHandler(result);
 			listenImagePicker();
+			initButtons();
 		})
 		.catch((error) => {});
+}
+
+function initButtons() {
+	$(".radio-wrapper:nth-child(1) p").click(function() {
+		if ($(this).index() > 0) {
+			$(this).toggleClass("is-active");
+			if ($(this).index() == 1)
+				showPrivate = !showPrivate;
+			else if ($(this).index() == 2)
+				showPublic = !showPublic;
+
+			printPlaylistsHandler(playlistsProtected);
+		}
+	});
+}
+
+// Do necessary things to print playlists.
+function printPlaylistsHandler(data) {
+	$(".image-item").off("click"); // remove listeners to prevent adding multiple listeners
+	$(".image-item:not(.is-gone)").remove(); // remove every item besides the teamplate
+	playlists = []; // remove existing items
+
+	data.forEach(item => {
+		if (user.id == item["owner"]["id"]) {
+			if (showPublic && showPrivate) playlists.push(item);
+			else if (showPublic && !showPrivate && item["public"] == true) playlists.push(item);
+			else if (!showPublic && showPrivate && item["public"] == false) playlists.push(item);
+		}
+	});
+
+	printPlaylists(playlists);
+	listenPlaylistClick();
 }
 
 // Trigger image picker on click.
