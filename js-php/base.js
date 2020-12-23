@@ -32,7 +32,7 @@ function readSpotifyCookies() {
 function printUserMaybe() {
 	if (isLoggedIn()) {
 		if (localStorage.user != null) {
-			user = localStorage.user;
+			user = JSON.parse(localStorage.user);
 			printUser();
 		}
 	}
