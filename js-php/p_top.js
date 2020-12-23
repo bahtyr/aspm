@@ -180,7 +180,7 @@ function handleData(data) {
 			}
 
 			if (type == "tracks") printTableTracks(arrItems);
-			else if (type == "artists") printTableArtists(arrTrends);
+			else if (type == "artists") printTableArtists(arrItems);
 			printTrends(arrTrends);
 
 			arrTracks = arrItems;
