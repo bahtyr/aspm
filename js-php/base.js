@@ -181,11 +181,12 @@ function printPlaylists(items) {
 	$("main").append(list);
 }
 
-function printTableTracks(items) {
+function printTableTracks(items, limit) {
+	let limit_ = limit != 0 ? limit : items.length
 	let list = [];
 	const template = $("table tr")[1].outerHTML;
 
-	for (let i = 0; i < 20; i++) {
+	for (let i = 0; i < limit_; i++) {
 		if (i == items.length) break;
 
 		let holder = $($.parseHTML(template));

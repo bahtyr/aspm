@@ -140,8 +140,8 @@ function handleData(data) {
 	// trending data needs proccesing, print these first
 
 	if (trending == 0) {
-		if (type == "tracks") printTableTracks(data["items"]);
-		else if (type == "artists") printTableArtists(data["items"]);
+		if (type == "tracks") printTableTracks(data["items"], 20);
+		else if (type == "artists") printTableArtists(data["items"], 20);
 
 		arrTracks = data["items"];
 	}
@@ -177,16 +177,16 @@ function handleData(data) {
 				arrItems.push(arr[i][1]);
 			}
 
-			if (type == "tracks") printTableTracks(arrItems);
-			else if (type == "artists") printTableArtists(arrItems);
+			if (type == "tracks") printTableTracks(arrItems, 20);
+			else if (type == "artists") printTableArtists(arrItems, 20);
 			printTrends(arrTrends);
 
 			arrTracks = arrItems;
 		}
 	} else {
 		if (trending == 1) {
-			if (type == "tracks") printTableTracks(data["items"]);
-			else if (type == "artists") printTableArtists(data["items"]);
+			if (type == "tracks") printTableTracks(data["items"], 20);
+			else if (type == "artists") printTableArtists(data["items"], 20);
 		}
 	}
 

@@ -83,9 +83,9 @@ nav ul li:nth-child(2) { background-color: var(--red-light); }
 nav ul li:nth-child(2) a { color: var(--red-dark);  }
 nav ul li:nth-child(2) a svg path { stroke: var(--red-dark); }
 
-nav ul li:nth-child(3) { background-color: var(--gray-light); }
-nav ul li:nth-child(3) a { color: var(--gray-dark);  }
-nav ul li:nth-child(3) a svg path { stroke: var(--gray-dark); }
+nav ul li:nth-child(3) { background-color: var(--blue-light); }
+nav ul li:nth-child(3) a { color: var(--blue-dark);  }
+nav ul li:nth-child(3) a svg path { stroke: var(--blue-dark); }
 
 nav ul li:nth-child(4) { background-color: var(--gray2-light); }
 nav ul li:nth-child(4) a { color: var(--gray2-dark);  }

@@ -165,3 +165,36 @@ function postAddTracks(playlistID, trackURIs) {
 		});
 	});
 }
+
+/*
+ * Get current user's liked / saved tracks.
+ */
+function requestSavedTracks(url_next) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			type: "GET",
+			url: url_next != "" ? url_next : `https://api.spotify.com/v1/me/tracks`,
+			data: {limit: 50},
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, textStatus) => resolve(data),
+			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
+		});
+	});
+}
+
+
+/*
+ * Get a playlist's tracks.
+ */
+function requestPlaylistTracks(playlistID, url_next) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			type: "GET",
+			url: url_next != "" ? url_next : `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
+			data: {limit: 100, fields: "total,limit,next,items(track(uri,id,name,artists(id,name),album(id,name,images)))"}, // max 100
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, textStatus) => resolve(data),
+			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
+		});
+	});
+}
