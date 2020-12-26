@@ -153,6 +153,22 @@ function apiGetPlaylistTracks(playlistID, url_next) {
 	});
 }
 
+/*
+ * Get a playlist's info. Almost a dupe of function above.
+ */
+function apiGetPlaylistInfo(playlistID) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			type: "GET",
+			url: `https://api.spotify.com/v1/playlists/${playlistID}`,
+			data: {limit: 100, fields: "name,description"}, // max 100
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, textStatus) => resolve(data),
+			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
+		});
+	});
+}
+
 // PUT, POST
 
 /*
@@ -187,6 +203,24 @@ function apiUploadPlaylistCover(playlistID, imgBase64) {
 			headers: {"Authorization": "Bearer " + spotify.accessToken},
 			success: (data, textStatus) => resolve(),
 			error: (textStatus, errorThrown) => reject([textStatus, error])
+		});
+	});
+}
+
+/*
+ * Replaces a playlist's cover image.
+ */
+function apiUpdatePlaylistInfo(playlistID, name, description) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			type: "PUT",
+			url: `https://api.spotify.com/v1/playlists/${playlistID}`,
+			data: JSON.stringify({name: name, description: description}),
+			processData: false,
+			contentType: "application/json",
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, textStatus) => resolve(data),
+			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
 		});
 	});
 }
