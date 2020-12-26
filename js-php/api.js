@@ -1,10 +1,11 @@
+// AUTH
 
 /**
  * Initial request to be made, user needs to authorize my client first. Will request tokens with given data.
  *
  * @result Returns spotify.code
  */
-function requestAuthorization() {
+function apiAuthRedirect() {
 	const redirect_uri = window.location.href.match(/^[^\#\?]+/)[0];
 	window.location.href = "./js-php/requests.php?request=auth&redirect_uri=" + redirect_uri;
 }
@@ -16,7 +17,7 @@ function requestAuthorization() {
  * @result					0: returns spotify.accessToken & spotify.refreshToken
  * 							1: returns spotify.accessToken
  */
-function requestTokens(request) {
+function apiGetTokens(request) {
 	return new Promise((resolve, reject) => {
 		let params;
 		if (request == 0)
@@ -43,7 +44,12 @@ function requestTokens(request) {
 	});
 }
 
-function requestCurrentUser() {
+// GET
+
+/** 
+ * @return {string/json} User object		Returns user data such as their ID, display name and image.
+ */
+function apiGetMe() {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			method: "GET",
@@ -67,7 +73,7 @@ function requestCurrentUser() {
  * @params {int} type 	0: tracks 		1: artists
  * @params {int} type 	0: short_term	1: long_term
  */
-function requestTopTracksArtists(type, timeRange) {
+function apiGetMyTop(type, timeRange) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			method: "GET",
@@ -87,7 +93,10 @@ function requestTopTracksArtists(type, timeRange) {
 	});
 }
 
-function requestCurrentUserPlaylists() {
+/*
+ * Get current user's every playlist, including liked playlists of others.
+ */
+function apiGetMyPlaylists() {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			method: "GET",
@@ -112,7 +121,62 @@ function requestCurrentUserPlaylists() {
 	});
 }
 
-function putPlaylistCover(playlistID, imgBase64) {
+/*
+ * Get current user's liked / saved tracks.
+ */
+function apiGetMySavedTracks(url_next) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			type: "GET",
+			url: url_next != "" ? url_next : `https://api.spotify.com/v1/me/tracks`,
+			data: {limit: 50},
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, textStatus) => resolve(data),
+			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
+		});
+	});
+}
+
+/*
+ * Get a playlist's tracks.
+ */
+function apiGetPlaylistTracks(playlistID, url_next) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			type: "GET",
+			url: url_next != "" ? url_next : `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
+			data: {limit: 100, fields: "total,limit,next,items(track(uri,id,name,artists(id,name),album(id,name,images)))"}, // max 100
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, textStatus) => resolve(data),
+			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
+		});
+	});
+}
+
+// PUT, POST
+
+/*
+ * @result 					Returns playlist object, most important keys are "href", "id".
+ */
+function apiCreatePlaylist(name, description) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			method: "POST",
+			url: `https://api.spotify.com/v1/users/${user.id}/playlists`,
+			data: `{"name": "${name}", "description": "${description}", "public": true}`,
+			processData: false,
+			contentType: "application/json",
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, status) => resolve(data),
+			error: (jqXHR, textStatus, errorThrown) => resolve(jqXHR)
+		});
+	});
+}
+
+/*
+ * Replaces a playlist's cover image.
+ */
+function apiUploadPlaylistCover(playlistID, imgBase64) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "PUT",
@@ -128,30 +192,11 @@ function putPlaylistCover(playlistID, imgBase64) {
 }
 
 /*
- * @result 					Returns playlist object, most important keys are "href", "id".
- */
-function postCreatePlaylist(name, description) {
-	return new Promise((resolve, reject) => {
-		$.ajax({
-			method: "POST",
-			url: `https://api.spotify.com/v1/users/${user.id}/playlists`,
-			data: `{"name": "${name}", "description": "${description}", "public": true}`,
-			processData: false,
-			contentType: "application/json",
-			headers: {"Authorization": "Bearer " + spotify.accessToken},
-			success: (data, status) => resolve(data),
-			error: (jqXHR, textStatus, errorThrown) => resolve(jqXHR)
-		});
-	});
-}
-
-
-/*
  * @param {int}				playlistID			Playlist ID.
  * @param {array[string]}	trackURIs			A list of track URIs in an array.
  * @result 										Returns snpashot_id in JSON object.
  */
-function postAddTracks(playlistID, trackURIs) {
+function apiAddTracksToPlaylist(playlistID, trackURIs) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			method: "POST",
@@ -162,39 +207,6 @@ function postAddTracks(playlistID, trackURIs) {
 			headers: {"Authorization": "Bearer " + spotify.accessToken},
 			success: (data, status) => resolve(data),
 			error: (jqXHR, textStatus, errorThrown) => resolve(jqXHR)
-		});
-	});
-}
-
-/*
- * Get current user's liked / saved tracks.
- */
-function requestSavedTracks(url_next) {
-	return new Promise((resolve, reject) => {
-		$.ajax({
-			type: "GET",
-			url: url_next != "" ? url_next : `https://api.spotify.com/v1/me/tracks`,
-			data: {limit: 50},
-			headers: {"Authorization": "Bearer " + spotify.accessToken},
-			success: (data, textStatus) => resolve(data),
-			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
-		});
-	});
-}
-
-
-/*
- * Get a playlist's tracks.
- */
-function requestPlaylistTracks(playlistID, url_next) {
-	return new Promise((resolve, reject) => {
-		$.ajax({
-			type: "GET",
-			url: url_next != "" ? url_next : `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
-			data: {limit: 100, fields: "total,limit,next,items(track(uri,id,name,artists(id,name),album(id,name,images)))"}, // max 100
-			headers: {"Authorization": "Bearer " + spotify.accessToken},
-			success: (data, textStatus) => resolve(data),
-			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
 		});
 	});
 }

@@ -19,7 +19,7 @@ $(function() {
 });
 
 function myTasks() {
-	requestCurrentUserPlaylists()
+	apiGetMyPlaylists()
 		.then((result) => {
 			playlistsProtected = result;
 			printPlaylistsHandler(result);
@@ -84,7 +84,7 @@ function listenImagePicker() {
 				img.src = result;
 				img.onload = () => { //load image to validate
 					if (validateNewPlaylistImage(f["type"], f["size"], img.width, img.height)) {
-						putPlaylistCover(selectedPlaylistID, result.substr(23))
+						apiUploadPlaylistCover(selectedPlaylistID, result.substr(23))
 							.then(() => {
 								showWarning("Successfully updated playlist cover.", true);
 								$(`.image-item:nth-child(${selectedPlaylistIndex + 2}) img`).attr("src", result);

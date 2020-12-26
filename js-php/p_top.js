@@ -110,7 +110,7 @@ function createPlaylistMaybe() {
 	today = mm + '/' + dd + '/' + yyyy;
 	description = today;
 
-	postCreatePlaylist(name, description)
+	apiCreatePlaylist(name, description)
 		.then((data) => {
 			let trackURIs = [];
 			for (let i = 0; i < 20; i++) {
@@ -119,7 +119,7 @@ function createPlaylistMaybe() {
 				trackURIs.push(arrTracks[i]["uri"]);
 			}
 
-			postAddTracks(data["id"], trackURIs)
+			apiAddTracksToPlaylist(data["id"], trackURIs)
 				.then((data) => showWarning("Playlist created successfully.", true))
 				.catch((error) => showWarning("Failed to add tracks to the playlist."));
 		})
@@ -127,7 +127,7 @@ function createPlaylistMaybe() {
 }
 
 function requestWrapper() {
-	requestTopTracksArtists(type, timeRange)
+	apiGetMyTop(type, timeRange)
 		.then((data) => {
 			const content = JSON.parse(data["content"]);
 			handleData(content);

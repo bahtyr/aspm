@@ -21,11 +21,11 @@ function initButtons() {
 
 function startRequests() {
 	updateProgress("Loading Saved Tracks");
-	requestSavedTracks("")
+	apiGetMySavedTracks("")
 		.then((data) => {
 			new Promise((resolve, reject) => requestSavedTracksWrapper(data, resolve, reject)) // load all saved tracks
 				.then(() => {
-					requestCurrentUserPlaylists() // load all user playlists
+					apiGetMyPlaylists() // load all user playlists
 						.then((data) => {
 							declutterPlaylists(data);
 							updateProgress("Playlists: " + data.length + " / " + data.length);
@@ -61,7 +61,7 @@ async function requestSavedTracksWrapper(data, resolve, reject) {
 	for (let i = 0; i < data["total"] / 50; i++) {
 		incremenetRequestCounter();
 		if (next_url != null || next_url != "") {
-			let tracks = await requestSavedTracks(next_url);
+			let tracks = await apiGetMySavedTracks(next_url);
 			next_url = tracks["next"];
 			declutterSavedTracks(tracks["items"]);
 			updateProgress("Saved Tracks: " + (data["limit"] * i) + " / " + data["total"]);
@@ -81,7 +81,7 @@ async function requestPlaylistTracksWrapper(resolve, reject) {
 			updateProgress(`Playlist ${i} / ${playlists.length} - Tracks ${100*x} / ${playlists[i]["tracks_total"]}`);
 		if (next_url != null || next_url != "") {
 
-			await requestPlaylistTracks("", next_url)
+			await apiGetPlaylistTracks("", next_url)
 				.then((data) => {
 					next_url = data["next"];
 					// add playlist_id to tracks, and save them to allplaylisttracks		
@@ -125,7 +125,7 @@ function createPlaylistMaybe() {
 		trackURIs.push("spotify:track:" + arrSavedOnly[i]["id"]);
 	}
 
-	postCreatePlaylist(name, description)
+	apiCreatePlaylist(name, description)
 		.then((data) => {
 			showWarning("Adding tracks.", false);
 			
@@ -145,7 +145,7 @@ async function createPlaylistWrapper(resolve, reject, playlistID) {
 	for (let i = 0; i < (arrSavedOnly.length / 100); i++) {
 		showWarning(`Adding tracks. ${(i*100)+100} / ${trackURIs.length}`, false);
 		let arr = trackURIs.slice(i*100, (i*100)+100);
-		await postAddTracks(playlistID, arr)
+		await apiAddTracksToPlaylist(playlistID, arr)
 					.then((data) => {})
 					.catch((error) => showWarning("Failed to add tracks to the playlist."));
 	}

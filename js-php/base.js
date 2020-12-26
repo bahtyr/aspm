@@ -23,8 +23,8 @@ function readSpotifyCookies() {
 			// check if our tokens expired
 			const timeDiff = Math.floor((Date.now() - spotify.dateInMs) / 1000);
 			if (timeDiff >= 3600)
-				requestTokensHandler(1);
-			else setTimeout(() => requestTokensHandler(1), (3600 - timeDiff) * 1000); // start expiration timer
+				apiGetTokensHandler(1);
+			else setTimeout(() => apiGetTokensHandler(1), (3600 - timeDiff) * 1000); // start expiration timer
 		}
 	}
 }
@@ -44,7 +44,7 @@ function authorizeMaybe() {
 
 		if(urlParams.has("code")) {
 			spotify.code = urlParams.get("code");
-			requestTokensHandler(0);
+			apiGetTokensHandler(0);
 		}
 	}
 }
@@ -54,10 +54,10 @@ function authorizeMaybe() {
  * 2 - If first time request user data.
  * 3 - Run loginCallback()
  *
- * A requestTokens() wrapper, the function was being called multiple times.
+ * A apiGetTokens() wrapper, the function was being called multiple times.
  */
-function requestTokensHandler(request) {
-	requestTokens(request)
+function apiGetTokensHandler(request) {
+	apiGetTokens(request)
 		.then((data) => {
 			const content = JSON.parse(data["content"]);
 
@@ -68,13 +68,14 @@ function requestTokensHandler(request) {
 			else saveSpotifyAuthData(spotify.code, content["access_token"], spotify.refreshToken);
 
 			if (isFirstTime) {
-				requestCurrentUser()
+				apiGetMe()
 					.then((data) => {
 						saveUser(data);
 						printUser();
-						loginCallback();
+						if (loginCallback instanceof Function)
+							loginCallback();
 					})
-					.catch((error) => console.log(data));
+					.catch((error) => console.log(error));
 			} else loginCallback();
 		})
 		.catch((error) => {
@@ -89,7 +90,7 @@ function saveSpotifyAuthData(code, accessToken, refreshToken) {
 	spotify.dateInMs = Date.now();
 	localStorage.setItem("spotify", JSON.stringify(spotify));
 	if (spotify.refreshToken != "")
-		setTimeout(() => requestTokens(true), 3600 * 1000);
+		setTimeout(() => apiGetTokens(1), 3600 * 1000);
 }
 
 function saveUser(data) {
@@ -276,7 +277,7 @@ function printTableArtists(items) {
 function initHeaderButtons() {
 	$(".darkmode-toggle").click(() => enableDarkMode(localStorage.darkMode == 0 ? 1 : 0));
 	$(".menu").click(() => $(".site-header").toggleClass('is-expanded'));
-	$(".login").click(() => requestAuthorization());
+	$(".login").click(() => apiAuthRedirect());
 	$(".user-name").dblclick(() => logout());
 }
 
