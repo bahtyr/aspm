@@ -2,26 +2,24 @@ let savedTracks = [];
 let playlists = [];
 let allPlaylistsTracks = [];
 
-let arrSavedOnly = [];
-let arrInPlaylists = [];
+let arrSavedOnly = []; // Tracks which are only in saved.
+let arrInPlaylists = []; // Tracks which appear in multiple playlists.
 
-let requestCounter = 0;
 let trackURIs = [];
-
-
+let requestCounter = 0;
 
 $(function() {
-	
-	init();
+	initButtons();
 });
 
-function init() {
-	$("#btn-start").click(() => doitmore());
+function initButtons() {
+	$("#btn-start").click(() => startRequests());
 	$("#btn-create-playlist").click(() => createPlaylistMaybe());
-
 }
 
-function doitmore() {
+// The main thing. Load saved tracks, load playlists, load playlists' tracks then compare.
+
+function startRequests() {
 	updateProgress("Loading Saved Tracks");
 	requestSavedTracks("")
 		.then((data) => {
@@ -34,16 +32,12 @@ function doitmore() {
 
 							new Promise((resolve, reject) => requestPlaylistTracksWrapper(resolve, reject))
 								.then(() => {
-										updateProgress("Comparing");
-
-										// compare(savedTracks, allPlaylistsTracks);
-										compare2(savedTracks, allPlaylistsTracks, arrSavedOnly);
-										updateProgress("Done!");
+										updateProgress(`Comparing ${savedTracks.length} saved tracks to ${allPlaylistsTracks.length} tracks in playlists`);
+										compareV2(savedTracks, allPlaylistsTracks, arrSavedOnly);
+										
+										updateProgress(`Found ${arrSavedOnly.length} tracks.`);
 										showWarning("Finished comparing!", true);
-
-
-										// console.log("savedOnly");
-										// console.log(arrSavedOnly);
+										$("#btn-create-playlist").removeClass("is-hidden");
 
 										printTableTracks(arrSavedOnly, 0);
 									})
@@ -54,7 +48,9 @@ function doitmore() {
 				})
 				.catch(); // saved tracks all
 		})
-		.catch(); // saved tracks 1
+		.catch(() => {
+			updateProgress("An error occured. Please try again in a few minutes.");
+		}); // saved tracks 1
 }
 
 async function requestSavedTracksWrapper(data, resolve, reject) {
@@ -69,7 +65,6 @@ async function requestSavedTracksWrapper(data, resolve, reject) {
 			next_url = tracks["next"];
 			declutterSavedTracks(tracks["items"]);
 			updateProgress("Saved Tracks: " + (data["limit"] * i) + " / " + data["total"]);
-
 		}
 	}
 
@@ -106,56 +101,72 @@ async function requestPlaylistTracksWrapper(resolve, reject) {
 	resolve();
 }
 
-//
+// Playlist Creation
 
-function compare2(arr1, arr2, arrToUpdate) {
-	for (let x = 0; x < arr1.length; x++) {
-		let existsIn2 = false;
+function createPlaylistMaybe() {
+	if (arrSavedOnly == null || arrSavedOnly.length == 0)
+		return;
 
-		for (let y = 0; y < arr2.length; y++) {
+	showWarning("Creating playlist.", false);
 
-			// found in arr2
-			if (!existsIn2 && arr1[x]["id"] == arr2[y]["id"]) {
-				existsIn2 = true;
-				break;
-			}
-		} // arr2 loop end
+	let name = "Saved Tracks Without Playlists"
 
-		if (!existsIn2)
-			arrToUpdate.push(arr1[x]);
-	} // arr1 loop end
+	let description;
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	var yyyy = today.getFullYear();
+	today = mm + '/' + dd + '/' + yyyy;
+	
+	description = `${arrSavedOnly.length} of ${savedTracks.length} saved tracks are not in any of my playlists.`;
+
+	for (let i = 0; i < arrSavedOnly.length; i++) {
+		if (i == arrSavedOnly.length) break;
+		trackURIs.push("spotify:track:" + arrSavedOnly[i]["id"]);
+	}
+
+	postCreatePlaylist(name, description)
+		.then((data) => {
+			showWarning("Adding tracks.", false);
+			
+			new Promise((resolve, reject) => 
+				createPlaylistWrapper(resolve, reject, data["id"])
+			);
+			
+		})
+		.catch((error) => {
+			showWarning("Failed to create the playlist.", true);
+			console.log(error);
+		});
 }
 
-function compare(arr1, arr2) {
-	updateProgress("Comparing " + arr1.length + " Saved Tracks to " + arr2.length + " tracks in playlists");
-	for (let x = 0; x < arr1.length; x++) {
-		let existsInB = false;
+async function createPlaylistWrapper(resolve, reject, playlistID) {
+	
+	for (let i = 0; i < (arrSavedOnly.length / 100); i++) {
+		showWarning(`Adding tracks. ${(i*100)+100} / ${trackURIs.length}`, false);
+		let arr = trackURIs.slice(i*100, (i*100)+100);
+		await postAddTracks(playlistID, arr)
+					.then((data) => {})
+					.catch((error) => showWarning("Failed to add tracks to the playlist."));
+	}
 
-		for (let y = 0; y < arr2.length; y++) {
-
-			// found in arr2
-			if (arr1[x]["id"] == arr2[y]["id"]) {
-				existsInB = true;
-
-				// check if this already exists in our found array
-				// if it is just add this one's playlist id
-				if (arrInPlaylists.length > 0
-					&& arrInPlaylists[arrInPlaylists.length - 1]["id"] == arr2[y]["id"]) {
-					arrInPlaylists[arrInPlaylists.length - 1]["playlist_ids"].push(arr2[y]["playlist_id"]);
-				} else {
-					arr2[y]["playlist_ids"] = [arr2[y]["playlist_id"]];
-					arrInPlaylists.push(arr2[y]);
-					// delete arrInPlaylists[arrInPlaylists.length - 1]["playlist_id"];
-				}
-			}
-		} // arr2 loop end
-
-		if (!existsInB)
-			arrSavedOnly.push(arr1[x]);
-	} // arr1 loop end
+	showWarning("All tracks are added to the playlist.", true);	
+	resolve();
 }
 
-// 
+// Update progress text to keep user up to date.
+
+function updateProgress(text) { $("#text-progress").text(text); }
+
+// Count the number of requests made to wait a few seconds after reaching a certain amount.
+
+async function incremenetRequestCounter() {
+	requestCounter++;
+	if (requestCounter % 20)
+		await new Promise((resolve, reject) => setTimeout(() => resolve(), 5000)); 
+}
+
+// Functions to remove unncesseray data from Spotify response data.
 
 function declutterSavedTracks(arr) {
 	for(i in arr) {
@@ -210,68 +221,51 @@ function declutterPlaylists(arr) {
 	}
 }
 
-//
+// Comparison Functions
 
-function updateProgress(text) { $("#text-progress").append("<br>"+text); }
+function compareV2(arr1, arr2, arrToUpdate) {
+	for (let x = 0; x < arr1.length; x++) {
+		let existsIn2 = false;
 
-async function incremenetRequestCounter() {
-	requestCounter++;
-	if (requestCounter % 20)
-		await setTimeout(() => { }, 5000);
+		for (let y = 0; y < arr2.length; y++) {
+
+			// found in arr2
+			if (!existsIn2 && arr1[x]["id"] == arr2[y]["id"]) {
+				existsIn2 = true;
+				break;
+			}
+		} // arr2 loop end
+
+		if (!existsIn2)
+			arrToUpdate.push(arr1[x]);
+	} // arr1 loop end
 }
 
-
-
-function createPlaylistMaybe() {
-	if (arrSavedOnly == null || arrSavedOnly.length == 0)
-		return;
-
-	showWarning("Creating playlist.", false);
-
-	let name = "Saved Tracks Without Playlists"
-
-	let description;
-	var today = new Date();
-	var dd = String(today.getDate()).padStart(2, '0');
-	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-	var yyyy = today.getFullYear();
-	today = mm + '/' + dd + '/' + yyyy;
+function compareV1(arr1, arr2) {
 	
-	description = `${arrSavedOnly.length} of ${savedTracks.length} saved tracks are not in any of my playlists.`;
-	console.log(description);
-	for (let i = 0; i < arrSavedOnly.length; i++) {
-		if (i == arrSavedOnly.length) break;
-		trackURIs.push("spotify:track:" + arrSavedOnly[i]["id"]);
-	}
+	for (let x = 0; x < arr1.length; x++) {
+		let existsInB = false;
 
-	// console.log(trackURIs);
+		for (let y = 0; y < arr2.length; y++) {
 
-	postCreatePlaylist(name, description)
-		.then((data) => {
-			showWarning("Adding tracks.", false);
-			
-			new Promise((resolve, reject) => {
-				createPlaylistWrapper(resolve, reject, data["id"]);
-				showWarning("All tracks are added to the playlist.", true);
-			});
-			
-		})
-		.catch((error) => {
-			showWarning("Failed to create the playlist.", true);
-			console.log(error);
-		});
-}
+			// found in arr2
+			if (arr1[x]["id"] == arr2[y]["id"]) {
+				existsInB = true;
 
+				// check if this already exists in our found array
+				// if it is just add this one's playlist id
+				if (arrInPlaylists.length > 0
+					&& arrInPlaylists[arrInPlaylists.length - 1]["id"] == arr2[y]["id"]) {
+					arrInPlaylists[arrInPlaylists.length - 1]["playlist_ids"].push(arr2[y]["playlist_id"]);
+				} else {
+					arr2[y]["playlist_ids"] = [arr2[y]["playlist_id"]];
+					arrInPlaylists.push(arr2[y]);
+					// delete arrInPlaylists[arrInPlaylists.length - 1]["playlist_id"];
+				}
+			}
+		} // arr2 loop end
 
-async function createPlaylistWrapper(resolve, reject, playlistID) {
-	
-	for (let i = 0; i < (arrSavedOnly.length / 100); i++) {
-		showWarning(`Adding tracks. ${(i*100)+100} / ${trackURIs.length}`, false);
-		let arr = trackURIs.slice(i*100, (i*100)+100);
-		await postAddTracks(playlistID, arr)
-					.then((data) => {})
-					.catch((error) => showWarning("Failed to add tracks to the playlist."));
-	}
-
-	resolve();
+		if (!existsInB)
+			arrSavedOnly.push(arr1[x]);
+	} // arr1 loop end
 }
