@@ -539,3 +539,66 @@ table td:not(:nth-child(3)) {
   	box-shadow: 0 2px 10px rgba(33, 33, 33, 0.5);
   	transition: opacity 0.3s ease-in-out;
 }
+
+
+/*---------------------------------------------------------------------------------------- POPUP GRID */
+
+.popup-page {
+  position: fixed; 
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+
+
+
+  transition: opacity 0.2s ease;
+
+
+  /*transition-timing-function: ease-out;*/
+  /*transition: 0.25s;*/
+  /*transform: translateY(0);*/
+}
+
+.popup-page.is-hidden {
+	/*visibility: initial;*/
+  
+	transition: opacity 0.3s ease;
+	opacity: 0;
+}
+
+.popup-page .space {
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	cursor: pointer;
+}
+
+.popup-page .space svg { }
+
+.popup-page .content-wrapper {
+	/*background-color: #fff;*/
+	background-color: var(--page-bg);
+	width: 100%;
+	height: 100%;
+	/*height: calc(100% - 36px);*/
+
+	transition-timing-function: ease-in;
+	transition: 0.25s;
+	transform: translateY(0);
+}
+
+.popup-page.is-hidden .content-wrapper {
+	transition-timing-function: ease-out;
+	transition: 1s;
+	transform: translateY(100%);
+}
+
+.popup-page .content {
+	padding: 20px;
+}
