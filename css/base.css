@@ -130,11 +130,12 @@ body.dark {
 
 body.dark,
 body.dark a,
-body.dark p {
+body.dark p,
+body.dark input {
 	color: var(--black-3); /* oc gray 0*/
 }
 
-a, p {
+a, p, input {
 	color: var(--oc-gray-8); /* oc 8 */
 }
 
@@ -184,6 +185,7 @@ body, .site-header, .sticky-top {
 	align-items: center;
 	position: fixed;
 	top: 0;
+	z-index: 10;
 }
 
 .sticky-top p {
@@ -542,6 +544,12 @@ table td:not(:nth-child(3)) {
 
 
 /*---------------------------------------------------------------------------------------- POPUP GRID */
+.popup-small {
+	max-width: 500px;
+	max-height: 400px;
+	width: 100%;
+	height: 100%;
+}
 
 .popup-page {
   position: fixed; 
@@ -550,43 +558,41 @@ table td:not(:nth-child(3)) {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
-
-
+  vertical-align: middle;
 
   transition: opacity 0.2s ease;
-
-
-  /*transition-timing-function: ease-out;*/
-  /*transition: 0.25s;*/
-  /*transform: translateY(0);*/
 }
 
 .popup-page.is-hidden {
 	/*visibility: initial;*/
-  
 	transition: opacity 0.3s ease;
 	opacity: 0;
 }
 
 .popup-page .space {
 	height: 36px;
+	cursor: pointer;
+}
+
+.popup-page .space > div {
+	width: 100%;
+	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	cursor: pointer;
 }
 
 .popup-page .space svg { }
 
 .popup-page .content-wrapper {
-	/*background-color: #fff;*/
+	overflow: auto;
 	background-color: var(--page-bg);
 	width: 100%;
 	height: 100%;
-	/*height: calc(100% - 36px);*/
+	margin-right: auto;
+	margin-left: auto;
 
 	transition-timing-function: ease-in;
 	transition: 0.25s;
@@ -595,10 +601,59 @@ table td:not(:nth-child(3)) {
 
 .popup-page.is-hidden .content-wrapper {
 	transition-timing-function: ease-out;
-	transition: 1s;
-	transform: translateY(100%);
+	transition: 0.2s;
+	transform: translateY(20%);
 }
 
 .popup-page .content {
 	padding: 20px;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+}
+
+
+.buttons-wrapper {
+	position: absolute;
+	bottom: 20px;
+	width: 100%;
+	display: flex;
+	flex-flow: row;
+	justify-content: space-around;
+}
+
+.popup-page input[type=text] {
+	width: 100%;
+	text-align: center;
+	font-size: 1rem;
+	background: none;
+	border: none;
+	border-bottom: 1px solid var(--oc-gray-4);
+	margin-bottom: 20px;
+}
+
+body.dark .popup-page input[type=text] {
+	border-bottom: 1px solid var(--oc-gray-7);
+}
+
+.popup-page textarea:focus, 
+.popup-page input:focus{
+    outline: none;
+}
+
+
+body.dark .popup-page .image-wrapper {
+	background-color: var(--oc-gray-8);
+}
+
+.popup-page .image-wrapper {
+	height: 200px;
+	width: 200px;
+	margin-bottom: 30px;
+	background-color: var(--oc-gray-3);
+}
+
+.popup-page .image-wrapper img {
+	width: 100%;
+	height: 100%;
 }

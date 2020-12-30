@@ -211,11 +211,16 @@ function apiUploadPlaylistCover(playlistID, imgBase64) {
  * Replaces a playlist's cover image.
  */
 function apiUpdatePlaylistInfo(playlistID, name, description) {
+	let data_;
+	if (description == null || !description.trim())
+		data_ = {name: name}
+	else data_ = {name: name, description: description}
+
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "PUT",
 			url: `https://api.spotify.com/v1/playlists/${playlistID}`,
-			data: JSON.stringify({name: name, description: description}),
+			data: JSON.stringify(data_),
 			processData: false,
 			contentType: "application/json",
 			headers: {"Authorization": "Bearer " + spotify.accessToken},

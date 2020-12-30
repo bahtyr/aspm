@@ -13,7 +13,6 @@ $(function() {
 });
 
 function initButtons() {
-	$("#btn-start").click(() => $(".popup-page").removeClass("is-hidden"));
 
 	// $("#btn-start").click(() => startRequests());
 	$("#btn-create-playlist").click(() => createPlaylistMaybe());

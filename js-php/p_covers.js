@@ -4,9 +4,12 @@ let selectedPlaylistID;
 let selectedPlaylistIndex;
 let showPrivate = true;
 let showPublic = true;
+let isImageUpdated = false;
+let imageHolder = "";
 
 $(function() {
 
+	$(".popup-page").removeClass("is-gone");
 	$("#btn-how-to").click(() => {
 		$(".description-wrapper").toggleClass("is-gone");
 		if ($(".description-wrapper").hasClass("is-gone"))
@@ -29,7 +32,25 @@ function myTasks() {
 		.catch((error) => {});
 }
 
+function loadPlaylistInfo(playlistID) {
+	if (playlists[selectedPlaylistIndex]['images'].length > 0) {
+		$(".popup-page img").removeClass("is-hidden");
+		$(".popup-page img").attr("src", playlists[selectedPlaylistIndex]['images'][0]["url"]);
+	}
+
+	apiGetPlaylistInfo(playlistID)
+		.then((data) => {
+			$("#modal-text1").val(data["name"]);
+			$("#modal-text2").val(data["description"]);
+		})
+		.catch((error) => {
+			console.log(error);
+			showWarning("An error occured.", true);
+		});
+}
+
 function initButtons() {
+	// filters
 	$(".radio-wrapper:nth-child(1) p").click(function() {
 		if ($(this).index() > 0) {
 			$(this).toggleClass("is-active");
@@ -41,6 +62,17 @@ function initButtons() {
 			printPlaylistsHandler(playlistsProtected);
 		}
 	});
+
+	// edit info popup page
+	$(".popup-page .image-wrapper").click(() => $("#input-image-picker").click());
+	$("#btn-cancel").click(() => {
+		$(".popup-page").addClass("is-hidden");
+		$(".popup-page img").addClass("is-hidden");
+		$(".popup-page img").attr("src", "");
+		$(".popup-page input").val("");
+		isImageUpdated = false;
+	});
+	$("#btn-save").click(() => doSave());
 }
 
 // Do necessary things to print playlists.
@@ -67,7 +99,8 @@ function listenPlaylistClick() {
 		let i = $(this).index() - 1; //substract hidden element
 		selectedPlaylistID = playlists[i]["id"];
 		selectedPlaylistIndex = i;
-		$("#input-image-picker").click();
+		$(".popup-page").removeClass("is-hidden");
+		loadPlaylistInfo(selectedPlaylistID);
 	});
 }
 
@@ -77,19 +110,18 @@ function listenImagePicker() {
 		let f = $(this)[0].files[0];
 		$(this).val(null); //reset file picker
 		
-		showWarning("Loading your image.", false);
+		showWarning("Loading your image.", true);
 		promieFileBase64(f) //read image (to base64)
 			.then(result => {
 				let img = new Image();
 				img.src = result;
 				img.onload = () => { //load image to validate
 					if (validateNewPlaylistImage(f["type"], f["size"], img.width, img.height)) {
-						apiUploadPlaylistCover(selectedPlaylistID, result.substr(23))
-							.then(() => {
-								showWarning("Successfully updated playlist cover.", true);
-								$(`.image-item:nth-child(${selectedPlaylistIndex + 2}) img`).attr("src", result);
-							})
-							.catch((error) => showWarning("Failed to update playlist cover.", true));
+						isImageUpdated = true;
+						imageHolder = result;
+						// show image no my popup page, before submitting
+						$(".popup-page img").removeClass("is-hidden");
+						$(".popup-page img").attr("src", result);
 					}
 				}
 			})
@@ -99,6 +131,47 @@ function listenImagePicker() {
 				console.log(error);
 			});
 	});
+}
+
+function doSave() {
+	if ($("#modal-text1").val() == null || !$("#modal-text1").val().trim()) {
+		showWarning("Playlist name can't be empty", true);
+		return;
+	}
+
+	if (isImageUpdated) {
+		apiUploadPlaylistCover(selectedPlaylistID, imageHolder.substr(23))
+			.then(() => {
+				showWarning("Successfully updated playlist cover.", true);
+				submitNewChanges();
+			})
+			.catch((error) => showWarning("Failed to update playlist cover.", true));
+	} else {
+		submitNewChanges();
+	}
+}
+
+function submitNewChanges() {
+	showWarning("Upading playlist information.", false);
+	let desc_ = $("#modal-text2").val();
+	apiUpdatePlaylistInfo(selectedPlaylistID, $("#modal-text1").val(), desc_)
+		.then((data) => {
+			$(".popup-page").addClass("is-hidden");
+			$(`.image-item:nth-child(${selectedPlaylistIndex+2}) p span`).text($("#modal-text1").val()); // update playlist title on our main grid
+			if (isImageUpdated) {
+				$(`.image-item:nth-child(${selectedPlaylistIndex + 2}) img`).attr("src", imageHolder);
+				playlists[selectedPlaylistIndex]["images"] = [{"url": imageHolder}];
+			}
+			playlists[selectedPlaylistIndex]["name"] = $("#modal-text1").val();
+
+			imageHolder = "";
+			isImageUpdated = false;
+			showWarning("Playlist updated successfully.", true);
+		})
+		.catch((error) => {
+			console.log(error);
+			showWarning("An error occured.", true);
+		});
 }
 
 // Check if the loaded image meets Spotify's specifications

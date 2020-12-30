@@ -76,7 +76,10 @@ function apiGetTokensHandler(request) {
 							loginCallback();
 					})
 					.catch((error) => console.log(error));
-			} else loginCallback();
+			} else {
+				if (loginCallback instanceof Function)
+					loginCallback();
+			}
 		})
 		.catch((error) => {
 			console.log(error);
