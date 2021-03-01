@@ -13,8 +13,7 @@ $(function() {
 });
 
 function initButtons() {
-
-	// $("#btn-start").click(() => startRequests());
+	$("#btn-start").click(() => startRequests());
 	$("#btn-create-playlist").click(() => createPlaylistMaybe());
 }
 

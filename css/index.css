@@ -87,9 +87,9 @@ nav ul li:nth-child(3) { background-color: var(--blue-light); }
 nav ul li:nth-child(3) a { color: var(--blue-dark);  }
 nav ul li:nth-child(3) a svg path { stroke: var(--blue-dark); }
 
-nav ul li:nth-child(4) { background-color: var(--gray2-light); }
-nav ul li:nth-child(4) a { color: var(--gray2-dark);  }
-nav ul li:nth-child(4) a svg path { stroke: var(--gray2-dark); }
+nav ul li:nth-child(4) { background-color: var(--purple-light); }
+nav ul li:nth-child(4) a { color: var(--purple-dark);  }
+nav ul li:nth-child(4) a svg path { stroke: var(--purple-dark); }
 
 nav ul li:nth-child(5) { background-color: var(--gray-light); }
 nav ul li:nth-child(5) a { color: var(--gray-dark);  }
@@ -106,5 +106,9 @@ nav ul li:nth-child(7) a svg path { stroke: var(--gray-dark); }
 nav ul li:nth-child(8) { background-color: var(--gray2-light); }
 nav ul li:nth-child(8) a { color: var(--gray2-dark);  }
 nav ul li:nth-child(8) a svg path { stroke: var(--gray2-dark); }
+
+nav ul li:nth-child(9) { background-color: var(--gray-light); }
+nav ul li:nth-child(9) a { color: var(--gray-dark);  }
+nav ul li:nth-child(9) a svg path { stroke: var(--gray-dark); }
 
 /* previous colors: blue, purple, teal, orange, pink, gray */

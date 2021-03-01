@@ -40,6 +40,9 @@ a > * { display: inline-block; }
 	--orange-dark: #F9813A;
 	--pink-light: #FACFDD;
 	--pink-dark: #E1658F;
+	--purple-light: #F3BFE8;
+	--purple-dark: #8B3D88;
+
 	--gray-light: #e8e8e8;
 	--gray-dark: #495464;
 	--gray2-light: #dee2e6;
