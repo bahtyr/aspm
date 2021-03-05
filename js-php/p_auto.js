@@ -4,26 +4,48 @@ let playlists = [];
 let playlistsProtected = []; // Keeps the initial playlist, in case the user turns off all the filters, the list would be empty
 let showPrivate = true;
 let showPublic = true;
-let newRulePlaylists = [];
 
-let allRules = [];
-let matchingAvailableRules = [];
+
+let rules = []; 
+let matchingRules = [];
+let newRuleHolder = [];
+
+
 
 let selectedPlaylistID;
 let selectedPlaylistIndex;
 
 $(function() {
+	$(".popup-page").removeClass("is-gone");
+	// popup element has is-gone attribute to hide its animation when the page is first loaded,
+	// it has done it's purpose it can now be removed
+	
+	reloadRules();
+	showAllRules();
+
+	getCurrentlyPlaying();
+	// -> findMatchingRules();
+
 	initButtons();
-	$(".popup-page").removeClass("is-gone"); 
-	// popup element has is-gone attribute to hide its animation when the page is first loaded, it has done it's purpose it can now be removed
+	initNewRulePageActions();
+	//load rules
+	
+	setTimeout(() => getCurrentlyPlaying(), 200000);
 });
 
 function initButtons() {
 	$("#btn-refresh").click(() => getCurrentlyPlaying());
-	$("#btn-new-rule").click(() => showNewRulePage());
-	$("#btn-remove-track").dblclick(() => deleteTrackAlso());
+	
+	$("#btn-new-rule").click(() => {
+		$(".popup-page").removeClass("is-hidden");
+		loadPlaylists();
+	});
+	
+	$("#btn-remove-track").dblclick(() => removeTrackFromPlaylist());
+}
 
-	// NEW RULE PLAYLIST FILTERS
+function initNewRulePageActions() {
+	// private / public filters
 	$(".radio-wrapper:nth-child(1) p").click(function() {
 		if ($(this).index() > 0) {
 			$(this).toggleClass("is-active");
@@ -36,23 +58,20 @@ function initButtons() {
 		}
 	});
 
+	// save rule
 	$("#btn-save-rule").click(() => {
-		// console.log(newRulePlaylists);
+
+		rules.push(newRuleHolder);
+		saveRules();
+
+		findMatchingRules();
+		showAllRules();
+
 		$(".popup-page").addClass("is-hidden");
-
-		// save new rule, but first load existing rules and combine them
-		if (localStorage.automationRules != null) {
-			let rules_ = JSON.parse(localStorage.automationRules);
-			if (rules_.length < 1)
-				rules_ = []; // an attempt to make rules_ an array if it isn't
-			rules_.push(newRulePlaylists);
-
-			localStorage.setItem("automationRules", JSON.stringify(rules_));
-		} else localStorage.setItem("automationRules", JSON.stringify([newRulePlaylists]));
-
-		sectionTwo();
 	});
 }
+
+// Currently Playing
 
 function getCurrentlyPlaying() {
 	apiGetCurrentlyPlayingTrack()
@@ -76,7 +95,7 @@ function getCurrentlyPlaying() {
 					if (currentTrack.contextType == "playlist") {
 						let uri =  data["context"]["uri"].split(':');
 						currentTrack.playlistID = uri[uri.length - 1];
-						loadMoreInfoOfPlaylist();
+						loadPlaylistInfo();
 					}
 				}
 
@@ -89,8 +108,7 @@ function getCurrentlyPlaying() {
 				$(".currently-playing p:nth-child(1)").text(`${currentTrack.contextType} : UNKNOWN`);
 				$(".currently-playing p:nth-child(2)").text(`${currentTrack.name} - ${currentTrack.artists.toString()}`);
 
-				sectionTwo();
-
+				findMatchingRules();
 			}
 		})
 		.catch((error) => {
@@ -98,23 +116,41 @@ function getCurrentlyPlaying() {
 		});
 }
 
-function showNewRulePage() {
-	$(".popup-page").removeClass("is-hidden");
+function loadPlaylistInfo() {
+	apiGetPlaylistInfo(currentTrack.playlistID)
+		.then((data) => {
+
+			let img = getAnImageFromArray(data["images"]);
+			if (img != null)
+				$(".currently-playing img").attr('src', img);
+
+			$(".currently-playing p:nth-child(1)").text(`${data.name}`);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
+
+// New Rule Page / Playlist Picker
+
+function loadPlaylists() {
 	apiGetMyPlaylists()
-		.then((result) => {
-			playlistsProtected = result;
-			printPlaylistsHandler(result);
-			// listenImagePicker();
-			// initButtons();
+		.then((data) => {
+			playlistsProtected = data;
+			printPlaylistsHandler(data);
 		})
 		.catch((error) => { console.log(error) });
 }
 
 function printPlaylistsHandler(data) {
+	// clear previous data, check filters, print & add listener
+
+	// these actions are done within a separate function, it needs to be called from filters as well
+
 	$(".image-item").off("click"); // remove listeners to prevent adding multiple listeners
 	$(".image-item:not(.is-gone)").remove(); // remove every item besides the teamplate
+	
 	playlists = []; // remove existing items
-	console.log(playlists);
 
 	data.forEach(item => {
 		if (user.id == item["owner"]["id"]) {
@@ -124,56 +160,104 @@ function printPlaylistsHandler(data) {
 		}
 	});
 
-	printPlaylists(playlists);
+	printPlaylists(playlists); // @base.js
+
+	listenPlaylistPicker();
+}
+
+function listenPlaylistPicker() {
+	// register selected playlists for a new rule
 
 	$(".image-item").click(function() {
-		let i = $(this).index() - 1; //substract hidden element
-		selectedPlaylistID = playlists[i]["id"];
-		selectedPlaylistIndex = i;
+		let i = $(this).index() - 1; // substract hidden element
 
-		if (newRulePlaylists.length > 1) // if two playlists are already selected, reset selection
-			newRulePlaylists = [];
+		if (newRuleHolder.length > 1) // if two playlists are already selected, reset selection
+			newRuleHolder = [];
 
-		console.log(getAnImageFromArray(playlists[i]["images"]));
-		newRulePlaylists.push({
+		newRuleHolder.push({
 			name: playlists[i]["name"], 
 			uri: playlists[i]["uri"].split(":")[2], 
 			image: getAnImageFromArray(playlists[i]["images"])}); // TODO - verify uri last index for other people's playlists
 
-		let selectionText = `Selected: 1- ${newRulePlaylists[0].name}`;
-		if (newRulePlaylists.length > 1)
-			selectionText += `, 2- ${newRulePlaylists[1].name}`;
+
+		// show selected playlists on top
+
+		let selectionText = `Selected: 1- ${newRuleHolder[0].name}`;
+		if (newRuleHolder.length > 1)
+			selectionText += `, 2- ${newRuleHolder[1].name}`;
 
 		$(".popup-page .description-wrapper p").text(selectionText);
-	});
+	});	
 }
 
-function sectionTwo() {
-	if (localStorage.automationRules != null) {
-		let rules_ = JSON.parse(localStorage.automationRules);
-		allRules = rules_;
-		let txt = "";
-		for (i in rules_) {
-			if (txt.length > 0)
-				txt += "\n";
-			txt += `${rules_[i][0].name} > ${rules_[i][1].name}`;
-		}
+// Matching Rules
 
-		prettyPrintAllRules();
+function findMatchingRules() {
+	reloadRules();
 
-		if (currentTrack.playlistID != null) {
-			matchingAvailableRules = []; // reset
-			
-			for (i in rules_) {
-				if (currentTrack.playlistID == rules_[i][0].uri)
-					matchingAvailableRules.push(rules_[i][1]);
+	if (currentTrack.playlistID != null) {
+		matchingRules = []; // reset
+		
+		if (rules.length > 0) {
+			for (i in rules) {
+				if (currentTrack.playlistID == rules[i][0].uri)
+					matchingRules.push(rules[i][1]);
 			}
 
-			// console.log(matchingAvailableRules);
 			printMatchingRules();
 		}
 	}
 }
+
+function listenMatchingRulesClick() {
+	// Add current track to selected playlist
+
+	$(".highlighted-rules-list .inline-image-item").click(function() {
+		let i = $(this).index() - 1; //substract hidden element
+		selectedPlaylistID = matchingRules[i]["uri"];
+		selectedPlaylistIndex = i;
+
+		apiAddTracksToPlaylist(selectedPlaylistID, [currentTrack.uri])
+			.then((data) => {
+				// console.log("Track added to new playlist");
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	});
+}
+
+// All Rules
+
+function showAllRules() {
+	printRules();
+}
+
+function listenRuleDeleteClick() {
+	// Delete selected rule
+
+	$(".rules-list .rule-box-wrapper .btn-delete").click(function() {
+		let i = $(this).parent().index() - 1; //substract hidden element
+
+		rules.splice(i, 1);
+		showAllRules();
+		saveRules();
+	});
+}
+
+// Remove Track
+
+function removeTrackFromPlaylist() {
+	apiRemoveTrackFromPlaylist(currentTrack.playlistID, [currentTrack.uri])
+		.then((data) => {
+			// console.log("Track deleted from playlist.");
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
+
+// Print Functions
 
 function printMatchingRules() {
 	$(".highlighted-rules-list .inline-image-item").off("click");
@@ -182,20 +266,20 @@ function printMatchingRules() {
 	let list = [];
 	const template = $(".highlighted-rules-list .inline-image-item")[0].outerHTML;
 
-	for (let i = 0; i < matchingAvailableRules.length; i++) {
+	for (let i = 0; i < matchingRules.length; i++) {
 		let holder = $($.parseHTML(template));
 		holder.removeClass("is-gone");
 
 		// IMAGE
-		if (matchingAvailableRules[i]["image"] != null)
-			holder.find("img").attr("src", matchingAvailableRules[i]["image"]);
+		if (matchingRules[i]["image"] != null)
+			holder.find("img").attr("src", matchingRules[i]["image"]);
 		else { 
 			holder.find("img").removeAttr("src", "");
 			holder.find("img").addClass("is-hidden");
 		}
 		
 		// NAME
-		let name = matchingAvailableRules[i]["name"];
+		let name = matchingRules[i]["name"];
 		if (name.length > 30)
 			name = name.substr(0, 30) + "...";
 		holder.find("p").text(name);
@@ -205,52 +289,32 @@ function printMatchingRules() {
 
 	$(".highlighted-rules-list").append(list);
 
-	addToActionListener();
+	listenMatchingRulesClick();
 }
 
-function addToActionListener() {
-	$(".highlighted-rules-list .inline-image-item").click(function() {
-		let i = $(this).index() - 1; //substract hidden element
-		selectedPlaylistID = matchingAvailableRules[i]["uri"];
-		selectedPlaylistIndex = i;
-
-		doMoveThings();
-	});
-}
-
-function doMoveThings() {
-	apiAddTracksToPlaylist(selectedPlaylistID, [currentTrack.uri])
-		.then((data) => {
-			console.log("did we do it mate?");
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-}
-
-function prettyPrintAllRules() {
+function printRules() {
 	$(".rules-list .rule-box-wrapper").off("click");
 	$(".rules-list .rule-box-wrapper:not(.is-gone)").remove(); // remove every item besides the teamplate
 
 	let list = [];
 	const template = $(".rules-list .rule-box-wrapper")[0].outerHTML;
 
-	for (let i = 0; i < allRules.length; i++) {
+	for (let i = 0; i < rules.length; i++) {
 		let holder = $($.parseHTML(template));
 		holder.removeClass("is-gone");
 
 		for (var x = 0; x < 2; x++) {
 
 			// IMAGE
-			if (allRules[i][x]["image"] != null)
-				holder.find(`.inline-image-item:nth-child(${x+1}) img`).attr("src", allRules[i][x]["image"]);
+			if (rules[i][x]["image"] != null)
+				holder.find(`.inline-image-item:nth-child(${x+1}) img`).attr("src", rules[i][x]["image"]);
 			else { 
 				holder.find(`.inline-image-item:nth-child(${x+1}) img`).removeAttr("src", "");
 				holder.find(`.inline-image-item:nth-child(${x+1}) img`).addClass("is-hidden");
 			}
 			
 			// NAME
-			let name = allRules[i][x]["name"];
+			let name = rules[i][x]["name"];
 			if (name.length > 30) name = name.substr(0, 30) + "...";
 			holder.find(`.inline-image-item:nth-child(${x+1}) p`).text(name);
 		}
@@ -259,42 +323,20 @@ function prettyPrintAllRules() {
 	}
 
 	$(".rules-list").append(list);
-	ruleDeleteListener();
+
+	listenRuleDeleteClick();
 }
 
-function ruleDeleteListener() {
-	$(".rules-list .rule-box-wrapper .btn-delete").click(function() {
-		let i = $(this).parent().index() - 1; //substract hidden element
-		let selectedRuleIndex = i;
+// Etc
 
-		allRules.splice(i, 1);
-		localStorage.setItem("automationRules", JSON.stringify(allRules));
-		sectionTwo();
-	});
+function reloadRules() {
+	if (localStorage.automationRules != null) {
+		rules = JSON.parse(localStorage.automationRules);
+	}
 }
 
-function deleteTrackAlso() {
-	apiRemoveTrackFromPlaylist(currentTrack.playlistID, [currentTrack.uri])
-		.then((data) => {
-			console.log(data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
+function saveRules() {
+	localStorage.setItem("automationRules", JSON.stringify(rules));	
 }
 
-function loadMoreInfoOfPlaylist() {
-	apiGetPlaylistInfo(currentTrack.playlistID)
-		.then((data) => {
-			if (data["images"] != null || data["images"][0]["url"] != null)
-				$(".currently-playing img").attr('src', data["images"][0]["url"]);
-
-			$(".currently-playing p:nth-child(1)").text(`${data.name}`);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-}
-
-// TODO - save playlist img when creating new rules
 // TODO - notification on actions
