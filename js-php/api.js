@@ -161,7 +161,7 @@ function apiGetPlaylistInfo(playlistID) {
 		$.ajax({
 			type: "GET",
 			url: `https://api.spotify.com/v1/playlists/${playlistID}`,
-			data: {limit: 100, fields: "name,description"}, // max 100
+			data: {limit: 100, fields: "name,description,images"}, // max 100
 			headers: {"Authorization": "Bearer " + spotify.accessToken},
 			success: (data, textStatus) => resolve(data),
 			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
@@ -242,6 +242,46 @@ function apiAddTracksToPlaylist(playlistID, trackURIs) {
 			url: `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
 			data: `{"uris": ${JSON.stringify(trackURIs)}}`,
 			processData: false,
+			contentType: "application/json",
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, status) => resolve(data),
+			error: (jqXHR, textStatus, errorThrown) => resolve(jqXHR)
+		});
+	});
+}
+
+/*
+ * @param {int}				playlistID			Playlist ID.
+ * @param {array[string]}	trackURIs			A list of track URIs in an array.
+ * @result 										Returns snpashot_id in JSON object.
+ */
+function apiRemoveTrackFromPlaylist(playlistID, trackURIs) {
+	let data_ = {"tracks": []};
+	for (i in trackURIs) 
+		data_.tracks.push({"uri": trackURIs[i]});
+
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			method: "DELETE",
+			url: `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
+			data: JSON.stringify(data_),
+			processData: false,
+			contentType: "application/json",
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, status) => resolve(data),
+			error: (jqXHR, textStatus, errorThrown) => resolve(jqXHR)
+		});
+	});
+}
+
+/*
+ *
+ */
+function apiGetCurrentlyPlayingTrack() {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			method: "GET",
+			url: `https://api.spotify.com/v1/me/player`,
 			contentType: "application/json",
 			headers: {"Authorization": "Bearer " + spotify.accessToken},
 			success: (data, status) => resolve(data),

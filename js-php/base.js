@@ -303,3 +303,12 @@ function enableDarkMode(yes) {
 		$('body, .bar').removeClass('dark');
 	}
 }
+
+// ---------------------------------------------------------------------------------------- ETC
+
+function getAnImageFromArray(arr) {
+	let imgArrLength = arr.length;
+	if (imgArrLength > 0)
+		return arr[imgArrLength > 2 ? 1 : 0]["url"];
+	else return null;
+}

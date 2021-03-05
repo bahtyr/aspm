@@ -5,7 +5,7 @@ check_getpost();
 // AUTHENTICATION
 
 function authorize($redirect_uri, $client_id, $client_secret) {
-	$scopes = "playlist-modify-private playlist-modify-public playlist-read-collaborative playlist-read-private user-follow-read user-library-read user-library-modify user-read-recently-played user-top-read ugc-image-upload";
+	$scopes = "playlist-modify-private playlist-modify-public playlist-read-collaborative playlist-read-private user-follow-read user-library-read user-library-modify user-read-recently-played user-top-read user-read-playback-state user-read-currently-playing ugc-image-upload";
 	$url = "https://accounts.spotify.com/authorize?"
 		."response_type=code&client_id={$client_id}&client_secret={$client_secret}&redirect_uri={$redirect_uri}&scope={$scopes}";
 	header("Location: {$url}");
