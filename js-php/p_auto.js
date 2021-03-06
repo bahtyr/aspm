@@ -10,11 +10,6 @@ let rules = [];
 let matchingRules = [];
 let newRuleHolder = [];
 
-
-
-let selectedPlaylistID;
-let selectedPlaylistIndex;
-
 $(function() {
 	$(".popup-page").removeClass("is-gone");
 	// popup element has is-gone attribute to hide its animation when the page is first loaded,
@@ -29,7 +24,7 @@ $(function() {
 	initButtons();
 	initNewRulePageActions();
 	//load rules
-	
+
 	setTimeout(() => getCurrentlyPlaying(), 200000);
 });
 
@@ -60,6 +55,11 @@ function initNewRulePageActions() {
 
 	// save rule
 	$("#btn-save-rule").click(() => {
+		if (newRuleHolder.length < 2) {
+			// don't save when 2 playlists are not yet selected
+			showWarning(`Please select 2 playlists.`, true);
+			return;
+		}
 
 		rules.push(newRuleHolder);
 		saveRules();
@@ -69,6 +69,15 @@ function initNewRulePageActions() {
 
 		$(".popup-page").addClass("is-hidden");
 	});
+
+	// close
+	$("#popup-close-area").click(() => {
+		$(".popup-page").addClass("is-hidden");
+		
+		// reset new rule selection on close
+		newRuleHolder = [];
+		$(".description-wrapper p").text("Select 2 playlists");
+	});
 }
 
 // Currently Playing
@@ -76,58 +85,64 @@ function initNewRulePageActions() {
 function getCurrentlyPlaying() {
 	apiGetCurrentlyPlayingTrack()
 		.then((data) => {
-
-			if (data["item"] != null) {
-				currentTrack.name = data["item"]["name"];
-				currentTrack.uri = data["item"]["uri"];
-				currentTrack.artists = "";
-				for (i in data["item"]["artists"]) {
-					if (currentTrack.artists.length > 0)
-						currentTrack.artists += ", ";
-					currentTrack.artists += data["item"]["artists"][i]["name"];
-				}
-
-				if (data["context"] == null)
-					currentTrack.contextType = "library";
-				else {
-					currentTrack.contextType = data["context"]["type"];
-
-					if (currentTrack.contextType == "playlist") {
-						let uri =  data["context"]["uri"].split(':');
-						currentTrack.playlistID = uri[uri.length - 1];
-						loadPlaylistInfo();
-					}
-				}
-
-				// contextType; playlist | album | artist | null (like_songs)
-				// the context uri might include user's name if the user is playing their playlist, however it is also possible that the user name is missing
-				// therefore this is not a reliable method to confirm if playlist is owned by the user or not.
-
-				// TODO - properly save / handle track context type, might display it with an icon in future
-
-				$(".currently-playing p:nth-child(1)").text(`${currentTrack.contextType} : UNKNOWN`);
-				$(".currently-playing p:nth-child(2)").text(`${currentTrack.name} - ${currentTrack.artists.toString()}`);
-
-				findMatchingRules();
+			if (data == null || data["item"] == null) {
+				showWarning("Error: Nothing is playing currently, make sure private session is disabled.", true);
+				return;
 			}
+
+			currentTrack.name = data["item"]["name"];
+			currentTrack.uri = data["item"]["uri"];
+			currentTrack.artists = "";
+			for (i in data["item"]["artists"]) {
+				if (currentTrack.artists.length > 0)
+					currentTrack.artists += ", ";
+				currentTrack.artists += data["item"]["artists"][i]["name"];
+			}
+
+			if (data["context"] == null)
+				currentTrack.contextType = "library";
+			else {
+				currentTrack.contextType = data["context"]["type"];
+
+				if (currentTrack.contextType == "playlist") {
+					let uri =  data["context"]["uri"].split(':');
+					currentTrack.playlistID = uri[uri.length - 1];
+					loadPlaylistInfo();
+				}
+			}
+
+			// contextType; playlist | album | artist | null (like_songs)
+			// the context uri might include user's name if the user is playing their playlist, however it is also possible that the user name is missing
+			// therefore this is not a reliable method to confirm if playlist is owned by the user or not.
+
+			// TODO - properly save / handle track context type, might display it with an icon in future
+
+			$(".currently-playing p:nth-child(1)").text(`${currentTrack.contextType} : UNKNOWN`);
+			$(".currently-playing p:nth-child(2)").text(`${currentTrack.name} - ${currentTrack.artists.toString()}`);
+
+			findMatchingRules();
 		})
 		.catch((error) => {
 			console.log(error);
+			showWarning("An error occured, please try again.", true);
 		});
 }
 
 function loadPlaylistInfo() {
 	apiGetPlaylistInfo(currentTrack.playlistID)
 		.then((data) => {
-
 			let img = getAnImageFromArray(data["images"]);
 			if (img != null)
 				$(".currently-playing img").attr('src', img);
 
 			$(".currently-playing p:nth-child(1)").text(`${data.name}`);
+
+			currentTrack.playlistImage = img;
+			currentTrack.playlistName = data.name;
 		})
 		.catch((error) => {
 			console.log(error);
+			// No need show to warning for not loading playlist name & image
 		});
 }
 
@@ -139,7 +154,10 @@ function loadPlaylists() {
 			playlistsProtected = data;
 			printPlaylistsHandler(data);
 		})
-		.catch((error) => { console.log(error) });
+		.catch((error) => { 
+			console.log(error);
+			showWarning("Failed to load user playlists, please try agian.", true);
+		});
 }
 
 function printPlaylistsHandler(data) {
@@ -214,15 +232,14 @@ function listenMatchingRulesClick() {
 
 	$(".highlighted-rules-list .inline-image-item").click(function() {
 		let i = $(this).index() - 1; //substract hidden element
-		selectedPlaylistID = matchingRules[i]["uri"];
-		selectedPlaylistIndex = i;
 
-		apiAddTracksToPlaylist(selectedPlaylistID, [currentTrack.uri])
+		apiAddTracksToPlaylist(matchingRules[i]["uri"], [currentTrack.uri])
 			.then((data) => {
-				// console.log("Track added to new playlist");
+				showWarning(`Track added to: ${matchingRules[i]["name"]}`, true);
 			})
 			.catch((error) => {
 				console.log(error);
+				showWarning(`Failed to add track to ${matchingRules[i]["name"]}`, true);
 			});
 	});
 }
@@ -250,9 +267,10 @@ function listenRuleDeleteClick() {
 function removeTrackFromPlaylist() {
 	apiRemoveTrackFromPlaylist(currentTrack.playlistID, [currentTrack.uri])
 		.then((data) => {
-			// console.log("Track deleted from playlist.");
+			showWarning(`Track removed from ${currentTrack.playlistName}`, true);
 		})
 		.catch((error) => {
+			showWarning(`Failed to remove track from ${currentTrack.playlistName}`, true);
 			console.log(error);
 		});
 }
@@ -338,5 +356,3 @@ function reloadRules() {
 function saveRules() {
 	localStorage.setItem("automationRules", JSON.stringify(rules));	
 }
-
-// TODO - notification on actions
