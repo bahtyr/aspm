@@ -95,9 +95,9 @@ nav ul li:nth-child(5) { background-color: var(--teal-light); }
 nav ul li:nth-child(5) a { color: var(--teal-dark);  }
 nav ul li:nth-child(5) a svg path { stroke: var(--teal-dark); }
 
-nav ul li:nth-child(6) { background-color: var(--gray2-light); }
-nav ul li:nth-child(6) a { color: var(--gray2-dark);  }
-nav ul li:nth-child(6) a svg path { stroke: var(--gray2-dark); }
+nav ul li:nth-child(6) { background-color: var(--orange-light); }
+nav ul li:nth-child(6) a { color: var(--orange-dark);  }
+nav ul li:nth-child(6) a svg path { stroke: var(--orange-dark); }
 
 nav ul li:nth-child(7) { background-color: var(--gray-light); }
 nav ul li:nth-child(7) a { color: var(--gray-dark);  }
