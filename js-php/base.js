@@ -307,6 +307,9 @@ function enableDarkMode(yes) {
 // ---------------------------------------------------------------------------------------- ETC
 
 function getAnImageFromArray(arr) {
+	if (arr == null || !Array.isArray(arr))
+		return null;
+
 	let imgArrLength = arr.length;
 	if (imgArrLength > 0)
 		return arr[imgArrLength > 2 ? 1 : 0]["url"];
