@@ -1,0 +1,79 @@
+<html>
+	<head>
+		<title>ASPM</title>
+		<link rel="stylesheet" href="./css/new.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	</head>
+	<body class="">
+
+		<!-- dark mode check -->
+		<!-- <script>if (localStorage.darkMode == 1) document.getElementsByTagName("body")[0].classList.add("dark");</script> -->
+
+		<!-- site header -->
+		<div class="site-header">
+			<div class="site-header-wrapper max-width-page">
+				<div></div>
+				<a class="site-title" href="/"><span>A Spotify Playlist Manager</span></a>
+				<div class="darkmode-toggle">
+					<div class="icon-wrapper sun active">
+						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 12.75C11.0711 12.75 12.75 11.0711 12.75 9C12.75 6.92893 11.0711 5.25 9 5.25C6.92893 5.25 5.25 6.92893 5.25 9C5.25 11.0711 6.92893 12.75 9 12.75Z" fill="black" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 0.75V2.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15.75V17.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.16504 3.16504L4.23004 4.23004" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.77 13.77L14.835 14.835" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M0.75 9H2.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.75 9H17.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.16504 14.835L4.23004 13.77" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.77 4.23004L14.835 3.16504" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					</div>
+					<div class="icon-wrapper moon">
+						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.7502 9.5925C15.6322 10.8692 15.1531 12.0858 14.3689 13.1001C13.5846 14.1144 12.5278 14.8843 11.3219 15.3199C10.1161 15.7555 8.81116 15.8386 7.55979 15.5596C6.30843 15.2805 5.16242 14.6509 4.25584 13.7443C3.34926 12.8378 2.71962 11.6917 2.4406 10.4404C2.16158 9.18901 2.24471 7.88406 2.68027 6.67822C3.11582 5.47238 3.88579 4.41552 4.90008 3.63131C5.91437 2.8471 7.13102 2.36798 8.40767 2.25C7.66023 3.2612 7.30056 4.50709 7.39407 5.76106C7.48758 7.01503 8.02807 8.19379 8.91722 9.08295C9.80638 9.9721 10.9851 10.5126 12.2391 10.6061C13.4931 10.6996 14.739 10.3399 15.7502 9.5925Z" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- sticky top -->
+		<div class="sticky-top is-hidden">
+			<div class="max-width-page">
+				<p>Alert</p>
+			</div>
+		</div>
+
+		<!-- user & player -->
+		<div class="max-width-page index-top-wrapper">
+			<!-- user -->
+			<div class="index-user">
+				<div class="left">
+					<img src="https://i.scdn.co/image/ab6775700000ee85224eb1a18feef801a1eacf45">
+					<p>Bahtiyar Ceylan</p>
+				</div>
+				<div class="border"></div>
+				<div class="bottom-wrapper">
+					<div class="number"><p>1,957</p><p>Liked Songs</p></div>
+					<div class="number"><p>51</p><p>Public Playlists</p></div>
+					<div class="number"><p>45</p><p>Private Playlists</p></div>
+				</div>
+				<svg class="right" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.25 12.25H2.91667C2.60725 12.25 2.3105 12.1271 2.09171 11.9083C1.87292 11.6895 1.75 11.3928 1.75 11.0833V2.91667C1.75 2.60725 1.87292 2.3105 2.09171 2.09171C2.3105 1.87292 2.60725 1.75 2.91667 1.75H5.25" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.33337 9.91671L12.25 7.00004L9.33337 4.08337" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.25 7H5.25" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+			</div>
+
+			<!-- player -->
+			<div class="index-player">
+				<img src="https://i.scdn.co/image/ab67616d00004851d7859b708f662c3018f213b8">
+				<p>ODIUM</p><p> &bull; LXST CXNTURY</p>
+				<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)"><path d="M13.4167 2.33337V5.83337H9.91675" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M0.583252 11.6666V8.16663H4.08325" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.04742 5.24996C2.34327 4.41392 2.84608 3.66645 3.50894 3.07729C4.1718 2.48813 4.97311 2.07649 5.83809 1.88078C6.70306 1.68507 7.60353 1.71166 8.45545 1.95808C9.30737 2.2045 10.083 2.66271 10.7099 3.28996L13.4166 5.8333M0.583252 8.16663L3.28992 10.71C3.91685 11.3372 4.69247 11.7954 5.54439 12.0418C6.39631 12.2883 7.29677 12.3149 8.16175 12.1191C9.02673 11.9234 9.82803 11.5118 10.4909 10.9226C11.1538 10.3335 11.6566 9.586 11.9524 8.74996" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0"><rect width="14" height="14" fill="white"/></clipPath></defs></svg>
+				<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.75 7.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.75 4.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.75 10.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.75 13.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+			</div>
+		</div>
+
+		<!-- nav icons-->		
+		<div class="body-wrapper max-width-page">
+			<nav class="index-icons">
+				<ul>
+					<li><a href="/top.html"><span></span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.84 4.60999C20.3292 4.099 19.7228 3.69364 19.0554 3.41708C18.3879 3.14052 17.6725 2.99817 16.95 2.99817C16.2275 2.99817 15.5121 3.14052 14.8446 3.41708C14.1772 3.69364 13.5708 4.099 13.06 4.60999L12 5.66999L10.94 4.60999C9.9083 3.5783 8.50903 2.9987 7.05 2.9987C5.59096 2.9987 4.19169 3.5783 3.16 4.60999C2.1283 5.64169 1.54871 7.04096 1.54871 8.49999C1.54871 9.95903 2.1283 11.3583 3.16 12.39L4.22 13.45L12 21.23L19.78 13.45L20.84 12.39C21.351 11.8792 21.7563 11.2728 22.0329 10.6053C22.3095 9.93789 22.4518 9.22248 22.4518 8.49999C22.4518 7.77751 22.3095 7.0621 22.0329 6.39464C21.7563 5.72718 21.351 5.12075 20.84 4.60999V4.60999Z" stroke="#EDEBF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Liked Songs</span></a></li>
+					<li><a href="/covers.html"><span></span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 6H21" stroke="#E7F3F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 12H21" stroke="#E7F3F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 18H21" stroke="#E7F3F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 6H3.01" stroke="#E7F3F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12H3.01" stroke="#E7F3F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 18H3.01" stroke="#E7F3F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Playlists</span></a></li>
+					<li><a href="/missing.html"><span></span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#FFF8F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Top tracks / artits</span></a></li>
+					<li><a href="/export.html"><span></span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18V5L21 3V16" stroke="#F8DAE1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 21C7.65685 21 9 19.6569 9 18C9 16.3431 7.65685 15 6 15C4.34315 15 3 16.3431 3 18C3 19.6569 4.34315 21 6 21Z" stroke="#F8DAE1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 19C19.6569 19 21 17.6569 21 16C21 14.3431 19.6569 13 18 13C16.3431 13 15 14.3431 15 16C15 17.6569 16.3431 19 18 19Z" stroke="#F8DAE1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Playlist Automation</span></a></li>
+					<li><a href="/export.html"><span></span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 18L22 12L16 6" stroke="#E3E3E4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 6L2 12L8 18" stroke="#E3E3E4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Compare Playlists</span></a></li>
+					<li><a class="is-hidden"></a></li>
+				</ul>
+			</nav>
+		</div>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="./js-php/api.js"></script>
+		<script src="./js-php/base.js"></script>
+	</body>
+</html>

@@ -1,0 +1,310 @@
+/* ---------------------------------------------------------------------------------------- RESET */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size:100%; }
+html, body { min-height: 100%; height: 100%; }
+ul { list-style: none; padding: 0; margin: 0; }
+a:link, a:visited { text-decoration: none; color: #000; }
+a > * { display: inline-block; }
+
+/* ---------------------------------------------------------------------------------------- */
+
+.is-hidden { visibility: hidden; }
+
+.max-width-page { max-width: 1100px; margin: auto; }
+
+/* ---------------------------------------------------------------------------------------- */
+
+body {
+	background-color: #F6F8FA;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	font-weight: lighter;
+	padding-bottom: 50px;
+}
+
+body.dark {
+	background-color: #212529;
+}
+
+body.dark .site-header {
+	background-color: #212529;
+	border-bottom-color: #495057;
+}
+
+a, p, input {
+	color: #343A40; /* oc 8 */
+}
+
+body.dark,
+body.dark a,
+body.dark p,
+body.dark input {
+	color: #B3B3B3;
+}
+
+/* ---------------------------------------------------------------------------------------- SITE HEADER */
+
+.site-header-wrapper > div:nth-child(1) { display: none; }
+
+.site-header {
+	height: 36px;
+	width: 100%;
+	background-color: #F5F5F5;
+	border-bottom: solid 1px #ECECEC;
+	vertical-align: middle;
+	font-size: 0.875rem;
+}
+
+.site-header-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	height: 100%;
+}
+
+/* ---------------------------------------------------------------------------------------- INDEX ICONS */
+
+.index-icons ul {
+	font-size: 0;
+	display: flex;
+	gap: 15px;
+}
+
+.index-icons li {
+	display: inline-block;
+}
+
+.index-icons li a {
+	display: flex;
+	height: 150px;
+	width: 150px;
+	flex-flow: column;
+	justify-content: space-between;
+	align-items: center;
+	border-radius: 4px;
+}
+
+.index-icons li a span {
+	display: flex;
+	align-items: flex-end;
+	width: 100%;
+	font-size: .875rem;
+	font-weight: bold;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	height: 48px;
+}
+
+.index-icons li:nth-child(1) a { color: #EDEBF4; }
+.index-icons li:nth-child(2) a { color: #F8DAE1; }
+.index-icons li:nth-child(3) a { color: #FFF8F3; }
+.index-icons li:nth-child(4) a { color: #E7F3F1; }
+.index-icons li:nth-child(5) a { color: #E3E3E4; }
+
+.index-icons li:nth-child(1) a { background: rgb(171,161,204); background: linear-gradient(135deg, rgba(171,161,204,1) 0%, rgba(71,52,127,1) 100%); }
+.index-icons li:nth-child(2) a { background: rgb(234,147,167); background: linear-gradient(135deg, rgba(234,147,167,1) 0%, rgba(169,57,83,1) 100%); }
+.index-icons li:nth-child(3) a { background: rgb(252,194,163); background: linear-gradient(135deg, rgba(252,194,163,1) 0%, rgba(243,115,53,1) 100%); }
+.index-icons li:nth-child(4) a { background: rgb(134,186,174); background: linear-gradient(135deg, rgba(134,186,174,1) 0%, rgba(42,123,96,1) 100%); }
+.index-icons li:nth-child(5) a { background: rgb(156,156,159); background: linear-gradient(135deg, rgba(156,156,159,1) 0%, rgba(73,77,88,1) 100%); }
+
+/* ---------------------------------------------------------------------------------------- INDEX */
+
+.index-top-wrapper {
+	display: flex;
+	flex-flow: row wrap;
+	margin-top: 30px;
+	margin-bottom: 25px;
+	gap: 25px;
+}
+
+.dark .index-user { background-color: #343a40; }
+.dark .index-player { background-color: #343a40; }
+
+/* ---------------- index user  */
+
+.index-user .left { display: flex; align-items: center; }
+.index-user .bottom-wrapper { display: flex; flex: 1; align-items: center; }
+
+.index-user {
+	flex: 3;
+	height: 78px;
+	background-color: #F1F1F1;
+	display: flex;
+	flex-flow: wrap;
+	align-items: center;
+	padding: 0 24px;
+	border-radius: 4px;
+}
+
+.index-user img {
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+.index-user .left p { font-weight: 400; } /* username */
+
+.index-user .number { margin-left: 15px; }
+.index-user .number:nth-child(1) { margin-left: 40px; }
+
+.index-user .number p { /*user track / playlist counter */
+	font-size: .75rem;
+	display: inline-block;
+}
+
+.index-user .number p:nth-child(1) { color: #333333; }
+.index-user .number p:nth-child(2) { color: #808080; margin-left: 5px; }
+.dark .index-user .number p:nth-child(1) { color: #B3B3B3 }
+.dark .index-user .number p:nth-child(2) { color: #808080; }
+
+.index-user svg {
+	margin-left: auto;
+}
+
+/* ---------------- index player  */
+
+.index-player {
+	flex: 2;
+	height: 78px;
+	background-color: #F1F1F1;
+	display: flex;
+	align-items: center;
+	border-radius: 4px;
+	padding-right: 24px;
+}
+
+.index-player img {
+	height: 78px;
+	width: 78px;
+	border-radius: 4px 0 0px 4px;
+	margin-right: 10px;
+}
+
+.index-player p { white-space: pre; }
+.index-player p:nth-child(2) { color: #333333; /*font-weight: 400;*/ }
+.index-player p:nth-child(3) { color: #808080; /*margin-left: 5px; text-transform: unset;*/ }
+.dark .index-player p:nth-child(2) { color: #B3B3B3 }
+.dark .index-player p:nth-child(3) { color: #808080; }
+
+.index-player svg:nth-child(4) { margin-left: auto; }
+.index-player svg:nth-child(5) { margin-left: 15px; }
+
+
+/*---------------------------------------------------------------------------------------- STICKY TOP */
+
+.sticky-top {
+	height: 36px;
+	width: 100%;
+	background-color: #1A1A1A;
+	display: flex;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	z-index: 10;
+}
+
+.sticky-top p {
+	color: #CCCCCC;
+}
+
+.sticky-top.is-hidden {
+	visibility: initial;
+	top: -36px;
+}
+
+/*---------------------------------------------------------------------------------------- DARK MODE TOGGLE */
+/* https://codepen.io/tatimblin/pen/RMjaqb */
+
+.darkmode-toggle {
+	width: 18px;
+	height: 18px;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.darkmode-toggle .icon-wrapper svg { width: 18px; height: 18px; }
+
+.darkmode-toggle .icon-wrapper.sun svg path { stroke: #C29C12; fill: #C29C12; }
+
+.darkmode-toggle .icon-wrapper.moon svg path { stroke: #283445; fill: #283445; }
+
+.darkmode-toggle .icon-wrapper { transition: all 200ms 300ms ease; }
+
+.darkmode-toggle .icon-wrapper:last-child { transform: translatey(-18px); }
+
+.darkmode-toggle .active { transition-delay: 100ms; }
+
+.darkmode-toggle .active:first-child { transform: translatey(18px); }
+
+.darkmode-toggle .active:last-child { transform: translatey(0); }
+
+/*---------------------------------------------------------------------------------------- ADAPTIVE UI */
+
+
+@media only screen and (max-width: 900px) {
+
+	.index-top-wrapper { gap: 15px; margin-bottom: 20px; }
+
+	.index-user, .index-player { width: 100%; }
+	.index-user { height: initial; padding-top: 15px; padding-bottom: 20px; }
+
+	.index-user .left { order: 1; width: 80%; }
+	.index-user .right { order: 2; }
+	.index-user .bottom-wrapper {
+		order: 3;
+		width: 100%;
+		margin-top: 30px;
+		justify-content: space-around;
+	}
+
+	.index-user .number:nth-child(1) { margin-left: 0; }
+	.index-user .number:nth-child(2) { margin-left: 0; }
+
+	.dark .index-user .border { background-color: #495057; }
+	.index-user .border {
+		position: relative;
+		top: 53%;
+		width: 100%;
+		height: 1px;
+		background-color: #dee2e6;	
+	}
+}
+
+
+@media only screen and (max-width: 768px) {
+
+	.index-icons ul {
+		display: flex;
+		justify-content: center;
+		flex-flow: row wrap;
+	}
+
+	.index-icons li { flex: 1; min-width: 100px; }
+
+	.index-icons li a {
+		width: 100%;
+		height: 100px;
+		/*width: 100px;*/
+		flex-flow: column;
+		justify-content: space-between;
+		align-items: center;
+		border-radius: 4px;
+	}
+
+	.index-icons li a span:nth-child(1) { display: none; }
+	.index-icons li a svg { margin: 10px 10px 0 auto; }
+	.index-icons li a svg { height: 18px; width: 18px; }
+}
+
+@media only screen and (max-width: 1100px) {
+
+	.max-width-page { padding: 0 20px; }
+
+	.site-header-wrapper > div:nth-child(1) { display: initial; }
+
+	.index-user .number p { display: block; text-align: center; }
+	.index-user .number p:nth-child(2) { margin: 0; }
+}
