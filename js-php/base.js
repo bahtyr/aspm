@@ -1,5 +1,4 @@
 $(function() {
-	loadDarkModePref();
 	initHeaderButtons();
 
 	readSpotifyCookies();
@@ -282,12 +281,6 @@ function initHeaderButtons() {
 	$(".menu").click(() => $(".site-header").toggleClass('is-expanded'));
 	$(".login").click(() => apiAuthRedirect());
 	$(".user-name").dblclick(() => logout());
-}
-
-function loadDarkModePref() {
-	if (localStorage.darkMode == null)
-		localStorage.darkMode = 0;
-	else enableDarkMode(localStorage.darkMode == 0 ? 0 : 1);
 }
 
 function enableDarkMode(yes) {
