@@ -136,7 +136,7 @@ body.dark {
 /* ---------------- index user  */
 
 .index-user .left { display: flex; align-items: center; }
-.index-user .bottom-wrapper { display: flex; flex: 1; align-items: center; }
+.index-user .bottom { display: flex; flex: 1; align-items: center; }
 
 .index-user {
 	flex: 3;
@@ -156,24 +156,31 @@ body.dark {
 	margin-right: 10px;
 }
 
+.index-user .icon-spotify { margin-right: 10px; }
+
 .index-user .left p { font-weight: 400; } /* username */
 
-.index-user .number { margin-left: 15px; }
-.index-user .number:nth-child(1) { margin-left: 40px; }
+.index-user .stats { margin-left: 15px; }
+.index-user .stats:nth-child(1) { margin-left: 40px; }
 
-.index-user .number p { /*user track / playlist counter */
+.index-user .stats p { /*user track / playlist counter */
 	font-size: .75rem;
 	display: inline-block;
 }
 
-.index-user .number p:nth-child(1) { color: #333333; }
-.index-user .number p:nth-child(2) { color: #808080; margin-left: 5px; }
-.dark .index-user .number p:nth-child(1) { color: #B3B3B3 }
-.dark .index-user .number p:nth-child(2) { color: #808080; }
+.index-user .stats p:nth-child(1) { color: #333333; }
+.index-user .stats p:nth-child(2) { color: #808080; margin-left: 5px; }
+.dark .index-user .stats p:nth-child(1) { color: #B3B3B3 }
+.dark .index-user .stats p:nth-child(2) { color: #808080; }
 
-.index-user svg {
-	margin-left: auto;
-}
+.index-user .right { margin-left: auto; } 
+.index-user .icon-logout { cursor: pointer; }
+
+/* ---------------- index login  */
+
+.index-user.show-login .user { display: none; }
+.index-user:not(.show-login) .login { display: none; }
+.index-user.show-login { cursor: pointer; }
 
 /* ---------------- index player  */
 
@@ -200,12 +207,11 @@ body.dark {
 .dark .index-player p { color: #B3B3B3 }
 .dark .index-player p span { color: #808080; }
 
-/*.index-player svg:nth-child(3) { margin-left: auto; }*/ /* no need due to flex:1 on text-wrapper */
-.index-player svg:nth-child(4) { margin-left: 15px; }
+/* text animation related */
 
 .index-player .text-wrapper {
 	flex: 1;
-	min-height: 1rem;
+	min-height: 1.1rem;
 	overflow: hidden;
 	position: relative;
 	margin-right: 10px;
@@ -226,6 +232,33 @@ body.dark {
   	100% { transform: translateX(-20%) }
 }
 
+/* icons */
+
+.index-player .icon-player-refresh,
+.index-player .icon-player-lyrics { cursor: pointer; }
+/*.index-player .icon-player-refresh { margin-left: auto; }*/ /* no need due to flex:1 on text-wrapper */
+.index-player .icon-player-lyrics { margin-left: 15px; }
+
+/* placeholder */
+
+.index-player {
+	position: relative;
+}
+
+.index-player .placeholder {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 78px;
+	height: 78px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px 0 0px 4px;
+	background-color: #C4C4C4;
+}
+
+.index-player .placeholder:not(.show) { display: none; }
 
 /*---------------------------------------------------------------------------------------- STICKY TOP */
 
@@ -293,15 +326,15 @@ body.dark {
 
 	.index-user .left { order: 1; width: 80%; }
 	.index-user .right { order: 2; }
-	.index-user .bottom-wrapper {
+	.index-user .bottom {
 		order: 3;
 		width: 100%;
 		margin-top: 30px;
 		justify-content: space-around;
 	}
 
-	.index-user .number:nth-child(1) { margin-left: 0; }
-	.index-user .number:nth-child(2) { margin-left: 0; }
+	.index-user .stats,
+	.index-user .stats:nth-child(1) { margin-left: 0; } /* can't reset margin on this elm. without directly referring */
 
 	.dark .index-user .border { background-color: #495057; }
 	.index-user .border {
@@ -345,6 +378,6 @@ body.dark {
 
 	.site-header-wrapper > div:nth-child(1) { display: initial; }
 
-	.index-user .number p { display: block; text-align: center; }
-	.index-user .number p:nth-child(2) { margin: 0; }
+	.index-user .stats p { display: block; text-align: center; }
+	.index-user .stats p:nth-child(2) { margin: 0; }
 }

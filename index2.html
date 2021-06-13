@@ -47,28 +47,37 @@
 		<!-- user & player -->
 		<div class="max-width-page index-top-wrapper">
 			<!-- user -->
-			<div class="index-user">
-				<div class="left">
-					<img src="placeholder.jpg">
-					<p></p>
+			<div class="index-user primary-box show-login">
+				<div class="login left">
+					<svg class="icon-spotify" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.9999 0C8.95449 0 0 8.95446 0 20.0001C0 31.0463 8.95449 40 19.9999 40C31.0465 40 40 31.0463 40 20.0001C40 8.95518 31.0465 0.000955316 19.9996 0.000955316L19.9999 0ZM29.1717 28.8459C28.8135 29.4334 28.0444 29.6197 27.4569 29.2591C22.7612 26.3907 16.8498 25.7411 9.88805 27.3317C9.21719 27.4846 8.54848 27.0642 8.39564 26.3931C8.24207 25.722 8.66073 25.0533 9.33326 24.9004C16.9518 23.1598 23.4867 23.9093 28.7585 27.1311C29.346 27.4917 29.5323 28.2584 29.1717 28.8459ZM31.6196 23.4001C31.1683 24.1338 30.2082 24.3655 29.475 23.9141C24.0991 20.6096 15.9043 19.6526 9.54558 21.5828C8.72092 21.8319 7.84992 21.3672 7.59963 20.5439C7.35126 19.7193 7.81625 18.8499 8.63948 18.5991C15.9028 16.3952 24.9326 17.4628 31.1062 21.2566C31.8394 21.708 32.071 22.6679 31.6196 23.4001ZM31.8298 17.7293C25.3839 13.9006 14.7491 13.5486 8.59482 15.4165C7.60656 15.7162 6.56146 15.1583 6.26198 14.17C5.96249 13.1813 6.51991 12.1369 7.50888 11.8364C14.5735 9.69173 26.3177 10.1061 33.739 14.5118C34.6298 15.0394 34.9212 16.1874 34.3934 17.0752C33.8679 17.9641 32.7168 18.2571 31.8308 17.7293H31.8298Z" fill="#1ED760"/></svg>
+					<p>To continue, log in to Spotify.</p>
 				</div>
-				<div class="border"></div>
-				<div class="bottom-wrapper">
-					<div class="number"><p>0</p><p>Liked Songs</p></div>
-					<div class="number"><p>0</p><p>Public Playlists</p></div>
-					<div class="number"><p>0</p><p>Private Playlists</p></div>
+				<svg class="login right" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.75 1.75H11.0833C11.3928 1.75 11.6895 1.87292 11.9083 2.09171C12.1271 2.3105 12.25 2.60725 12.25 2.91667V11.0833C12.25 11.3928 12.1271 11.6895 11.9083 11.9083C11.6895 12.1271 11.3928 12.25 11.0833 12.25H8.75" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.83337 9.91659L8.75004 6.99992L5.83337 4.08325" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.75 7H1.75" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+				<div class="user left">
+					<img class="user-image" src="placeholder.jpg">
+					<p class="user-name"></p>
 				</div>
-				<svg class="right" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.25 12.25H2.91667C2.60725 12.25 2.3105 12.1271 2.09171 11.9083C1.87292 11.6895 1.75 11.3928 1.75 11.0833V2.91667C1.75 2.60725 1.87292 2.3105 2.09171 2.09171C2.3105 1.87292 2.60725 1.75 2.91667 1.75H5.25" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.33337 9.91671L12.25 7.00004L9.33337 4.08337" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.25 7H5.25" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+				<div class="user border"></div>
+				<div class="user bottom">
+					<div class="stats"><p class="user-stats-1">0</p><p>Liked Songs</p></div>
+					<div class="stats"><p class="user-stats-2">0</p><p>Public Playlists</p></div>
+					<div class="stats"><p class="user-stats-3">0</p><p>Private Playlists</p></div>
+				</div>
+				<svg class="user right icon-logout" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.25 12.25H2.91667C2.60725 12.25 2.3105 12.1271 2.09171 11.9083C1.87292 11.6895 1.75 11.3928 1.75 11.0833V2.91667C1.75 2.60725 1.87292 2.3105 2.09171 2.09171C2.3105 1.87292 2.60725 1.75 2.91667 1.75H5.25" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.33337 9.91671L12.25 7.00004L9.33337 4.08337" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.25 7H5.25" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 			</div>
 
 			<!-- player -->
 			<div class="index-player">
-				<img src="placeholder.jpg">
-				<div class="text-wrapper">
-					<p></p>
+				<div class="placeholder player-image-placeholder show">
+					<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15 30C23.2843 30 30 23.2843 30 15C30 6.71573 23.2843 0 15 0C6.71573 0 0 6.71573 0 15C0 23.2843 6.71573 30 15 30ZM21.5625 15L12.1875 9.375V20.625L21.5625 15Z" fill="#EBEBEB"/></svg>
 				</div>
-				<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)"><path d="M13.4167 2.33337V5.83337H9.91675" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M0.583252 11.6666V8.16663H4.08325" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.04742 5.24996C2.34327 4.41392 2.84608 3.66645 3.50894 3.07729C4.1718 2.48813 4.97311 2.07649 5.83809 1.88078C6.70306 1.68507 7.60353 1.71166 8.45545 1.95808C9.30737 2.2045 10.083 2.66271 10.7099 3.28996L13.4166 5.8333M0.583252 8.16663L3.28992 10.71C3.91685 11.3372 4.69247 11.7954 5.54439 12.0418C6.39631 12.2883 7.29677 12.3149 8.16175 12.1191C9.02673 11.9234 9.82803 11.5118 10.4909 10.9226C11.1538 10.3335 11.6566 9.586 11.9524 8.74996" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0"><rect width="14" height="14" fill="white"/></clipPath></defs></svg>
-				<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.75 7.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.75 4.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.75 10.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.75 13.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+				<img class="player-image" src="placeholder.jpg">
+				<div class="text-wrapper player-text-wrapper">
+					<p class="player-text">Nothing is playing</p>
+				</div>
+				<svg class="icon-player-refresh" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)"><path d="M13.4167 2.33337V5.83337H9.91675" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M0.583252 11.6666V8.16663H4.08325" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.04742 5.24996C2.34327 4.41392 2.84608 3.66645 3.50894 3.07729C4.1718 2.48813 4.97311 2.07649 5.83809 1.88078C6.70306 1.68507 7.60353 1.71166 8.45545 1.95808C9.30737 2.2045 10.083 2.66271 10.7099 3.28996L13.4166 5.8333M0.583252 8.16663L3.28992 10.71C3.91685 11.3372 4.69247 11.7954 5.54439 12.0418C6.39631 12.2883 7.29677 12.3149 8.16175 12.1191C9.02673 11.9234 9.82803 11.5118 10.4909 10.9226C11.1538 10.3335 11.6566 9.586 11.9524 8.74996" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0"><rect width="14" height="14" fill="white"/></clipPath></defs></svg>
+				<svg class="icon-player-lyrics" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.75 7.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.75 4.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.75 10.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.75 13.5H2.25" stroke="#999999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
 			</div>
 		</div>
 

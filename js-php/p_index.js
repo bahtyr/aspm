@@ -4,7 +4,10 @@ let currentTrack = {name: "", artists: "", image: ""};
 $(function() {
 	document.getElementsByTagName("body")[0].classList.add("animate");
 	if (isLoggedIn()) myTasks();
-	else loginCallback = myTasks;
+	else {
+		initLoginBtn();
+		loginCallback = myTasks;
+	}
 });
 
 // 1. print user info / which doesn't need additional data
@@ -14,7 +17,7 @@ $(function() {
 // 4. printer user stats
 // 5. get current playing
 function myTasks() {
-	printUser();
+	printUser_();
 	getSaved();
 	initButtons();
 }
@@ -63,11 +66,12 @@ function getPlaying() {
 
 			currentTrack.image = data.item.album.images[data.item.album.images.length - 2].url;
 
-			$(".index-player p").html(`${currentTrack.name}<span> &bull; ${currentTrack.artists}`);
-			$(".index-player img").attr("src", currentTrack.image);
+			$(".player-text").html(`${currentTrack.name}<span> &bull; ${currentTrack.artists}`);
+			$(".player-image").attr("src", currentTrack.image);
+			$(".player-image-placeholder").removeClass("show");
 
-			let a = $(".index-player .text-wrapper");
-			let b = $(".index-player .text-wrapper p");
+			let a = $(".player-text-wrapper");
+			let b = $(".player-text");
 
 			if (b.width() > a.width())
 				b.addClass("animate");
@@ -82,22 +86,30 @@ function getPlaying() {
 // 
 
 function initButtons() {
-	$(".index-user svg").click(() => logout_());
-	$(".index-player svg:nth-child(3)").click(() => getPlaying());
-	$(".index-player svg:nth-child(4)").click(() => searchLyrics());
+	$(".icon-logout").click(() => logout_());
+	$(".icon-player-refresh").click(() => getPlaying());
+	$(".icon-player-lyrics").click(() => searchLyrics());
+}
+
+function initLoginBtn() {
+	$(".primary-box.show-login").click(function() {
+		if (!isLoggedIn())
+			apiAuthRedirect();
+	});
 }
 
 //
 
-function printUser() {
-	$(".index-user img").attr("src", user.image);
-	$(".index-user .left p").text(user.name);
+function printUser_() {
+	$(".primary-box").removeClass("show-login");
+	$(".user-image").attr("src", user.image);
+	$(".user-name").text(user.name);
 }
 
 function printUserStats() {
-	$(".index-user .bottom-wrapper div:nth-child(1) p:nth-child(1)").text(userStats.liked);
-	$(".index-user .bottom-wrapper div:nth-child(2) p:nth-child(1)").text(userStats.public_p);
-	$(".index-user .bottom-wrapper div:nth-child(3) p:nth-child(1)").text(userStats.private_p);
+	$(".user-stats-1").text(userStats.liked);
+	$(".user-stats-2").text(userStats.public_p);
+	$(".user-stats-3").text(userStats.private_p);
 }
 
 function searchLyrics() {
@@ -119,11 +131,18 @@ function logout_() {
 	user.id = "";
 	localStorage.removeItem("user");
 
-	$(".index-user img").attr("src", "placeholder.jpg");
-	$(".index-user .left p").text("Please sign in.");
-	$(".index-user .bottom-wrapper div:nth-child(1) p:nth-child(1)").text("0");
-	$(".index-user .bottom-wrapper div:nth-child(2) p:nth-child(1)").text("0");
-	$(".index-user .bottom-wrapper div:nth-child(3) p:nth-child(1)").text("0");
-	$(".index-player p").html(`Nothing is playing.`);
-	$(".index-player img").attr("src", "placeholder.jpg");
+	$(".primary-box").addClass("show-login");
+
+	$(".user-image").attr("src", "placeholder.jpg");
+	$(".user-name").text("Please sign in.");
+	$(".user-stats-1").text("0");
+	$(".user-stats-2").text("0");
+	$(".user-stats-3").text("0");
+	$(".player-image").attr("src", "placeholder.jpg");
+	$(".player-image-placeholder").addClass("show");
+	$(".player-text").html(`Nothing is playing`);
+	$(".player-text").removeClass("animate");
+
+	$(".primary-box").off("click"); // clear login btn listener, if not, since they are within the save div, clicking on logout also triggers login listener
+	setTimeout(() => {  initLoginBtn(); }, 500); // delay is due to above comment. if we instantly re-init a listener, it'll be triggered.
 }
