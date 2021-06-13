@@ -1,0 +1,80 @@
+<html>
+	<head>
+		<title>ASPM - Liked Songs</title>
+		<link rel="stylesheet" href="./css/new.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	</head>
+	<body class="">
+
+		<!-- dark mode check -->
+		<script> if (localStorage.darkMode == 1) document.getElementsByTagName("body")[0].classList.add("dark"); </script>
+
+		<!-- site header -->
+		<div class="site-header">
+			<div class="site-header-wrapper max-width-page">
+				<div></div>
+				<a class="site-title" href="/"><span>A Spotify Playlist Manager</span></a>
+
+				<!-- dark mode toggle -->
+				<div class="darkmode-toggle">
+					<div class="icon-wrapper sun no-animation">
+						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 12.75C11.0711 12.75 12.75 11.0711 12.75 9C12.75 6.92893 11.0711 5.25 9 5.25C6.92893 5.25 5.25 6.92893 5.25 9C5.25 11.0711 6.92893 12.75 9 12.75Z" fill="black" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 0.75V2.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15.75V17.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.16504 3.16504L4.23004 4.23004" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.77 13.77L14.835 14.835" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M0.75 9H2.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.75 9H17.25" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.16504 14.835L4.23004 13.77" stroke="black" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.77 4.23004L14.835 3.16504" stroke="black" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					</div>
+					<div class="icon-wrapper moon no-animation">
+						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.7502 9.5925C15.6322 10.8692 15.1531 12.0858 14.3689 13.1001C13.5846 14.1144 12.5278 14.8843 11.3219 15.3199C10.1161 15.7555 8.81116 15.8386 7.55979 15.5596C6.30843 15.2805 5.16242 14.6509 4.25584 13.7443C3.34926 12.8378 2.71962 11.6917 2.4406 10.4404C2.16158 9.18901 2.24471 7.88406 2.68027 6.67822C3.11582 5.47238 3.88579 4.41552 4.90008 3.63131C5.91437 2.8471 7.13102 2.36798 8.40767 2.25C7.66023 3.2612 7.30056 4.50709 7.39407 5.76106C7.48758 7.01503 8.02807 8.19379 8.91722 9.08295C9.80638 9.9721 10.9851 10.5126 12.2391 10.6061C13.4931 10.6996 14.739 10.3399 15.7502 9.5925Z" stroke="black" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- dark mode icon adjustments -->
+		<script>
+			if (localStorage.darkMode == 1) // show appropriate icon 
+				document.getElementsByClassName("moon")[0].classList.add("active");
+			else document.getElementsByClassName("sun")[0].classList.add("active");
+			// no-anim is used to hide the anim on page load, elements are loaded now remove it
+			document.getElementsByClassName("no-animation")[0].classList.remove("no-animation");
+			document.getElementsByClassName("no-animation")[0].classList.remove("no-animation");
+		</script>
+
+		<!-- sticky top -->
+		<div class="sticky-top is-hidden">
+			<div class="max-width-page">
+				<p>Alert</p>
+			</div>
+		</div>
+
+		<!-- page head -->
+		<div class="liked-top-wrapper max-width-page">
+			<p class="page-title">Liked Songs</p>
+			<p class="button btn-export">Export All to Playlist</p>
+		</div>
+
+		<div class="table max-width-page">
+			<div class="row header">
+				<span></span>
+				<span>Track</span>
+				<span>Artist</span>
+				<span>Album</span>
+				<span>Date Added</span>
+			</div>
+			<div class="row is-gone">
+				<span>1</span>
+			  	<span>FreelanceAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCCCCCCC</span>
+			  	<span>Toro y MoiBBBBBBBBBBBBBBBBBBBBBBBBBBB</span>
+			  	<span>Outer Peace</span>
+			  	<span>Jan 28, 2019</span>
+			</div>
+		</div>
+		<div class="table-bottom max-width-page">
+			<svg class="icon-prev" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 17L6 12L11 7" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 17L13 12L18 7" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+			<p class="page-count">1-10 of 100</p>
+			<svg class="icon-next" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 17L18 12L13 7" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 17L11 12L6 7" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+		</div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="./js-php/api.js"></script>
+		<script src="./js-php/base.js"></script>
+		<script src="./js-php/p_liked.js"></script>
+	</body>
+</html>
