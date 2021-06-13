@@ -2,7 +2,6 @@ let userStats = {liked: 0, public_p: 0, private_p: 0}
 let currentTrack = {name: "", artists: "", image: ""};
 
 $(function() {
-	document.getElementsByTagName("body")[0].classList.add("animate");
 	if (isLoggedIn()) myTasks();
 	else {
 		initLoginBtn();

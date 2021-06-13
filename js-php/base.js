@@ -1,4 +1,5 @@
 $(function() {
+	document.getElementsByTagName("body")[0].classList.add("animate");
 	initHeaderButtons();
 
 	readSpotifyCookies();
