@@ -279,8 +279,8 @@ function printTableArtists(items) {
 function initHeaderButtons() {
 	$(".darkmode-toggle").click(() => enableDarkMode(localStorage.darkMode == 0 ? 1 : 0));
 	$(".menu").click(() => $(".site-header").toggleClass('is-expanded'));
-	$(".login").click(() => apiAuthRedirect());
-	$(".user-name").dblclick(() => logout());
+	// $(".login").click(() => apiAuthRedirect());
+	// $(".user-name").dblclick(() => logout());
 }
 
 function enableDarkMode(yes) {
