@@ -145,49 +145,6 @@ function printUser() {
 	$(".user-name").removeClass("is-gone").text(user.name);
 }
 
-function printPlaylists(items) {
-	let list = [];
-	const template = $(".image-item")[0].outerHTML;
-
-	for (let i = 0; i < items.length; i++) {
-		let holder = $($.parseHTML(template));
-		holder.removeClass("is-gone");
-
-		// IMAGE
-		let imgArrLength = items[i]["images"].length;
-		if (imgArrLength > 0)
-			holder.find("img").attr("src", items[i]["images"][imgArrLength > 2 ? 1 : 0]["url"]);
-		else { 
-			holder.find("img").removeAttr("src", "");
-			holder.find("img").addClass("is-hidden");
-		}
-		
-		// NAME
-		let name = items[i]["name"];
-		if (name.length > 30)
-			name = name.substr(0, 30) + "...";
-		holder.find("p span").text(name);
-
-		// IS PRIVATE / PUBLIC
-		if (items[i]["public"])
-			holder.addClass("is-public");
-		else holder.removeClass("is-public");
-
-		list.push(holder);
-	}
-
-	// add empty elements at the of the grid to properly align the last row of tiles
-	for (let i = 0; i < 6; i++) {
-		let holder = $($.parseHTML(template));
-		holder.html("");
-		holder.addClass("is-filler");
-		holder.removeClass("is-gone");
-		list.push(holder);
-	}
-
-	$("main").append(list);
-}
-
 function printTableTracks(items, limit) {
 	let limit_ = limit != 0 ? limit : items.length
 	let list = [];
@@ -377,12 +334,13 @@ function getDateWithComma(str) {
 
 // !important: uses a decluttered tracks items list
 function printTableTracks_(items, limit, offset) {
-	let limit_ = limit != 0 ? limit : items.length
+	limit = limit != null && limit != 0 ? limit : items.length;
+	offset = offset != null && offset != 0 ? offset : 0;
 	let list = [];
 	const template = $(".table .row")[1].outerHTML;
 
-	for (let i = offset; i < offset + limit_; i++) {
-		if (i == items.length) break;
+	for (let i = offset; i < offset + limit; i++) {
+		if (i == offset + limit) break;
 
 		let holder = $($.parseHTML(template));
 		holder.removeClass("is-gone");
@@ -418,6 +376,54 @@ function printTableTracks_(items, limit, offset) {
 
 	$(".table").append(list);
 }
+
+function printPlaylists(items, limit, offset) {
+	limit = limit != null && limit != 0 ? limit : items.length;
+	offset = offset != null && offset != 0 ? offset : 0;
+	let list = [];
+	const template = $(".item")[0].outerHTML;
+
+	for (let i = offset; i < offset + limit; i++) {
+		if (i == offset + limit) break;
+
+		let holder = $($.parseHTML(template));
+		holder.removeClass("is-gone");
+
+		// IMAGE
+		let imgArrLength = items[i].images.length;
+		if (imgArrLength > 0)
+			holder.find(".image").attr("src", items[i].images[imgArrLength > 2 ? 1 : 0].url);
+		else { 
+			holder.find(".image").removeAttr("src", "");
+			holder.find(".image").addClass("is-hidden");
+		}
+		
+		// NAME
+		let name = items[i]["name"];
+		if (name.length > 30)
+			name = name.substr(0, 30) + "...";
+		holder.find(".text").text(name);
+
+		// IS PRIVATE / PUBLIC
+		if (items[i].public)
+			holder.addClass("is-public");
+		else holder.removeClass("is-public");
+
+		list.push(holder);
+	}
+
+	// add empty elements at the of the grid to properly align the last row of tiles
+	for (let i = 0; i < 6; i++) {
+		let holder = $($.parseHTML(template));
+		holder.html("");
+		holder.addClass("is-filler");
+		holder.removeClass("is-gone");
+		list.push(holder);
+	}
+
+	$(".item-list").append(list);
+}
+
 
 // show modal
 function showModal(foo) {

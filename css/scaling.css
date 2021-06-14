@@ -1,3 +1,35 @@
+/*---------------------------------------------------------------------------------------- */
+
+@media only screen and (max-width: 1100px) { /* LARGE */
+
+	.max-width-page { padding: 0 20px; }
+
+	.site-header-wrapper > div:nth-child(1) { display: initial; }
+}
+
+/*---------------------------------------------------------------------------------------- INDEX */
+
+/*---------------------------------------------------------------- MEDIUM */
+
+@media only screen and (max-width: 768px) {
+
+	.index-icons li { flex: 1; min-width: 100px; }
+
+	.index-icons li a {
+		width: 100%;
+		height: 100px;
+		flex-flow: column;
+		justify-content: space-between;
+		align-items: center;
+		border-radius: 4px;
+	}
+
+	.index-icons li a span:nth-child(1) { display: none; }
+	.index-icons li a svg { margin: 10px 10px 0 auto; }
+	.index-icons li a svg { height: 18px; width: 18px; }
+}
+
+/*---------------------------------------------------------------- MEDIUM++ */
 
 @media only screen and (max-width: 900px) {
 
@@ -29,39 +61,18 @@
 	}
 }
 
+/*---------------------------------------------------------------- LARGE */
 
-@media only screen and (max-width: 768px) {
-
-	.index-icons li { flex: 1; min-width: 100px; }
-
-	.index-icons li a {
-		width: 100%;
-		height: 100px;
-		flex-flow: column;
-		justify-content: space-between;
-		align-items: center;
-		border-radius: 4px;
-	}
-
-	.index-icons li a span:nth-child(1) { display: none; }
-	.index-icons li a svg { margin: 10px 10px 0 auto; }
-	.index-icons li a svg { height: 18px; width: 18px; }
-}
-
-@media only screen and (max-width: 1100px) {
-
-	.max-width-page { padding: 0 20px; }
-
-	.site-header-wrapper > div:nth-child(1) { display: initial; }
+@media only screen and (max-width: 1100px) { /* LARGE */
 
 	.index-user .stats p { display: block; text-align: center; }
 	.index-user .stats p:nth-child(2) { margin: 0; }
 }
 
 
-/* table */
+/*---------------------------------------------------------------------------------------- TABLE */
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 600px) { /* SMALl */
 	.modal { margin: 0 26px; }
 
 	.row > span:nth-child(3),
@@ -69,7 +80,15 @@
 	.row > span:nth-child(5) { display: none; }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 768px) {  /* MEDIUM */
 	.row > span:nth-child(4),
 	.row > span:nth-child(5) { display: none; }
+}
+
+/*---------------------------------------------------------------------------------------- OTHER */
+
+@media only screen and (max-width: 560px) { /* SMALl- */
+
+	.item-list.medium .item { background-color:  initial; }
+	.dark .item-list.medium .item { background-color:  initial; }
 }
