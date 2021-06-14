@@ -1,10 +1,13 @@
 $(function() {
 	document.getElementsByTagName("body")[0].classList.add("animate");
+	
 	initHeaderButtons();
 
 	readSpotifyCookies();
 	printUserMaybe();
 	authorizeMaybe();
+
+	initModalDismissListener();
 });
 
 // ---------------------------------------------------------------------------------------- API FUNCTIONS
@@ -414,4 +417,23 @@ function printTableTracks_(items, limit, offset) {
 	}
 
 	$(".table").append(list);
+}
+
+// show modal
+function showModal(foo) {
+	if (foo) {
+		$(".modal-wrapper").removeClass("hide");
+		$(".modal-wrapper").addClass("show");
+	} else {
+		$(".modal-wrapper").removeClass("show");
+		$(".modal-wrapper").addClass("hide");
+	}
+}
+
+function initModalDismissListener() {
+	$(".dismiss-area").click((e) => {
+		if ($(e.target).attr("class") == "dismiss-area") {
+			showModal(false);
+		}
+	});
 }

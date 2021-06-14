@@ -236,5 +236,6 @@
 	border-radius: 2px;
 }
 
+.dark .button { color: #EDEBF4; }
 .button.disabled { color: #343A40; background-color: #E5E5E5;}
 .dark .button.disabled { color: #B3B3B3; background-color: #373D42 }

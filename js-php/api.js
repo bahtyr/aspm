@@ -156,12 +156,12 @@ function apiGetPlaylistTracks(playlistID, url_next) {
 /*
  * Get a playlist's info. Almost a dupe of function above.
  */
-function apiGetPlaylistInfo(playlistID) {
+function apiGetPlaylistInfo(playlistID, limit_) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "GET",
 			url: `https://api.spotify.com/v1/playlists/${playlistID}`,
-			data: {limit: 100, fields: "name,description,images"}, // max 100
+			data: {limit: limit_ == null ? null : limit_, fields: "name,description,images"}, // max 100
 			headers: {"Authorization": "Bearer " + spotify.accessToken},
 			success: (data, textStatus) => resolve(data),
 			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
@@ -210,11 +210,11 @@ function apiUploadPlaylistCover(playlistID, imgBase64) {
 /*
  * Replaces a playlist's cover image.
  */
-function apiUpdatePlaylistInfo(playlistID, name, description) {
+function apiUpdatePlaylistInfo(playlistID, name, description, public_) {
 	let data_;
 	if (description == null || !description.trim())
-		data_ = {name: name}
-	else data_ = {name: name, description: description}
+		data_ = {name: name, public: public_ == null ? true : public_}
+	else data_ = {name: name, description: description, public: public_ == null ? true : public_}
 
 	return new Promise((resolve, reject) => {
 		$.ajax({
