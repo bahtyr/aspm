@@ -309,3 +309,109 @@ function getAnImageFromArray(arr) {
 		return arr[imgArrLength > 2 ? 1 : 0]["url"];
 	else return null;
 }
+
+// ---------------------------------------------------------------------------------------- NEW
+
+// Count requests made and wait if necessary
+let requestCounter = 0;
+async function countRequestsAndWait() {
+	requestCounter++;
+	if (requestCounter % 20)
+		await new Promise((resolve, reject) => setTimeout(() => resolve(), 5000)); 
+}
+
+function updateProgressBar(x, y) {
+	const p = $(".top-progress-bar");
+
+	p.css("width", `${x*100/y}%`);
+
+	if (x >= y) {
+		setTimeout(() => {
+			p.css("transition", "none");
+			p.css("width", "0");
+			setTimeout(() => p.css("transition", ""), 200);
+		}, 1000);
+	}
+}
+
+// A function to only keep essential data from a track items array
+function declutterLibraryTracks(arr, newArr) {
+	for(i in arr) {
+		let temp = {};
+		temp.id = arr[i].track.id;
+		temp.name = arr[i].track.name;
+		temp.artists = [];
+
+		for (y in arr[i].track.artists) {
+			let tempY = {};
+			tempY.id = arr[i].track.artists[y].id;
+			tempY.name = arr[i].track.artists[y].name;
+			temp.artists.push(tempY);
+		}
+
+		temp.album = {images: [{}]};
+		temp.album.id = arr[i].track.album.id;
+		temp.album.name = arr[i].track.album.name;
+
+		let imgArrLength = arr[i].track.album.images.length;
+		if (imgArrLength > 0)
+			temp.album.images[0].url = arr[i].track.album.images[imgArrLength > 2 ? 1 : 0].url;
+		else temp.album.images[0].url = "";
+
+		temp.dateAdded = arr[i].added_at;
+
+		newArr.push(temp);
+	}
+}
+
+// Returns a date in "Jan 21, 2021" format
+function getDateWithComma(str) {
+	let d = new Date(str).toDateString();
+	let s = d.slice(4, 10);
+	if (s.charAt(4) == "0") s = s.slice(0, 4) + s.slice(5);
+	return s + ',' + d.slice(10);
+}
+
+// !important: uses a decluttered tracks items list
+function printTableTracks_(items, limit, offset) {
+	let limit_ = limit != 0 ? limit : items.length
+	let list = [];
+	const template = $(".table .row")[1].outerHTML;
+
+	for (let i = offset; i < offset + limit_; i++) {
+		if (i == items.length) break;
+
+		let holder = $($.parseHTML(template));
+		holder.removeClass("is-gone");
+
+		//
+
+		let name = items[i].name;
+		let artists = "";
+		let album = items[i].album.name;
+		let dateAdded = getDateWithComma(items[i].dateAdded);
+
+		for (y in items[i].artists) {
+			if (y > 0) artists += ", ";
+			artists += items[i].artists[y].name;
+		}
+
+		holder.find("span:nth-child(2)").attr("title", name);
+		holder.find("span:nth-child(3)").attr("title", artists);
+		holder.find("span:nth-child(4)").attr("title", album);
+
+		if (name.length > 50) name = name.substr(0, 50) + "...";
+		if (artists.length > 25) artists = artists.substr(0, 25) + "...";
+		if (album.length > 25) album = album.substr(0, 25) + "...";
+
+		holder.find("span:nth-child(1)").text(i + 1);
+		holder.find("span:nth-child(2)").text(name);
+		holder.find("span:nth-child(3)").text(artists);
+		holder.find("span:nth-child(4)").text(album);
+		holder.find("span:nth-child(5)").text(dateAdded);
+
+		list.push(holder);
+	}
+
+	$(".table").append(list);
+}

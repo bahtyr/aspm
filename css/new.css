@@ -11,6 +11,8 @@ a > * { display: inline-block; }
 
 .is-hidden { visibility: hidden; }
 .is-gone { display: none !important; }
+.disabled,
+.disabled > svg { cursor: default !important; }
 
 .max-width-page { max-width: 1100px; margin: auto; }
 
@@ -285,6 +287,9 @@ body.dark {
 	border-radius: 2px;
 }
 
+.button.disabled { color: #343A40; background-color: #E5E5E5;}
+.dark .button.disabled { color: #B3B3B3; background-color: #373D42 }
+
 /*---------------------------------------------------------------------------------------- TABLE */
 
 .table {
@@ -340,9 +345,10 @@ body.dark {
 .dark .table-bottom svg path { stroke: #B3B3B3; }
 .table-bottom .icon-prev { margin-left: auto; padding-right: 6px; box-sizing: initial; }
 .table-bottom .icon-next { padding-left: 6px; box-sizing: initial; }
-
+/* disabled  */
+.table-bottom.disabled svg path { stroke: #CCCCCC; }
+.dark .table-bottom.disabled svg path { stroke: #343A40; }
 /* hover */
-
 .row:hover:not(.header) { background-color: #F6F6F6; }
 .dark .row:hover:not(.header) { background-color: #272B30; }
 
@@ -366,6 +372,23 @@ body.dark {
 .sticky-top.is-hidden {
 	visibility: initial;
 	top: -36px;
+}
+
+/*---------------------------------------------------------------------------------------- TOP PORGRESS BAR */
+
+.top-progress-bar-wrapper {
+	position: fixed;
+	top: 0;
+	z-index: 11;
+	width: 100%;
+	height: 4px;
+}
+
+.top-progress-bar-wrapper div {
+	height: 100%;
+	width: 0%;
+	background-color: #1971C2;
+	transition: width 1s linear;
 }
 
 /*---------------------------------------------------------------------------------------- DARK MODE TOGGLE */

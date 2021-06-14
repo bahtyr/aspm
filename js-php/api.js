@@ -128,7 +128,7 @@ function apiGetMySavedTracks(url_next, limit_) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "GET",
-			url: url_next != "" ? url_next : `https://api.spotify.com/v1/me/tracks`,
+			url: url_next != null && url_next != "" ? url_next : `https://api.spotify.com/v1/me/tracks`,
 			data: {limit: limit_ == null ? 50 : limit_},
 			headers: {"Authorization": "Bearer " + spotify.accessToken},
 			success: (data, textStatus) => resolve(data),
