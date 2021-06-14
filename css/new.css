@@ -230,8 +230,8 @@
 .button {
 	padding: 6px 18px;
 	font-size: .875rem;
-	color: #EDEBF4;
-	background-color: #47347F;
+	color: #FFFFFF;
+	background-color: var(--accent);
 	cursor: pointer;
 	border-radius: 2px;
 }

@@ -26,6 +26,11 @@ a, p, input {
 	color: #B3B3B3;
 }
 
+body.purple { --accent: #47347F; }
+body.red { --accent: #A93953; }
+body.orange { --accent: #F37335; }
+body.green { --accent: #2A7B60;  }
+
 /* ---------------------------------------------------------------------------------------- */
 
 body.animate,
@@ -250,7 +255,7 @@ body.dark {
 	cursor: pointer;
 	font-weight: 400;
 	font-size: .875rem;
-	color: #47347F;
+	color: var(--accent);
 }
 
 .btn-curved {
@@ -260,10 +265,10 @@ body.dark {
 	font-weight: 400;
 	font-size: .875rem;
 	color: #fff;
-	background-color: #47347F;
+	background-color: var(--accent);
 }
 
-.dark .btn-text { color: #47347F; }
+.dark .btn-text { color: var(--accent); }
 .dark .btn-curved { color: #fff; }
 
 /* spacing */
