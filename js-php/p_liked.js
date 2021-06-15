@@ -102,10 +102,10 @@ function createPlaylist(arr) {
 								isLoading = false;
 	
 								// show dialog
-								$(".modal-playlist-image").attr("src", playlist.image);
-								$(".modal-playlist-name").text(playlist.name);
-								$(".modal-playlist-description").text(playlist.description);
-								$(".modal .description").text(`${tracks.length} songs were added to your newly created playlist.`);
+								$(".modal__playlist-image").attr("src", playlist.image);
+								$(".modal__playlist-name").text(playlist.name);
+								$(".modal__playlist-desc").text(playlist.description);
+								$(".modal__text").text(`${tracks.length} songs were added to your newly created playlist.`);
 
 								showModal(true);
 							}, 1000);						

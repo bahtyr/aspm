@@ -91,91 +91,45 @@ body.animate .sticky-top {
 
 /* main containers */
 
-.modal-wrapper {
+.modal {
 	position: fixed;
 	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	z-index: 1;
 }
 
-.dismiss-area {
+.modal__dismiss-area {
 	width: 100%;
 	height: 100%;
 	background-color: rgb(0,0,0);
-  	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.5);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 }
 
-.modal {  }
-
-.share-playlist-modal {
-	border-radius: 3px;
-	background-color: #fff;
+.modal__box { 
 	display: flex;
 	flex-flow: column wrap;
+	overflow: hidden;
+	border-radius: 3px;
+	background-color: #fff;
+}
+
+.modal__stack {
+	flex-wrap: nowrap;
+	position: relative;
+	transition: all .5s ease-out;
+	justify-content: center;
 	align-items: center;
 }
-
-/* playlist elements */
-
-.modal-playlist-wrapper {
-	display: flex;
-	flex-flow: row;
-	align-items: center;
-	width: 100%;
-	padding: 20px;
-	border-bottom: solid 1px #dee2e6;
-}
-
-.modal-playlist-image {
-	width: 78px;
-	height: 78px;
-	margin-right: 10px;
-}
-
-.modal-playlist-name { font-weight: 600; color: #343A40; }
-.modal-playlist-description { font-size: .875rem; color: #808080; margin-top: 4px; font-weight: 200; }
-.dark .modal-playlist-name { color: #343A40;  }
-.dark .modal-playlist-description { color: #808080; }
-
-.modal .description { color: #343A40; padding: 0 20px; text-align: center; font-weight: 200; }
-.dark .modal .description { color: #343A40; }
-
-/* buttons */
-
-.btn-text {
-	cursor: pointer;
-	font-weight: 400;
-	font-size: .875rem;
-	color: var(--accent);
-}
-
-.btn-curved {
-	cursor: pointer;
-	padding: 8px 30px;
-	border-radius: 27px;
-	font-weight: 400;
-	font-size: .875rem;
-	color: #fff;
-	background-color: var(--accent);
-}
-
-.dark .btn-text { color: var(--accent); }
-.dark .btn-curved { color: #fff; }
-
-/* spacing */
-
-.share-playlist-modal > p:nth-of-type(1) { margin-bottom: 30px; margin-top: 16px; }
-.share-playlist-modal > p:nth-of-type(2) { margin-bottom: 12px; }
-.share-playlist-modal > p:nth-of-type(3) { margin-bottom: 20px; }
 
 /* dismiss text */
 
-.dismiss-text {
+.modal__dismiss-area__text {
 	cursor: default;
 	margin-top: 16px;
 	text-transform: uppercase;
@@ -184,20 +138,20 @@ body.animate .sticky-top {
 	color: #fff;
 }
 
-.dark .dismiss-text { color: #fff; }
+.dark .modal__dismiss-area__text { color: #fff; }
 
 /* ---------------------------------------------------------------------------------------- MODAL ANIMATIONS */
 
 /* set */
-.modal-wrapper { visibility: hidden; opacity: 0; }
-.modal { transform: translateY(30%); }
+.modal { visibility: hidden; opacity: 0; }
+.modal__box { transform: translateY(30%); }
 
 /* show */
-.modal-wrapper.show { visibility: visible; opacity: 1; transition: visibility 0s linear 0s, opacity 300ms; } /*fade in*/
-.modal-wrapper.show .modal { animation: slideUp .5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; } /*slide up*/
+.modal.show { visibility: visible; opacity: 1; transition: visibility 0s linear 0s, opacity 300ms; } /*fade in*/
+.modal.show .modal__box { animation: slideUp .5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; } /*slide up*/
 /* hide */
-.modal-wrapper.hide { visibility: hidden; opacity: 0; transition: visibility 0s linear 300ms, opacity 300ms; } /*fade out*/
-.modal-wrapper.hide .modal { animation: slideDown .5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; } /*slide down*/
+.modal.hide { visibility: hidden; opacity: 0; transition: visibility 0s linear 300ms, opacity 300ms; } /*fade out*/
+.modal.hide .modal__box { animation: slideDown .5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; } /*slide down*/
 
 /* keyframes */
 @keyframes slideUp {
@@ -227,7 +181,6 @@ body.animate .sticky-top {
 	/*font-size: rem;*/
 }
 .dark .row { border-bottom-color: #373D42; }
-
 
 .row.header {
 	font-weight: 500;
@@ -425,7 +378,7 @@ body.animate .sticky-top {
 .dark .item-list.large .item .image-wrapper::before { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); }
 .dark .item-list.medium .item::before { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); }
 
-/* ---------------------------------------------------------------------------------------- IMAGE GRID */
+/* ---------------------------------------------------------------------------------------- BUTTONS */
 
 .button-filled {
 	padding: 6px 18px;
@@ -439,3 +392,23 @@ body.animate .sticky-top {
 .button-filled.disabled { color: #343A40; background-color: #E5E5E5;}
 .dark .button-filled.disabled { color: #B3B3B3; background-color: #373D42 }
 .dark .button-filled { color: #EDEBF4; }
+
+.btn-text {
+	cursor: pointer;
+	font-weight: 400;
+	font-size: .875rem;
+	color: var(--accent);
+}
+
+.btn-curved {
+	cursor: pointer;
+	padding: 8px 30px;
+	border-radius: 27px;
+	font-weight: 400;
+	font-size: .875rem;
+	color: #fff;
+	background-color: var(--accent);
+}
+
+.dark .btn-text { color: var(--accent); }
+.dark .btn-curved { color: #fff; }

@@ -7,7 +7,8 @@ $(function() {
 	printUserMaybe();
 	authorizeMaybe();
 
-	initModalDismissListener();
+	// initModalDismissListener();
+	doModalThings();
 });
 
 // ---------------------------------------------------------------------------------------- API FUNCTIONS
@@ -427,18 +428,54 @@ function printPlaylists(items, limit, offset) {
 // show modal
 function showModal(foo) {
 	if (foo) {
-		$(".modal-wrapper").removeClass("hide");
-		$(".modal-wrapper").addClass("show");
+		$(".modal").removeClass("hide");
+		$(".modal").addClass("show");
 	} else {
-		$(".modal-wrapper").removeClass("show");
-		$(".modal-wrapper").addClass("hide");
+		$(".modal").removeClass("show");
+		$(".modal").addClass("hide");
 	}
 }
 
 function initModalDismissListener() {
-	$(".dismiss-area").click((e) => {
-		if ($(e.target).attr("class") == "dismiss-area") {
+	$(".modal__dismiss-area").click((e) => {
+		if ($(e.target).attr("class") == "modal__dismiss-area") {
 			showModal(false);
+		}
+	});
+}
+
+function doModalThings() {
+	// initModalDismissListener();
+
+	// fix modal height and hide overflow content 
+	$('.modal__box').height($('.modal__stack__one').height());
+	$('.modal__box').width($('.modal__stack__one').width());
+
+	// do transitions
+	let modalStack = 1;
+	$(".modal__dismiss-area").click((e) => {
+		if ($(e.target).attr("class") == "modal__dismiss-area") {
+
+			if (modalStack == 1) { // show two
+				$(".modal__stack__one").addClass('hide');
+				$(".modal__stack__two").addClass('show');
+				$(".modal__stack__one").removeClass('show');
+				$(".modal__stack__two").removeClass('hide');
+
+				$('.modal__box').height($('.modal__stack__two').height());
+				$('.modal__box').width($('.modal__stack__two').width());
+
+			} else if (modalStack == 2) { // show one
+				$(".modal__stack__one").addClass('show');
+				$(".modal__stack__two").addClass('hide');
+				$(".modal__stack__one").removeClass('hide');
+				$(".modal__stack__two").removeClass('show');
+
+				$('.modal__box').height($('.modal__stack__one').height());
+				$('.modal__box').width($('.modal__stack__one').width());
+			}
+
+			modalStack = modalStack == 1 ? 2 : 1;
 		}
 	});
 }

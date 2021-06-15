@@ -41,22 +41,15 @@
 		</script>
 
 		<!-- modal -->
-		<div class="modal-wrapper">
-			<div class="dismiss-area">
+		<div class="modal hide">
+			<div class="modal__dismiss-area">
 				<!-- content -->
-				<div class="modal share-playlist-modal">
-					<!-- playlist preview -->
-					<div class="modal-playlist-wrapper">
-						<img class="modal-playlist-image" src="">
-						<div class=""><p class="modal-playlist-name"></p><p class="modal-playlist-description"></p></div>
-					</div>
-					<!-- desc. / buttons -->
-					<p class="description">Your songs were added to your new playlist.</p>
-					<p class="btn-text btn-private">Make Private</p>
-					<p class="btn-curved btn-share">Share with your friends</p>
+				<div class="modal__box modal__stack">
+					<div class="modal__stack__one show"><p>Hello</p></div>
+					<div class="modal__stack__two hide"><p>World</p></div>
 				</div>
 				<!-- dismiss text -->
-				<p class="dismiss-text">Dismiss</p>
+				<p class="modal__dismiss-area__text">Dismiss</p>
 			</div>
 		</div>
 
@@ -75,11 +68,11 @@
 		<div class="max-width-page">
 			<div class="page-bar">
 				<!-- filters -->
-				<span id="filter-public" class="filter is-active filter-public"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.99984 1.16675C3.77984 1.16675 1.1665 3.78008 1.1665 7.00008C1.1665 10.2201 3.77984 12.8334 6.99984 12.8334C10.2198 12.8334 12.8332 10.2201 12.8332 7.00008C12.8332 3.78008 10.2198 1.16675 6.99984 1.16675ZM2.33317 7.00008C2.33317 6.64425 2.37984 6.29425 2.45567 5.96175L5.244 8.75008V9.33342C5.244 9.97508 5.769 10.5001 6.41067 10.5001V11.6259C4.11817 11.3342 2.33317 9.37425 2.33317 7.00008ZM10.4357 10.1501C10.284 9.67758 9.85234 9.33342 9.32734 9.33342H8.744V7.58342C8.744 7.26258 8.4815 7.00008 8.16067 7.00008H4.66067V5.83342H5.82734C6.14817 5.83342 6.41067 5.57092 6.41067 5.25008V4.08341H7.57734C8.219 4.08341 8.744 3.55841 8.744 2.91675V2.67758C10.4532 3.36591 11.6665 5.04592 11.6665 7.00008C11.6665 8.21342 11.194 9.32175 10.4357 10.1501Z" fill="black"/></svg><span>Public</span></span>
+				<span id="filter-public" class="filter is-active filter-public"><svg width="14" height="14" viewBox="0 0 14 14" fill="black" xmlns="http://www.w3.org/2000/svg"><path d="M6.99984 1.16675C3.77984 1.16675 1.1665 3.78008 1.1665 7.00008C1.1665 10.2201 3.77984 12.8334 6.99984 12.8334C10.2198 12.8334 12.8332 10.2201 12.8332 7.00008C12.8332 3.78008 10.2198 1.16675 6.99984 1.16675ZM2.33317 7.00008C2.33317 6.64425 2.37984 6.29425 2.45567 5.96175L5.244 8.75008V9.33342C5.244 9.97508 5.769 10.5001 6.41067 10.5001V11.6259C4.11817 11.3342 2.33317 9.37425 2.33317 7.00008ZM10.4357 10.1501C10.284 9.67758 9.85234 9.33342 9.32734 9.33342H8.744V7.58342C8.744 7.26258 8.4815 7.00008 8.16067 7.00008H4.66067V5.83342H5.82734C6.14817 5.83342 6.41067 5.57092 6.41067 5.25008V4.08341H7.57734C8.219 4.08341 8.744 3.55841 8.744 2.91675V2.67758C10.4532 3.36591 11.6665 5.04592 11.6665 7.00008C11.6665 8.21342 11.194 9.32175 10.4357 10.1501Z" fill="none"/></svg><span>Public</span></span>
 				<span id="filter-private" class="filter is-active filter-private"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="12px" height="12px"><path d="M0 0h24v24H0z" fill="none"/><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg><span>Private</span></span>
 				<!-- view -->
-				<svg id="filter-large" class="view view-large is-active" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 1H3C2.44772 1 2 1.44772 2 2V10C2 10.5523 2.44772 11 3 11H9C9.55228 11 10 10.5523 10 10V2C10 1.44772 9.55228 1 9 1Z" fill="#C4C4C4"/></svg>
-				<svg id="filter-medium" class="view view-medium" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 1H2C1.44772 1 1 1.44772 1 2V4C1 4.55228 1.44772 5 2 5H10C10.5523 5 11 4.55228 11 4V2C11 1.44772 10.5523 1 10 1Z" fill="#C4C4C4"/><path d="M10 7H2C1.44772 7 1 7.44772 1 8V10C1 10.5523 1.44772 11 2 11H10C10.5523 11 11 10.5523 11 10V8C11 7.44772 10.5523 7 10 7Z" fill="#C4C4C4"/></svg>
+				<svg id="filter-large" class="view view-large is-active" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 1H3C2.44772 1 2 1.44772 2 2V10C2 10.5523 2.44772 11 3 11H9C9.55228 11 10 10.5523 10 10V2C10 1.44772 9.55228 1 9 1Z" fill="black"/></svg>
+				<svg id="filter-medium" class="view view-medium" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 1H2C1.44772 1 1 1.44772 1 2V4C1 4.55228 1.44772 5 2 5H10C10.5523 5 11 4.55228 11 4V2C11 1.44772 10.5523 1 10 1Z" fill="black"/><path d="M10 7H2C1.44772 7 1 7.44772 1 8V10C1 10.5523 1.44772 11 2 11H10C10.5523 11 11 10.5523 11 10V8C11 7.44772 10.5523 7 10 7Z" fill="#C4C4C4"/></svg>
 			</div>
 		</div>
 
