@@ -1,13 +1,4 @@
-/* ---------------------------------------------------------------------------------------- RESET */
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { font-size:100%; }
-html, body { min-height: 100%; height: 100%; }
-ul { list-style: none; padding: 0; margin: 0; }
-a:link, a:visited { text-decoration: none; color: #000; }
-a > * { display: inline-block; }
-
-/* ---------------------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------------------- GENERIC CLASSES */
 
 .is-hidden { visibility: hidden; }
 .is-gone { display: none !important; }
@@ -16,150 +7,7 @@ a > * { display: inline-block; }
 
 .max-width-page { max-width: 1100px; margin: auto; }
 
-/* ---------------------------------------------------------------------------------------- */
-
-a, p, input {
-	color: #343A40;
-}
-
-.dark, .dark a, .dark p, .dark input {
-	color: #B3B3B3;
-}
-
-body.purple { --accent: #47347F; }
-body.red { --accent: #A93953; }
-body.orange { --accent: #F37335; }
-body.green { --accent: #2A7B60;  }
-
-/* ---------------------------------------------------------------------------------------- */
-
-body.animate,
-body.animate .site-header,
-body.animate .sticky-top {
-	transition: all 300ms ease;
-	-o-transition: all 300ms ease;
-  	-ms-transition: all 300ms ease;
-  	-moz-transition: all 300ms ease;
-  	-webkit-transition: all 300ms ease;
-}
-
-/* ---------------------------------------------------------------------------------------- */
-
-body {
-	background-color: #F6F8FA;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	font-weight: lighter;
-}
-
-body > div:last-of-type { margin-bottom: 20px; }
-body:after { content: "\00a0\00a0"; } /* required for iOS Safari */
-
-body.dark {
-	background-color: #212529;
-}
-
-/*---------------------------------------------------------------------------------------- TABLE */
-
-.table {
-	width: 100%;
-	cursor: default;
-}
-
-.row {
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
-	padding: 8px 8px;
-	border-bottom: solid 1px #E6E6E6;
-	font-size: .875rem;
-	/*font-size: rem;*/
-}
-.dark .row { border-bottom-color: #373D42; }
-
-
-.row.header {
-	font-weight: 500;
-	background-color: #F1F1F1;
-	border-radius: 2px;
-}
-.dark .row.header { background-color: #343A40; }
-
-.row span { padding-right: 10px; }
-.row span:nth-child(1) { text-align: right; min-width: 42px; }
-.row span:nth-child(2) { flex: 3; }
-.row span:nth-child(3) { flex: 2; }
-.row span:nth-child(4) { flex: 2; }
-.row span:nth-child(5) { flex: 1; }
-
-/* bottom */
-
-.table-bottom {
-	display: flex;
-	flex-flow: row;
-	width: 100%;
-	font-size: .875rem;
-	cursor: default;
-	padding-right: 20px;
-	align-items: center;
-	margin-top: 20px;
-}
-
-.table-bottom .page-count {
-	font-weight: 500;
-	user-select: none;
-}
-
-.table-bottom svg { margin-top: 1px; cursor: pointer; }
-.dark .table-bottom svg path { stroke: #B3B3B3; }
-.table-bottom .icon-prev { margin-left: auto; padding-right: 6px; box-sizing: initial; }
-.table-bottom .icon-next { padding-left: 6px; box-sizing: initial; }
-/* disabled  */
-.table-bottom.disabled svg path { stroke: #CCCCCC; }
-.dark .table-bottom.disabled svg path { stroke: #343A40; }
-/* hover */
-.row:hover:not(.header) { background-color: #F6F6F6; }
-.dark .row:hover:not(.header) { background-color: #272B30; }
-
-/*---------------------------------------------------------------------------------------- STICKY TOP */
-
-.sticky-top {
-	height: 36px;
-	width: 100%;
-	background-color: #1A1A1A;
-	display: flex;
-	align-items: center;
-	position: fixed;
-	top: 0;
-	z-index: 10;
-}
-
-.sticky-top p {
-	color: #CCCCCC;
-}
-
-.sticky-top.is-hidden {
-	visibility: initial;
-	top: -36px;
-}
-
-/*---------------------------------------------------------------------------------------- TOP PORGRESS BAR */
-
-.top-progress-bar-wrapper {
-	position: fixed;
-	top: 0;
-	z-index: 11;
-	width: 100%;
-	height: 4px;
-}
-
-.top-progress-bar-wrapper div {
-	height: 100%;
-	width: 0%;
-	background-color: #1971C2;
-	transition: width 1s linear;
-}
-
-/*---------------------------------------------------------------------------------------- DARK MODE TOGGLE */
+/* ---------------------------------------------------------------------------------------- DARK MODE TOGGLE */
 /* https://codepen.io/tatimblin/pen/RMjaqb */
 
 .darkmode-toggle {
@@ -185,13 +33,50 @@ body.dark {
 
 .darkmode-toggle .active:last-child { transform: translatey(0); }
 
+/* we use a no animation class to prevent playing an animation when page loads with the saved theme */
 .darkmode-toggle .active.no-animation,
-.darkmode-toggle .icon-wrapper.no-animation {
-	/*transition: none;*/
-	transition-delay: 0;
+.darkmode-toggle .icon-wrapper.no-animation { transition-delay: 0; }
+
+/* ---------------------------------------------------------------------------------------- STICKY TOP */
+
+.sticky-top {
+	height: 36px;
+	width: 100%;
+	background-color: #1A1A1A;
+	display: flex;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	z-index: 10;
 }
 
-/*---------------------------------------------------------------------------------------- MODAL */
+.sticky-top p {
+	color: #CCCCCC;
+}
+
+.sticky-top.is-hidden {
+	visibility: initial;
+	top: -36px;
+}
+
+/* ---------------------------------------------------------------------------------------- TOP PORGRESS BAR */
+
+.top-progress-bar-wrapper {
+	position: fixed;
+	top: 0;
+	z-index: 11;
+	width: 100%;
+	height: 4px;
+}
+
+.top-progress-bar-wrapper div {
+	height: 100%;
+	width: 0%;
+	background-color: #1971C2;
+	transition: width 1s linear;
+}
+
+/* ---------------------------------------------------------------------------------------- MODAL */
 
 /* main containers */
 
@@ -290,7 +175,7 @@ body.dark {
 
 .dark .dismiss-text { color: #fff; }
 
-/*---------------------------------------------------------------------------------------- MODAL ANIMATIONS */
+/* ---------------------------------------------------------------------------------------- MODAL ANIMATIONS */
 
 /* set */
 .modal-wrapper { visibility: hidden; opacity: 0; }
@@ -314,8 +199,71 @@ body.dark {
 	100% { transform: translateY(30%); }
 }
 
+/* ---------------------------------------------------------------------------------------- TABLE */
 
-/*---------------------------------------------------------------------------------------- IMAGE GRID */
+.table {
+	width: 100%;
+	cursor: default;
+}
+
+.row {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	padding: 8px 8px;
+	border-bottom: solid 1px #E6E6E6;
+	font-size: .875rem;
+	/*font-size: rem;*/
+}
+.dark .row { border-bottom-color: #373D42; }
+
+
+.row.header {
+	font-weight: 500;
+	background-color: #F1F1F1;
+	border-radius: 2px;
+}
+.dark .row.header { background-color: #343A40; }
+
+.row span { padding-right: 10px; }
+.row span:nth-child(1) { text-align: right; min-width: 42px; }
+.row span:nth-child(2) { flex: 3; }
+.row span:nth-child(3) { flex: 2; }
+.row span:nth-child(4) { flex: 2; }
+.row span:nth-child(5) { flex: 1; }
+
+/* bottom */
+
+.table-bottom {
+	display: flex;
+	flex-flow: row;
+	width: 100%;
+	font-size: .875rem;
+	cursor: default;
+	padding-right: 20px;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.table-bottom .page-count {
+	font-weight: 500;
+	user-select: none;
+}
+
+.table-bottom svg { margin-top: 1px; cursor: pointer; }
+.dark .table-bottom svg path { stroke: #B3B3B3; }
+.table-bottom .icon-prev { margin-left: auto; padding-right: 6px; box-sizing: initial; }
+.table-bottom .icon-next { padding-left: 6px; box-sizing: initial; }
+/* disabled  */
+.table-bottom.disabled svg path { stroke: #CCCCCC; }
+.dark .table-bottom.disabled svg path { stroke: #343A40; }
+/* hover */
+.row:hover:not(.header) { background-color: #F6F6F6; }
+.dark .row:hover:not(.header) { background-color: #272B30; }
+
+/* ---------------------------------------------------------------------------------------- IMAGE GRID */
+
+/* ---------------------------------------------------------------- LIST */
 
 .item-list {
 	display: flex;
@@ -323,14 +271,14 @@ body.dark {
 	margin-top: 20px;
 }
 
-/* ITEM */
+/* ---------------------------------------------------------------- IMAGE */
 
 .item {
 	vertical-align: top;
 	text-align: left;
 }
 
-/* IMAGE */
+/* ---------------------------------------------------------------- IMAGE */
 
 .item .image-wrapper {
 	width: 78px;
@@ -346,7 +294,7 @@ body.dark {
 	border-radius: 4px;
 }
 
-/* TEXT */
+/* ---------------------------------------------------------------- TEXT (& ICON) */
 
 .item p,
 .item svg {
@@ -370,14 +318,13 @@ body.dark {
 
 .item.is-public svg { display: none; }
 
-/* FILLER  */
+/* ---------------------------------------------------------------- FILLER */
+/*is used so the last elements can have proper scaling */
 
 .item-list .item.is-filler { height: 0 !important; }
 .item-list .item.is-filler .image-wrapper { height: 0 !important; padding: 0 !important; }
 
-/* LIST TYPES */
-
-/*---------------------------------------------------------------- large */
+/* ---------------------------------------------------------------- TYPE: LARGE */
 
 .item-list.large {
 	gap: 20px;
@@ -403,11 +350,7 @@ body.dark {
 
 .item-list.large .item p {  }
 
-/*.item-list.large .item.is-filler { height: 0; }*/
-/*.item-list.large .item.is-filler .image-wrapper { height: 0; padding: 0; }*/
-
-
-/*---------------------------------------------------------------- medium */
+/* ---------------------------------------------------------------- TYPE: MEDIUM */
 
 .item-list.medium {
 	gap: 10px;
@@ -442,7 +385,7 @@ body.dark {
 	background-color: #272B30;
 }
 
-/* HOVER */
+/* ---------------------------------------------------------------- HOVER */
 
 .item:hover { cursor: pointer; }
 
@@ -471,21 +414,23 @@ body.dark {
 .dark .item-list.large .item .image-wrapper::before { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); }
 .dark .item-list.medium .item::before { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); }
 
-/*---------------------------------------------------------------------------------------- PAGE THINGS */
+/* ---------------------------------------------------------------------------------------- PAGE THINGS */
 
 .page-bar {
 	display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  padding: 8px 20px;
-  font-size: .875rem;
+	flex-flow: row nowrap;
+	align-items: center;
+	padding: 8px 20px;
+	font-size: .875rem;
 	font-weight: 500;
-  background-color: #F1F1F1;
-  border-bottom: solid 1px #E6E6E6;
-  border-radius: 2px;
+  	background-color: #F1F1F1;
+  	border-bottom: solid 1px #E6E6E6;
+  	border-radius: 2px;
 }
 
 .dark .page-bar { background-color: #343a40; border-bottom: solid 1px #373D42; }
+
+/* ---------------------------------------------------------------- ITEMS / ICONS */
 
 .page-bar > * {
 	display: inline-block;
@@ -507,6 +452,8 @@ body.dark {
 }
 
 .page-bar .view:nth-of-type(1) { margin-left: auto; }
+
+/* ---------------------------------------------------------------- COLORS */
 
 .filter { color: #CCCCCC; }
 .filter svg { fill: #CCCCCC; }
