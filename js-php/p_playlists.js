@@ -19,7 +19,7 @@ function loadPlaylists() {
 			updateProgressBar(4, 4);
 			playlistsProtected = result;
 			printPlaylistsHandler(result);
-			// listenImagePicker();
+			listenItemClicks();
 			initButtons();
 		})
 		.catch((error) => console.log("err: load playlists"));
@@ -81,5 +81,23 @@ function initButtons() {
 		if ($(".item-list").hasClass("large"))
 			$(".item-list").removeClass("large");
 		else $(".item-list").addClass("large"); 
+	});
+}
+
+function listenItemClicks() {
+	$(".item").click(function() {
+		let i = $(this).index() - 1; // substract template element
+		selection.playlistID = playlists[i].id;
+		selection.playlistIndex = i;
+		selection.itemIndex = i;
+
+		showModal(true);
+
+		$(".modal__playlist-image").attr("src", playlists[selection.playlistIndex].images[0].url);
+		$(".modal__playlist-name").text(playlists[selection.playlistIndex].name);
+
+		$(".modal__pl-edit__image").attr("src", playlists[selection.playlistIndex].images[0].url);
+		$(".modal__pl-edit__name").val(playlists[selection.playlistIndex].name);
+		$(".modal__pl-edit__desc").val(playlists[selection.playlistIndex].description);
 	});
 }

@@ -448,8 +448,13 @@ function doModalThings() {
 	// initModalDismissListener();
 
 	// fix modal height and hide overflow content 
-	$('.modal__box').height($('.modal__stack__one').height());
-	$('.modal__box').width($('.modal__stack__one').width());
+	$('.modal__box').height($('.modal__stack__one').outerHeight());
+	$('.modal__box').width($('.modal__stack__one').outerWidth());
+
+	
+	console.log("init");
+	console.log(`1: w${$('.modal__stack__one').width()} h${$('.modal__stack__one').height()}`);
+	console.log(`2: w${$('.modal__stack__two').width()} h${$('.modal__stack__two').height()}`);
 
 	// do transitions
 	let modalStack = 1;
@@ -462,8 +467,10 @@ function doModalThings() {
 				$(".modal__stack__one").removeClass('show');
 				$(".modal__stack__two").removeClass('hide');
 
-				$('.modal__box').height($('.modal__stack__two').height());
-				$('.modal__box').width($('.modal__stack__two').width());
+				$('.modal__box').height($('.modal__stack__two').outerHeight());
+				$('.modal__box').width($('.modal__stack__two').outerWidth());
+				console.log("aaa");
+
 
 			} else if (modalStack == 2) { // show one
 				$(".modal__stack__one").addClass('show');
@@ -471,11 +478,25 @@ function doModalThings() {
 				$(".modal__stack__one").removeClass('hide');
 				$(".modal__stack__two").removeClass('show');
 
-				$('.modal__box').height($('.modal__stack__one').height());
-				$('.modal__box').width($('.modal__stack__one').width());
+				$('.modal__box').height($('.modal__stack__one').outerHeight());
+				$('.modal__box').width($('.modal__stack__one').outerWidth());
+				console.log("bbb");
 			}
 
 			modalStack = modalStack == 1 ? 2 : 1;
+
+			console.log(`1: w${$('.modal__stack__one').width()} h${$('.modal__stack__one').height()}`);
+			console.log(`2: w${$('.modal__stack__two').width()} h${$('.modal__stack__two').height()}`);
 		}
 	});
+
+
+	$(".modal__pl-edit__toggle").click(function(e) {
+		$(".modal__pl-edit__toggle").toggleClass("is-active");
+	});
+}
+
+function hideDismiss() {
+	// view hidden
+	// boolean off to not work on click
 }

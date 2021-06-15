@@ -406,9 +406,31 @@ body.animate .sticky-top {
 	border-radius: 27px;
 	font-weight: 400;
 	font-size: .875rem;
+	text-align: center;
 	color: #fff;
 	background-color: var(--accent);
 }
 
 .dark .btn-text { color: var(--accent); }
 .dark .btn-curved { color: #fff; }
+
+/* ---------------------------------------------------------------- ICON */
+
+.btn-icon {
+	cursor: pointer;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+
+.btn-icon svg {
+	margin-right: 14px;
+}
+
+.btn-icon svg path { stroke: var(--accent); }
+
+.btn-icon span {
+	color: var(--accent);
+	font-weight: 400;
+	font-size: 1rem;
+}
