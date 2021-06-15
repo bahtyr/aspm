@@ -13,8 +13,10 @@ $(function() {
 });
 
 function loadPlaylists() {
+	updateProgressBar(2.5, 4);
 	apiGetMyPlaylists()
 		.then((result) => {
+			updateProgressBar(4, 4);
 			playlistsProtected = result;
 			printPlaylistsHandler(result);
 			// listenImagePicker();
@@ -51,6 +53,21 @@ function initButtons() {
 		} else if (e.target.id == "filter-public" || e.target.parentElement.id == "filter-public") {
 			filters.public = !filters.public;
 			printPlaylistsHandler(playlistsProtected);
+		}
+
+
+		if (!filters.private && !filters.public) {
+			if (e.target.id == "filter-private" || e.target.parentElement.id == "filter-private") {
+				filters.private = false;
+				filters.public = true;
+				$(".filter-public").addClass("is-active");
+				printPlaylistsHandler(playlistsProtected);
+			} else if (e.target.id == "filter-public" || e.target.parentElement.id == "filter-public") {
+				filters.private = true;
+				filters.public = false;
+				$(".filter-private").addClass("is-active");
+				printPlaylistsHandler(playlistsProtected);
+			}
 		}
 	});
 

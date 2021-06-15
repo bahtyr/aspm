@@ -415,7 +415,6 @@ function printPlaylists(items, limit, offset) {
 	// add empty elements at the of the grid to properly align the last row of tiles
 	for (let i = 0; i < 6; i++) {
 		let holder = $($.parseHTML(template));
-		holder.html("");
 		holder.addClass("is-filler");
 		holder.removeClass("is-gone");
 		list.push(holder);
