@@ -370,6 +370,11 @@ body.dark {
 
 .item.is-public svg { display: none; }
 
+/* FILLER  */
+
+.item-list .item.is-filler { height: 0 !important; }
+.item-list .item.is-filler .image-wrapper { height: 0 !important; padding: 0 !important; }
+
 /* LIST TYPES */
 
 /*---------------------------------------------------------------- large */
@@ -398,8 +403,8 @@ body.dark {
 
 .item-list.large .item p {  }
 
-.item-list.large .item.is-filler { height: 0; }
-.item-list.large .item.is-filler .image-wrapper { height: 0; padding: 0; }
+/*.item-list.large .item.is-filler { height: 0; }*/
+/*.item-list.large .item.is-filler .image-wrapper { height: 0; padding: 0; }*/
 
 
 /*---------------------------------------------------------------- medium */
