@@ -181,9 +181,9 @@
 
 .index-player .placeholder:not(.show) { display: none; }
 
-/* ---------------------------------------------------------------------------------------- LIKED */
+/* ---------------------------------------------------------------------------------------- PAGE TOP */
 
-.liked-top-wrapper {
+.page-top-wrapper {
 	width: 100%;
 	display: flex;
 	flex-flow: row;
@@ -197,15 +197,63 @@
 	font-weight: 500;
 }
 
-.button {
-	padding: 6px 18px;
+/* ---------------------------------------------------------------------------------------- PAGE BAR */
+
+.page-bar {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	padding: 8px 20px;
 	font-size: .875rem;
-	color: #FFFFFF;
-	background-color: var(--accent);
-	cursor: pointer;
-	border-radius: 2px;
+	font-weight: 500;
+  	background-color: #F1F1F1;
+  	border-bottom: solid 1px #E6E6E6;
+  	border-radius: 2px;
 }
 
-.dark .button { color: #EDEBF4; }
-.button.disabled { color: #343A40; background-color: #E5E5E5;}
-.dark .button.disabled { color: #B3B3B3; background-color: #373D42 }
+.dark .page-bar { background-color: #343a40; border-bottom: solid 1px #373D42; }
+
+/* ---------------------------------------------------------------- ITEMS / ICONS */
+
+.page-bar > * {
+	display: inline-block;
+    vertical-align: middle;
+}
+
+.page-bar svg { margin-right: 4px; }
+
+.page-bar .filter {
+	cursor: pointer;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	margin-right: 16px;
+}
+
+.page-bar .view { 
+	cursor: pointer;
+}
+
+.page-bar .view:nth-of-type(1) { margin-left: auto; }
+
+/* ---------------------------------------------------------------- COLORS */
+
+.filter { color: #CCCCCC; }
+.filter svg { fill: #CCCCCC; }
+.filter-public svg path { fill: #CCCCCC; }
+.is-active.filter { color: #808080; }
+.is-active.filter svg { fill: #808080; }
+.is-active.filter-public svg path { fill: #808080; }
+
+.view path { fill: #CCCCCC; }
+.is-active.view path { fill: #808080; }
+
+.dark .filter { color: #808080; }
+.dark .filter svg { fill: #808080; }
+.dark .filter-public svg path { fill: #808080; }
+.dark .is-active.filter { color: #CCCCCC; }
+.dark .is-active.filter svg { fill: #CCCCCC; }
+.dark .is-active.filter-public svg path { fill: #CCCCCC; }
+
+.dark .view path { fill: #808080; }
+.dark .is-active.view path { fill: #CCCCCC; }

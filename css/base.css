@@ -7,7 +7,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 a:link, a:visited { text-decoration: none; color: #000; }
 a > * { display: inline-block; }
 
-/* ---------------------------------------------------------------------------------------- TEXT */
+/* ---------------------------------------------------------------------------------------- TEXT & COLORS */
 
 a, p, input {
 	color: #343A40;
@@ -17,24 +17,14 @@ a, p, input {
 	color: #B3B3B3;
 }
 
+/* ACCENT COLORS */
+
 body.purple { --accent: #47347F; }
 body.red { --accent: #A93953; }
 body.orange { --accent: #F37335; }
 body.green { --accent: #2A7B60;  }
 
-/* ---------------------------------------------------------------------------------------- */
-
-body.animate,
-body.animate .site-header,
-body.animate .sticky-top {
-	transition: all 300ms ease;
-	-o-transition: all 300ms ease;
-  	-ms-transition: all 300ms ease;
-  	-moz-transition: all 300ms ease;
-  	-webkit-transition: all 300ms ease;
-}
-
-/* ---------------------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------------------- BODY */
 
 body {
 	background-color: #F6F8FA;

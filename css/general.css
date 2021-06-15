@@ -37,6 +37,17 @@
 .darkmode-toggle .active.no-animation,
 .darkmode-toggle .icon-wrapper.no-animation { transition-delay: 0; }
 
+/* we enable dark mode color transition after page is fully loaded, therefore initial color change is not animated and instant */
+body.animate,
+body.animate .site-header,
+body.animate .sticky-top {
+	transition: all 300ms ease;
+	-o-transition: all 300ms ease;
+  -ms-transition: all 300ms ease;
+  -moz-transition: all 300ms ease;
+  -webkit-transition: all 300ms ease;
+}
+
 /* ---------------------------------------------------------------------------------------- STICKY TOP */
 
 .sticky-top {
@@ -414,63 +425,17 @@
 .dark .item-list.large .item .image-wrapper::before { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); }
 .dark .item-list.medium .item::before { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); }
 
-/* ---------------------------------------------------------------------------------------- PAGE THINGS */
+/* ---------------------------------------------------------------------------------------- IMAGE GRID */
 
-.page-bar {
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
-	padding: 8px 20px;
+.button-filled {
+	padding: 6px 18px;
 	font-size: .875rem;
-	font-weight: 500;
-  	background-color: #F1F1F1;
-  	border-bottom: solid 1px #E6E6E6;
-  	border-radius: 2px;
-}
-
-.dark .page-bar { background-color: #343a40; border-bottom: solid 1px #373D42; }
-
-/* ---------------------------------------------------------------- ITEMS / ICONS */
-
-.page-bar > * {
-	display: inline-block;
-    vertical-align: middle;
-}
-
-.page-bar svg { margin-right: 4px; }
-
-.page-bar .filter {
+	color: #FFFFFF;
+	background-color: var(--accent);
 	cursor: pointer;
-	display: flex;
-	flex-flow: row;
-	align-items: center;
-	margin-right: 16px;
+	border-radius: 2px;
 }
 
-.page-bar .view { 
-	cursor: pointer;
-}
-
-.page-bar .view:nth-of-type(1) { margin-left: auto; }
-
-/* ---------------------------------------------------------------- COLORS */
-
-.filter { color: #CCCCCC; }
-.filter svg { fill: #CCCCCC; }
-.filter-public svg path { fill: #CCCCCC; }
-.is-active.filter { color: #808080; }
-.is-active.filter svg { fill: #808080; }
-.is-active.filter-public svg path { fill: #808080; }
-
-.view path { fill: #CCCCCC; }
-.is-active.view path { fill: #808080; }
-
-.dark .filter { color: #808080; }
-.dark .filter svg { fill: #808080; }
-.dark .filter-public svg path { fill: #808080; }
-.dark .is-active.filter { color: #CCCCCC; }
-.dark .is-active.filter svg { fill: #CCCCCC; }
-.dark .is-active.filter-public svg path { fill: #CCCCCC; }
-
-.dark .view path { fill: #808080; }
-.dark .is-active.view path { fill: #CCCCCC; }
+.button-filled.disabled { color: #343A40; background-color: #E5E5E5;}
+.dark .button-filled.disabled { color: #B3B3B3; background-color: #373D42 }
+.dark .button-filled { color: #EDEBF4; }
