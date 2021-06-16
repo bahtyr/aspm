@@ -40,6 +40,13 @@
 			document.getElementsByClassName("no-animation")[0].classList.remove("no-animation");
 		</script>
 
+		<!-- sticky top -->
+		<div class="sticky-top is-hidden">
+			<div class="max-width-page">
+				<p>Alert</p>
+			</div>
+		</div>
+
 		<!-- modal -->
 		<div class="modal hide">
 			<div class="modal__dismiss-area">
@@ -71,7 +78,7 @@
 						<!-- playlist preview -->
 						<div class="modal__pl-edit__top">
 							<img class="modal__pl-edit__image" src="">
-							<p class="modal__pl-edit__upload-text">Repalce</p>
+							<p class="modal__pl-edit__upload-text">Replace</p>
 						</div>
 						<input type="text" class="modal__pl-edit__name" placeholder="Playlist Name">
 						<textarea class="modal__pl-edit__desc" placeholder="Playlist Description" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
@@ -121,6 +128,10 @@
 				<p><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="12px" height="12px"><path d="M0 0h24v24H0z" fill="none"/><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg><span class="text"></span></p>
 			</div>
 		</div>
+
+
+		<!-- iamge file picker -->
+		<input id="input__image-picker" type="file" accept="image/*" class="is-gone">
 
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="./js-php/api.js"></script>

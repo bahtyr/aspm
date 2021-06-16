@@ -7,8 +7,7 @@ $(function() {
 	printUserMaybe();
 	authorizeMaybe();
 
-	// initModalDismissListener();
-	doModalThings();
+	initBaseModalActions();
 });
 
 // ---------------------------------------------------------------------------------------- API FUNCTIONS
@@ -424,6 +423,7 @@ function printPlaylists(items, limit, offset) {
 	$(".item-list").append(list);
 }
 
+// ---------------------------------------------------------------------------------------- MODAL
 
 // show modal
 function showModal(foo) {
@@ -436,67 +436,47 @@ function showModal(foo) {
 	}
 }
 
-function initModalDismissListener() {
+let dismissAction;
+function initBaseModalActions() {
 	$(".modal__dismiss-area").click((e) => {
 		if ($(e.target).attr("class") == "modal__dismiss-area") {
-			showModal(false);
-		}
-	});
-}
-
-function doModalThings() {
-	// initModalDismissListener();
-
-	// fix modal height and hide overflow content 
-	$('.modal__box').height($('.modal__stack__one').outerHeight());
-	$('.modal__box').width($('.modal__stack__one').outerWidth());
-
-	
-	console.log("init");
-	console.log(`1: w${$('.modal__stack__one').width()} h${$('.modal__stack__one').height()}`);
-	console.log(`2: w${$('.modal__stack__two').width()} h${$('.modal__stack__two').height()}`);
-
-	// do transitions
-	let modalStack = 1;
-	$(".modal__dismiss-area").click((e) => {
-		if ($(e.target).attr("class") == "modal__dismiss-area") {
-
-			if (modalStack == 1) { // show two
-				$(".modal__stack__one").addClass('hide');
-				$(".modal__stack__two").addClass('show');
-				$(".modal__stack__one").removeClass('show');
-				$(".modal__stack__two").removeClass('hide');
-
-				$('.modal__box').height($('.modal__stack__two').outerHeight());
-				$('.modal__box').width($('.modal__stack__two').outerWidth());
-				console.log("aaa");
-
-
-			} else if (modalStack == 2) { // show one
-				$(".modal__stack__one").addClass('show');
-				$(".modal__stack__two").addClass('hide');
-				$(".modal__stack__one").removeClass('hide');
-				$(".modal__stack__two").removeClass('show');
-
-				$('.modal__box').height($('.modal__stack__one').outerHeight());
-				$('.modal__box').width($('.modal__stack__one').outerWidth());
-				console.log("bbb");
-			}
-
-			modalStack = modalStack == 1 ? 2 : 1;
-
-			console.log(`1: w${$('.modal__stack__one').width()} h${$('.modal__stack__one').height()}`);
-			console.log(`2: w${$('.modal__stack__two').width()} h${$('.modal__stack__two').height()}`);
+			if (dismissAction != null && dismissAction instanceof Function) {
+				dismissAction();
+			} else showModal(false);
 		}
 	});
 
-
-	$(".modal__pl-edit__toggle").click(function(e) {
-		$(".modal__pl-edit__toggle").toggleClass("is-active");
-	});
+	// set stack 1's height / width to the main modal, it doesn't wrap it properly
+	// modal's h/w will be changed on changeModalStack again
+	if ($(".modal__box").hasClass("modal__stack")) {
+		$('.modal__box').height($('.modal__stack__one').outerHeight());
+		$('.modal__box').width($('.modal__stack__one').outerWidth());	
+	}
 }
 
-function hideDismiss() {
-	// view hidden
-	// boolean off to not work on click
+function disableModalDismiss(disable, hideText, fn) {
+
+	if (hideText != null && hideText)
+		$(".modal__dismiss-area__text").css("visibility", "hidden");
+	else $(".modal__dismiss-area__text").css("visibility", "visible");
+
+	if (fn != null) {
+		if (fn instanceof Function)
+			dismissAction = fn;
+	} else if (disable != null && disable) {
+		dismissAction = function() {};
+	} else if (disable != null && !disable) {
+		dismissAction = null;
+	}
+}
+
+// send selector strings
+function changeModalStack(from, to) {
+	$(from).addClass('hide');
+	$(from).removeClass('show');
+	$(to).addClass('show');
+	$(to).removeClass('hide');
+
+	$('.modal__box').height($(to).outerHeight());
+	$('.modal__box').width($(to).outerWidth());
 }
