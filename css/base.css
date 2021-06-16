@@ -21,7 +21,7 @@ a, p, input {
 
 body.purple { --accent: #47347F; }
 body.red { --accent: #A93953; }
-body.orange { --accent: #F37335; }
+body.orange { --accent: #F37335; --accent-lighter: #FFDBC8; }
 body.green { --accent: #2A7B60;  }
 
 /* ---------------------------------------------------------------------------------------- BODY */

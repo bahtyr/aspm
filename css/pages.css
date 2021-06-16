@@ -190,12 +190,14 @@
 	justify-content: space-between;
 	margin-top: 30px;
 	margin-bottom: 30px;
+	user-select: none;
 }
 
 .page-title {
 	font-size: 1.375rem;
 	font-weight: 500;
 }
+
 
 /* ---------------------------------------------------------------------------------------- PAGE BAR */
 
@@ -257,6 +259,81 @@
 
 .dark .view path { fill: #808080; }
 .dark .is-active.view path { fill: #CCCCCC; }
+
+/* ---------------------------------------------------------------------------------------- TOP ARTIST / TRACKS */
+
+.page-title__p-top {
+	font-size: 1.375rem;
+	font-weight: 300;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: flex-end;
+	white-space: pre;
+}
+
+.page-title__p-top__bold {
+	font-weight: 500;
+}
+
+.page-title__p-top svg {
+	margin-left: 4px;
+	margin-bottom: 0.188rem;
+}
+
+.page-title__p-top svg path { stroke: #343A40; }
+.dark .page-title__p-top svg path { stroke: #B3B3B3; }
+
+/* ---------------------------------------------------------------------------------------- TAB */
+
+.tab {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+
+.tab__item {
+	font-size: .875rem;
+	cursor: pointer;
+	text-align: center;
+	padding: 6px 14px;
+}
+
+.tab__item.is-active {
+	font-weight: 400;
+	background-color: var(--accent-lighter);
+	color: var(--accent);
+	border-radius: 2rem;
+}
+
+/* ---------------------------------------------------------------------------------------- MODALS */
+
+.swap-text {
+	cursor: pointer;
+	height: 2rem;
+	overflow: hidden;
+	user-select: none;
+}
+
+.swap-text__wrapper {
+	margin-left: 6px;
+	display: flex;
+	flex-flow: column wrap;
+}
+
+.swap-text__wrapper > * {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-end;
+}
+
+
+.swap-text__wrapper.show { animation: down .5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+.swap-text__wrapper.hide { animation: up .5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+
+/* keyframes */
+@keyframes down { 	0% { transform: translateY(0%); 	} 100% { transform: translateY(50%);	} } 
+@keyframes up	{ 	0% { transform: translateY(50%); 	} 100% { transform: translateY(0%); 	} }
+
 
 /* ---------------------------------------------------------------------------------------- MODALS */
 

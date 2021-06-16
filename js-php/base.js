@@ -377,6 +377,35 @@ function printTableTracks_(items, limit, offset) {
 	$(".table").append(list);
 }
 
+function printTableArtists_(items, limit, offset) {
+	limit = limit != null && limit != 0 ? limit : items.length;
+	offset = offset != null && offset != 0 ? offset : 0;
+	let list = [];
+	const template = $(".table .row")[1].outerHTML;
+
+	for (let i = offset; i < offset + limit; i++) {
+		if (i == offset + limit) break;
+
+		let holder = $($.parseHTML(template));
+		holder.removeClass("is-gone");
+
+		let name = items[i].name;
+
+		holder.find("span:nth-child(2)").attr("title", name);
+
+		if (name.length > 50) name = name.substr(0, 50) + "...";
+
+		holder.find("span:nth-child(1)").text(i + 1);
+		holder.find("span:nth-child(2)").text(name);
+		holder.find("span:nth-child(3)").text("");
+		holder.find("span:nth-child(4)").text("");
+
+		list.push(holder);
+	}
+
+	$(".table").append(list);
+}
+
 function printPlaylists(items, limit, offset) {
 	limit = limit != null && limit != 0 ? limit : items.length;
 	offset = offset != null && offset != 0 ? offset : 0;

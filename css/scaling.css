@@ -72,7 +72,7 @@
 
 /* ---------------------------------------------------------------------------------------- TABLE */
 
-@media only screen and (max-width: 600px) { /* SMALl */
+@media only screen and (max-width: 600px) { /* SMALL */
 
 	.row > span:nth-child(3),
 	.row > span:nth-child(4),
@@ -90,4 +90,25 @@
 
 	.item-list.medium .item { background-color:  initial; }
 	.dark .item-list.medium .item { background-color:  initial; }
+}
+
+/*   */
+
+@media only screen and (max-width: 600px) { /* SMALL */
+
+	.page-top-wrapper__p-top {
+		flex-wrap: wrap;
+	}
+	.page-top-wrapper__p-top .left { order: 1; }
+	.page-top-wrapper__p-top .right { order: 2; }
+	.page-top-wrapper__p-top .middle {
+		order: 3;
+		width: 100%;
+		margin-top: 30px;
+		/*justify-content: space-around;*/
+	}
+
+	.page-top-wrapper__p-top .tab__item {
+		flex: 1;
+	}
 }
