@@ -73,7 +73,6 @@
 /* ---------------------------------------------------------------------------------------- TABLE */
 
 @media only screen and (max-width: 600px) { /* SMALl */
-	.modal { margin: 0 26px; }
 
 	.row > span:nth-child(3),
 	.row > span:nth-child(4),
