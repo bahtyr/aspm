@@ -52,19 +52,11 @@ function apiGetTokens(request) {
 function apiGetMe() {
 	return new Promise((resolve, reject) => {
 		$.ajax({
-			method: "GET",
-			url: "./js-php/requests.php",
-			data: { request: "get_current_user", access_token: spotify.accessToken},
-			dataType: "json",
-			success: function(data, status) {
-				if (data["status"] == 200) {
-					resolve(data);
-				} else {
-					reject(data);
-				}
-			},
-			error: (jqXHR, textStatus, errorThrown) => 
-				reject("PHP Request Failed. " + textStatus)
+			type: "GET",
+			url: `https://api.spotify.com/v1/me`,
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, textStatus) => resolve(data),
+			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
 		});
 	});
 }
@@ -122,6 +114,22 @@ function apiGetMyPlaylists() {
 }
 
 /*
+ * Get public playlists of a user.
+ */
+function apiGetUserPlaylists(userID) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			type: "GET",
+			url: `https://api.spotify.com/v1/users/${userID}/playlists`,
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			data: {limit: 25},
+			success: (data, textStatus) => resolve(data),
+			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
+		});
+	});
+}
+
+/*
  * Get current user's liked / saved tracks.
  */
 function apiGetMySavedTracks(url_next, limit_) {
@@ -145,7 +153,7 @@ function apiGetPlaylistTracks(playlistID, url_next) {
 		$.ajax({
 			type: "GET",
 			url: url_next != "" ? url_next : `https://api.spotify.com/v1/playlists/${playlistID}/tracks`,
-			data: {limit: 100, fields: "total,limit,next,items(track(uri,id,name,artists(id,name),album(id,name,images)))"}, // max 100
+			data: {limit: 100, fields: "total,limit,next,items(added_at,track(uri,id,name,artists(id,name),album(id,name,images)))"}, // max 100
 			headers: {"Authorization": "Bearer " + spotify.accessToken},
 			success: (data, textStatus) => resolve(data),
 			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
@@ -156,12 +164,12 @@ function apiGetPlaylistTracks(playlistID, url_next) {
 /*
  * Get a playlist's info. Almost a dupe of function above.
  */
-function apiGetPlaylistInfo(playlistID, limit_) {
+function apiGetPlaylistInfo(playlistID) {
 	return new Promise((resolve, reject) => {
 		$.ajax({
 			type: "GET",
 			url: `https://api.spotify.com/v1/playlists/${playlistID}`,
-			data: {limit: limit_ == null ? null : limit_, fields: "name,description,images"}, // max 100
+			data: {fields: "name,description,images,owner(display_name,id)"}, // max 100
 			headers: {"Authorization": "Bearer " + spotify.accessToken},
 			success: (data, textStatus) => resolve(data),
 			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
