@@ -539,3 +539,67 @@
 @keyframes shiftDownFromTop { 	0% { transform: translateY(-30%); 	} 100% { transform: translateY(0%); 	} }								/*one show*/
 @keyframes shiftDown { 			0% { transform: translateY(0%); 	} 99% { transform: translateY(30%);		} 100% { visibility: hidden; } }/*two hide*/
 @keyframes shiftUpFromBottom { 	0% { transform: translateY(30%); 	} 100% { transform: translateY(0%); 	} } 							/*two show */
+
+/* ---------------------------------------------------------------------------------------- PAGE AUTOMATION */
+
+.p-auto__player {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+}
+
+.p-auto__player__image {
+	margin-left: 20px;
+	margin-right: 10px;
+	border-radius: 100%;
+	background-color: #C4C4C4;
+	height: 44px;
+	width: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.p-auto__player__image2 {
+	margin-left: 40px;
+	margin-right: 10px;
+	border-radius: 4px;
+	background-color: #C4C4C4;
+	height: 44px;
+	width: 44px;
+}
+
+.p-auto__player__image img { border-radius: 100%; }
+.p-auto__player__image2 img { border-radius: 4px; }
+
+.p-auto__player img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+
+
+/* ---------------------------------------------------------------- ITEM ADD */
+
+.p-auto__item-add .image-wrapper {
+	background: initial;
+	background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23B3B3B3' stroke-width='4' stroke-dasharray='12%2c 22' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+}
+
+.p-auto__item-add svg {
+	position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+}
+
+/* disable hover shadow */
+.item-list.large .item.p-auto__item-add:hover .image-wrapper::before { opacity: 0; }
+
+.modal__p-auto {
+	display: block;
+	overflow: auto;
+	border-radius: 0;
+}

@@ -16,6 +16,10 @@ $(function() {
 // 4. printer user stats
 // 5. get current playing
 function myTasks() {
+	apiGetMe().then((data) => {
+			saveUser(data);
+			printUser_();
+		});
 	printUser_();
 	getSaved();
 	initButtons();
@@ -101,7 +105,7 @@ function initLoginBtn() {
 
 function printUser_() {
 	$(".primary-box").removeClass("show-login");
-	$(".user-image").attr("src", user.image);
+	$(".user-image").attr("src", user.image == null ? "placeholder.jpg" : user.image);
 	$(".user-name").text(user.name);
 }
 
