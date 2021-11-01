@@ -100,10 +100,9 @@ function saveSpotifyAuthData(code, accessToken, refreshToken) {
 }
 
 function saveUser(data) {
-	const content = JSON.parse(data["content"]);
-	user.name = content["display_name"];
-	user.image = content["images"][0]["url"];
-	user.id = content["id"];
+	user.name = data["display_name"];
+	user.image = getAnImageFromArray(data["images"]);
+	user.id = data["id"];
 
 	localStorage.setItem("user", JSON.stringify(user));
 }
@@ -406,7 +405,7 @@ function printTableArtists_(items, limit, offset) {
 	$(".table").append(list);
 }
 
-function printPlaylists(items, limit, offset) {
+function printPlaylists(items, limit, offset, elementID) {
 	limit = limit != null && limit != 0 ? limit : items.length;
 	offset = offset != null && offset != 0 ? offset : 0;
 	let list = [];
@@ -449,7 +448,7 @@ function printPlaylists(items, limit, offset) {
 		list.push(holder);
 	}
 
-	$(".item-list").append(list);
+	$(elementID != null ? elementID : ".item-list").append(list);
 }
 
 // ---------------------------------------------------------------------------------------- MODAL
