@@ -176,6 +176,27 @@ body.dark .modal.full-page .modal__box { background-color: #212529; }
 	100% { transform: translateY(30%); }
 }
 
+/* ---------------------------------------------------------------- MODAL STACKS ANIMATIONS */
+
+.modal__stack__one,
+.modal__stack__two { transition: all .5s ease-out; }
+.modal__stack__two { transform: translateY(30%); }
+
+.modal__stack .show { opacity: 1; z-index: 10; }
+.modal__stack .hide { opacity: 0; z-index: 9; }
+
+.modal__stack__one.show { animation: shiftDownFromTop .5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+.modal__stack__one.hide { animation: shiftUp .5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+
+.modal__stack__two.show { animation: shiftUpFromBottom .5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+.modal__stack__two.hide { animation: shiftDown .5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+
+/* keyframes */
+@keyframes shiftUp { 			0% { transform: translateY(0%); 	} 99% { transform: translateY(-30%);	} 100% { visibility: hidden; } }/*one hide*/
+@keyframes shiftDownFromTop { 	0% { transform: translateY(-30%); 	} 100% { transform: translateY(0%); 	} }								/*one show*/
+@keyframes shiftDown { 			0% { transform: translateY(0%); 	} 99% { transform: translateY(30%);		} 100% { visibility: hidden; } }/*two hide*/
+@keyframes shiftUpFromBottom { 	0% { transform: translateY(30%); 	} 100% { transform: translateY(0%); 	} } 							/*two show */
+
 /* ---------------------------------------------------------------------------------------- TABLE */
 
 .table {
@@ -361,17 +382,121 @@ body.dark .modal.full-page .modal__box { background-color: #212529; }
 	background-color: #272B30;
 }
 
+
+/* ---------------------------------------------------------------- TYPE: MULTI */
+
+.item-list.multi {
+	gap: 20px;
+}
+
+.item-list.multi .item {
+  flex: 1;
+}
+
+.item-list.multi .item .wrapper {
+  position: relative;
+	display: flex;
+	flex-flow: row;
+	vertical-align: middle;
+	align-items: center;
+	
+	padding: 12px 0 12px 12px;
+	margin-bottom: 8px;
+  border-radius: 4px;
+  background-color: #F1F1F1;
+}
+
+.dark .item-list.multi .item .wrapper { color: #B3B3B3; background-color: #272B30; }
+
+.item-list.multi .item .image-wrapper { 
+	flex: 1;
+}
+.item-list.multi .item .image-wrapper { margin-left: 6px; }
+.item-list.multi .item .image-wrapper:nth-child(1) { margin-left: 0; }
+.item-list.multi .item .image-wrapper.is-active { outline: 2px solid var(--accent); }
+
+.item-list.multi .item img { }
+
+.item-list.multi .item p { margin-left: 8px; }
+
+/* ---------------------------------------------------------------- */
+
+.item-list.multi .like-btn-wrapper { min-width: 60px; }
+.item-list.multi .like-btn-wrapper svg { display: block; margin: auto; }
+.item-list.multi .like-btn-wrapper svg:nth-child(1) { margin-bottom: 20px; }
+
+
+.item-list.multi .like-btn-wrapper svg path { transition: all 300ms ease; }
+.item-list.multi .like-btn-wrapper svg.positive:hover path { fill: #267D68; }
+.item-list.multi .like-btn-wrapper svg.negative:hover path { fill: #D65757; }
+
+
+/* ---------------------------------------------------------------- */
+/* multi single image item, could have change the list css to handle multiple types of sizes */
+/* however it would make writing more complicated, since this will probably be the only instance where this is needed */
+/* making a multi+single item type will be simpler */
+
+/* ---------------------------------------------------------------- TYPE: MULTI + SINGLE */
+
+
+.item-list.multi .item.single .item { 
+	flex: 1;
+	width: 100%;
+	height: 102px;
+	min-width: 140px;
+}
+
+.item-list.multi .item.single .wrapper {
+
+}
+
+.item-list.multi .item.single .image-wrapper { 
+	width: 100%;
+	height: 102px;
+	/*min-width: 140px;*/
+	min-width: 102px;
+	padding-top: 102px;
+	margin-bottom: 8px;
+	position: relative;
+}
+
+.item-list.multi .item.single img { 
+	position: absolute;
+	height: 102px;
+	top: 0; left: 0; bottom: 0; right: 0;
+}
+
+
+/* -------- just remove multi styles */
+.item-list.multi .item.single .wrapper {
+  display: initial;
+  position: initial;
+
+	padding: 0;
+  border-radius: 0;
+  background-color: initial;
+}
+.item-list.multi .item.single .image-wrapper { flex: initial; }
+.item-list.multi .item.single .image-wrapper.is-active { outline: initial; }
+.item-list.multi .item.single p { margin-left: initial; }
+.item-list.multi .item.single .like-btn-wrapper { display: none; }
+.dark .item-list.multi .item.single .wrapper { color: initial; background-color: initial; }
+
 /* ---------------------------------------------------------------- HOVER */
 
 .item:hover { cursor: pointer; }
 
 /* opacity */
 .item-list.large .item:hover .image-wrapper::before,
-.item-list.medium .item:hover::before { opacity: 1; }
+.item-list.medium .item:hover::before,
+.item-list.multi :not(.single).item:hover .wrapper::before,
+.item-list.multi .item.single:hover .image-wrapper::before { opacity: 1; }
 
 /* define shadow */
 .item-list.large .item .image-wrapper::before,
-.item-list.medium .item::before {
+.item-list.medium .item::before,
+.item-list.multi :not(.single).item .wrapper::before,
+.item-list.multi .item.single .image-wrapper::before {
 	content: '';
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
@@ -384,11 +509,14 @@ body.dark .modal.full-page .modal__box { background-color: #212529; }
 }
 
 /* use lighter shadow on medium */
-.item-list.medium .item::before { box-shadow: 0 2px 10px rgba(33, 33, 33, 0.15); } 
+.item-list.medium .item::before,
+.item-list.multi :not(.single).item .wrapper::before { box-shadow: 0 2px 10px rgba(33, 33, 33, 0.15); } 
 
 /* dark mode */
-.dark .item-list.large .item .image-wrapper::before { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); }
-.dark .item-list.medium .item::before { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); }
+.dark .item-list.large .item .image-wrapper::before,
+.dark .item-list.multi .item.single .image-wrapper::before { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); }
+.dark .item-list.medium .item::before,
+.dark .item-list.multi :not(.single).item .wrapper::before { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); }
 
 /* ---------------------------------------------------------------------------------------- BUTTONS */
 
