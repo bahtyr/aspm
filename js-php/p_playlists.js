@@ -116,14 +116,12 @@ function listenPlaylistItemClicks() {
 		selection.playlistIndex = i;
 		selection.itemIndex = i + 2;
 
-		modal.show();
-
 		// put info on context menu
-		$(".modal__playlist-image").attr("src", playlists[selection.playlistIndex].images[0].url);
+		$(".modal__playlist-image").attr("src", getAnImageFromArray(playlists[selection.playlistIndex].images, 1));
 		$(".modal__playlist-name").text(playlists[selection.playlistIndex].name);
 
 		// put info on edit menu
-		$(".modal__pl-edit__image").attr("src", playlists[selection.playlistIndex].images[0].url);
+		$(".modal__pl-edit__image").attr("src", getAnImageFromArray(playlists[selection.playlistIndex].images, 1));
 		$(".modal__pl-edit__name").val(playlists[selection.playlistIndex].name);
 		$(".modal__pl-edit__desc").val(playlists[selection.playlistIndex].description);
 
@@ -135,6 +133,9 @@ function listenPlaylistItemClicks() {
 			$("#toggle-public").removeClass("is-active");
 			$("#toggle-private").addClass("is-active");
 		}
+
+		modal.showStack(".modal__pl-context");
+		modal.show();
 	});
 }
 
@@ -157,7 +158,7 @@ function listenContextActions() {
 				break;
 			case "btn-details": /*TODO*/ break;
 			case "btn-automation":
-				window.location.href = '../auto.html?new=' + selection.playlistID;
+				window.location.href = '../auto2.html?new=' + selection.playlistID;
 				break;
 			case "btn-compare":
 				window.location.href = '../missing.html?a=' + selection.playlistID;
