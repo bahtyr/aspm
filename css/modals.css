@@ -1,25 +1,93 @@
-/* ---------------------------------------------------------------------------------------- MODALS */
+/* ---------------------------------------------------------------- BACKGROUND COLORS */
 
-/* ---------------------------------------------------------------- CONTAINERS */
+.modal__box,
+.modal__stack__one,
+.modal__stack__two { background-color: #FFF; }
+
+/* to be used when modal__stack is being used */
+
+.modal__bg-auto { background-color: #F6F8FA; }
+.modal__bg-dark { background-color: #212529; }
+.modal__bg-light { background-color: #F6F8FA; }
+.dark .modal__bg-auto { background-color: #212529; }
+.dark .modal__bg-dark { background-color: #212529; }
+.dark .modal__bg-light { background-color: #F6F8FA; }
+
+/* ---------------------------------------------------------------- CONTENT WRAPPERS (.modal__box) */
+
+.modal__stack__one,
+.modal__stack__two {
+	position: absolute;
+	white-space: nowrap;
+	top: 0;
+}
 
 .modal__share {
 	align-items: center;
 }
 
-.modal__pl-context {  }
+.modal__pl-context { min-width: 15.625rem; }
 
-.modal__pl-edit { 
+.modal__pl-edit {
+	display: flex;
+	flex-flow: column;
 	align-items: center;
+	padding: 20px;
+	min-width: 15.625rem;
+}
+
+.modal__new-rule {
 	padding: 20px;
 }
 
-.modal__stack__one,
-.modal__stack__two { /* their layout can be different */
-	position: absolute;
-	top: 0;
-	width: 18.75rem;
-	min-width: 15.625rem;
-	background-color: #FFF;
+/* ---------------------------------------------------------------- GENERAL */
+
+/* -------------------------------- TEXT */
+
+.modal__title {
+	font-weight: 600;
+}
+
+.modal__text { 
+	font-weight: 200;
+}
+
+.modal__text { color: #343A40; }
+.dark .modal__text { color: #343A40; }
+
+/* -------------------------------- INPUT TEXT */
+
+.modal__input-text {
+	width: 100%;
+	font-size: .875rem;
+	background: none;
+	background-color: #F1F1F1;
+	border: none;
+	padding: 10px;
+	margin-top: 10px;
+	resize: none;
+	color: #000;
+}
+
+.dark .modal__input-text { color: #000; }
+
+.modal__input-text:focus { outline: 1px solid #808080; }
+
+/* -------------------------------- BUTTONS */
+
+.modal__align-buttons-right {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.modal__align-buttons-right > *:nth-child(1) {
+    margin-left: auto;
+    margin-right: 16px;
+}
+
+.modal__align-buttons-right > *:nth-child(2) {
+    width: 46%;
 }
 
 /* ---------------------------------------------------------------- ELEMENTS */
@@ -47,12 +115,14 @@
 	margin-top: 4px;
 }
 
-.dark .modal__playlist-name { color: #343A40;  }
+.dark .modal__playlist-name { color: #343A40; }
 .dark .modal__playlist-desc { color: #808080; }
 
-/* normal text */
-.modal__text { color: #343A40; padding: 0 20px; text-align: center; font-weight: 200; }
-.dark .modal__text { color: #343A40; }
+.modal__share .modal__text,
+.modal__pl-context .modal__text,
+.modal__pl-edit .modal__text {
+	padding: 0 20px;
+}
 
 /* -------------------------------- playlist edit (text / iamge) */
 
@@ -77,28 +147,6 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-}
-
-/* playlist name & description */
-.modal__pl-edit__name,
-.modal__pl-edit__desc {
-	width: 100%;
-	font-size: .875rem;
-	background: none;
-	background-color: #F1F1F1;
-	border: none;
-	padding: 10px;
-	margin-top: 10px;
-	resize: none;
-	color: #000;
-}
-
-.dark .modal__pl-edit__name,
-.dark .modal__pl-edit__desc { color: #000; }
-
-.modal__pl-edit__name:focus,
-.modal__pl-edit__desc:focus{
-	outline: 1px solid #808080;
 }
 
 /* -------------------------------- playlist edit buttons (save / cancel) */
@@ -181,3 +229,45 @@
 .modal__share > p:nth-of-type(1) { margin-bottom: 30px; margin-top: 16px; }
 .modal__share > p:nth-of-type(2) { margin-bottom: 12px; }
 .modal__share > p:nth-of-type(3) { margin-bottom: 20px; }
+
+/* ---------------------------------------------------------------- PLAYLIST AUTOMATION */
+
+/*  */
+.modal__p-auto {
+	width: 100%;
+	height: 100%;
+	display: block;
+	overflow: auto;
+	border-radius: 0;
+}
+
+/* need to find better solution for text coloring in modals */
+/*.modal__new-rule p,
+.modal__new-rule label,
+.dark .modal__new-rule p,
+.dark .modal__new-rule label { color: #343A40; }*/
+
+.modal__new-rule label {
+	margin-left: 6px;
+}
+
+.rule-playlist-line {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+.rule-playlist-line img {
+	width: 28px; height: 28px;
+}
+
+.rule-playlist-line div {
+	margin-left: 8px;
+	display: inline-block;
+}
+
+.rule-playlist-line div p:nth-child(1) {
+	font-weight: 500;
+	text-transform: lowercase;
+}

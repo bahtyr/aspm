@@ -169,7 +169,7 @@ function apiGetPlaylistInfo(playlistID) {
 		$.ajax({
 			type: "GET",
 			url: `https://api.spotify.com/v1/playlists/${playlistID}`,
-			data: {fields: "name,description,images,owner(display_name,id)"}, // max 100
+			data: {fields: "id,name,description,images,owner(display_name,id),public"}, // max 100
 			headers: {"Authorization": "Bearer " + spotify.accessToken},
 			success: (data, textStatus) => resolve(data),
 			error: (textStatus, errorThrown) => reject([textStatus, errorThrown])
@@ -263,7 +263,7 @@ function apiAddTracksToPlaylist(playlistID, trackURIs) {
  * @param {array[string]}	trackURIs			A list of track URIs in an array.
  * @result 										Returns snpashot_id in JSON object.
  */
-function apiRemoveTrackFromPlaylist(playlistID, trackURIs) {
+function apiRemoveTracksFromPlaylist(playlistID, trackURIs) {
 	let data_ = {"tracks": []};
 	for (i in trackURIs) 
 		data_.tracks.push({"uri": trackURIs[i]});

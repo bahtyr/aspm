@@ -345,7 +345,7 @@
 	margin-left: 20px;
 	margin-right: 10px;
 	border-radius: 100%;
-	background-color: #C4C4C4;
+	/*background-color: #C4C4C4;*/
 	height: 44px;
 	width: 44px;
 	display: flex;
@@ -357,7 +357,7 @@
 	margin-left: 40px;
 	margin-right: 10px;
 	border-radius: 4px;
-	background-color: #C4C4C4;
+	/*background-color: #C4C4C4;*/
 	height: 44px;
 	width: 44px;
 }
@@ -367,9 +367,13 @@
 
 .p-auto__player img {
 	height: 100%;
-	width: 100%;
+	/*width: 100%;*/ /* disabling this to prevent it from shrinking */
 	object-fit: cover;
 }
+
+.p-auto__player svg { flex-shrink: 0; } 
+
+.p-auto__player p { white-space: break-spaces; }
 
 /* ---------------------------------------------------------------- ITEM ADD */
 
@@ -392,12 +396,5 @@
 .item-list .item.p-auto__item-add p { margin-left: 0; }
 .item-list.multi .item.p-auto__item-add .image-wrapper { width: 102px; height: 102px; margin-bottom: 8px; }
 
-/* disable hover shadow */
+/* disable hover shadow for "add" item */
 .item-list.large .item.p-auto__item-add:hover .image-wrapper::before { opacity: 0; }
-
-/*  */
-.modal__p-auto {
-	display: block;
-	overflow: auto;
-	border-radius: 0;
-}

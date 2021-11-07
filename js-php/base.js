@@ -1,3 +1,8 @@
+/**
+ * TODO
+ * 
+ * a function to get atrists' name as string. (loop artists[i].name & use trim if long)
+ */
 $(function() {
 	document.getElementsByTagName("body")[0].classList.add("animate");
 	
@@ -153,36 +158,15 @@ function printTableTracks(items, limit) {
 		let holder = $($.parseHTML(template));
 		holder.removeClass("is-gone");
 
-		// NO
 		holder.find("td:nth-child(2)").text(i + 1);
-
-		// IMAGE
-		let imgArrLength = items[i]["album"]["images"].length;
-		if (imgArrLength > 0)
-			holder.find("td:nth-child(3) img").attr("src", items[i]["album"]["images"][0]["url"]);
-		else { 
-			holder.find("td:nth-child(3) img").removeAttr("src", "");
-			holder.find("td:nth-child(3) img").addClass("is-hidden");
-		}
-		
-		// TITLE
-		let name = items[i]["name"];
-		if (name.length > 25)
-			name = name.substr(0, 25) + "...";
-		holder.find("td:nth-child(3) span").text(name);
+		holder.find("td:nth-child(3) img").attr("src", getAnImageFromArray(items[i]["album"]["images"]));
+		holder.find("td:nth-child(3) span").text(trimmedText(items[i]["name"], 25));
 
 		// ARTISTS
-		// TODO loop artists
-		let artists = items[i]["artists"][0]["name"];
-		if (artists.length > 25)
-			artists = artists.substr(0, 25) + "...";
-		holder.find("td:nth-child(4)").text(artists);
+		holder.find("td:nth-child(4)").text(trimmedText(items[i]["artists"][0]["name"], 25));
 
 		// ALBUM
-		let album = items[i]["album"]["name"];
-		if (album.length > 25)
-			album = album.substr(0, 25) + "...";
-		holder.find("td:nth-child(5)").text(album);
+		holder.find("td:nth-child(5)").text(trimmedText(items[i]["album"]["name"], 25));
 
 		list.push(holder);
 	}
@@ -204,19 +188,10 @@ function printTableArtists(items) {
 		holder.find("td:nth-child(2)").text(i + 1);
 
 		// IMAGE
-		let imgArrLength = items[i]["images"].length;
-		if (imgArrLength > 0)
-			holder.find("td:nth-child(3) img").attr("src", items[i]["images"][imgArrLength - 1]["url"]);
-		else { 
-			holder.find("td:nth-child(3) img").removeAttr("src", "");
-			holder.find("td:nth-child(3) img").addClass("is-hidden");
-		}
+		holder.find("td:nth-child(3) img").attr("src", getAnImageFromArray(items[i]["images"]));
 		
 		// TITLE
-		let name = items[i]["name"];
-		if (name.length > 25)
-			name = name.substr(0, 25) + "...";
-		holder.find("td:nth-child(3) span").text(name);
+		holder.find("td:nth-child(3) span").text(trimmedText(items[i]["name"], 25));
 
 		// POPULARITY
 		holder.find("td:nth-child(4)").text(items[i]["popularity"]);
@@ -257,14 +232,38 @@ function enableDarkMode(yes) {
 
 // ---------------------------------------------------------------------------------------- ETC
 
-function getAnImageFromArray(arr) {
-	if (arr == null || !Array.isArray(arr))
-		return null;
+/**
+ * Validates image array, sends null if empty.
+ * 
+ * @params {array}	arr 			Spotify image array.
+ * @params {int}	priority 		Optional. 0: Highest resolution, 2: Lowest resolution.
+ * @result {string}					Returns an image url. Attempts to return priority resolution, if not returns highest resolution.
+ */
+function getAnImageFromArray(arr, priority) {
+	if (arr == null || !Array.isArray(arr) || arr.length == 0)
+		return "placeholder.jpg";
 
-	let imgArrLength = arr.length;
-	if (imgArrLength > 0)
-		return arr[imgArrLength > 2 ? 1 : 0]["url"];
-	else return null;
+	if (priority == null)
+		priority = 0;
+
+	while (priority >= arr.length) {
+		priority--;
+	}
+
+	return arr[priority]["url"];
+}
+
+/**
+ * Returns the string with ellipsis at end if its longer than desired.
+ * 
+ * @params {string}	str 			String
+ * @params {int}	length 			Max length
+ * @result {string}					String...
+ */
+function trimmedText(str, length) {
+	if (str.length > (length == null ? 25 : length))
+		return str.substr(0, (length == null ? 25 : length)) + "...";
+	return str;
 }
 
 // ---------------------------------------------------------------------------------------- NEW
@@ -358,14 +357,10 @@ function printTableTracks_(items, limit, offset) {
 		holder.find("span:nth-child(3)").attr("title", artists);
 		holder.find("span:nth-child(4)").attr("title", album);
 
-		if (name.length > 50) name = name.substr(0, 50) + "...";
-		if (artists.length > 25) artists = artists.substr(0, 25) + "...";
-		if (album.length > 25) album = album.substr(0, 25) + "...";
-
 		holder.find("span:nth-child(1)").text(i + 1);
-		holder.find("span:nth-child(2)").text(name);
-		holder.find("span:nth-child(3)").text(artists);
-		holder.find("span:nth-child(4)").text(album);
+		holder.find("span:nth-child(2)").text(trimmedText(name, 50));
+		holder.find("span:nth-child(3)").text(trimmedText(artists, 25));
+		holder.find("span:nth-child(4)").text(trimmedText(album, 25));
 		holder.find("span:nth-child(5)").text(dateAdded);
 
 		list.push(holder);
@@ -388,12 +383,8 @@ function printTableArtists_(items, limit, offset) {
 
 		let name = items[i].name;
 
-		holder.find("span:nth-child(2)").attr("title", name);
-
-		if (name.length > 50) name = name.substr(0, 50) + "...";
-
 		holder.find("span:nth-child(1)").text(i + 1);
-		holder.find("span:nth-child(2)").text(name);
+		holder.find("span:nth-child(2)").text(trimmedText(name, 50));
 		holder.find("span:nth-child(3)").text("");
 		holder.find("span:nth-child(4)").text("");
 
@@ -415,22 +406,9 @@ function printPlaylists(items, limit, offset, elementID) {
 		let holder = $($.parseHTML(template));
 		holder.removeClass("is-gone");
 
-		// IMAGE
-		let imgArrLength = items[i].images.length;
-		if (imgArrLength > 0)
-			holder.find(".image").attr("src", items[i].images[imgArrLength > 2 ? 1 : 0].url);
-		else { 
-			holder.find(".image").removeAttr("src", "");
-			holder.find(".image").addClass("is-hidden");
-		}
-		
-		// NAME
-		let name = items[i]["name"];
-		if (name.length > 30)
-			name = name.substr(0, 30) + "...";
-		holder.find(".text").text(name);
+		holder.find(".image").attr("src", getAnImageFromArray(items[i].images));
+		holder.find(".text").text(trimmedText(items[i]["name"], 30));
 
-		// IS PRIVATE / PUBLIC
 		if (items[i].public)
 			holder.addClass("is-public");
 		else holder.removeClass("is-public");
@@ -456,8 +434,12 @@ class Modal {
 	modalBox;
 	stacks = {};
 	activeStack;
+	dismissListener;
 	dismissAction = this.hide;
 
+	/**
+	 * Use default modal selctor if a certain selector is not given.
+	 */
 	constructor(selector) {
 	    this.modal = $(selector == null ? ".modal" : selector);
 	    this.initDismiss();
@@ -471,6 +453,7 @@ class Modal {
 	hide() {
 		this.modal.addClass("hide");
 		this.modal.removeClass("show");
+		this.callAndClearOnDimissListener();
 	}
 
 	/**
@@ -482,7 +465,8 @@ class Modal {
 			if ($(e.target).attr("class") != null &&  
 				$(e.target).attr("class").includes("modal__dismiss-area")) {
 				if (this.dismissAction != null && this.dismissAction instanceof Function) {
-					this.dismissAction();
+					this.dismissAction(); // hide modal or do the changed dismisse action
+					this.callAndClearOnDimissListener();
 				}
 			}
 		});	
@@ -496,6 +480,34 @@ class Modal {
 
 		if (boo) dismissText.css("visibility", "hidden");
 		else dismissText.css("visibility", "visible");
+	}
+
+
+	/**
+	 * A callback funtion initializer. Called when the modal is dismissed.
+	 */
+	onDismiss(fn) {
+		//
+		this.dismissListener = fn;
+	}
+
+
+	/**
+	 * Run dismissListener function if valid, then clear it. Only one use of dismissListener is allowed for now.
+	 */
+	callAndClearOnDimissListener() {
+		if (this.dismissListener != null && this.dismissListener instanceof Function) {
+			this.dismissListener();
+			this.dismissListener = null;
+		}
+	}
+
+	/**
+	 * 
+	 */
+	clearOnDismiss() {
+		//
+		this.dismissListener = null;
 	}
 
 	/**
