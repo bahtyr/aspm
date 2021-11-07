@@ -6,8 +6,6 @@ $(function() {
 	readSpotifyCookies();
 	printUserMaybe();
 	authorizeMaybe();
-
-	initBaseModalActions();
 });
 
 // ---------------------------------------------------------------------------------------- API FUNCTIONS
@@ -453,58 +451,105 @@ function printPlaylists(items, limit, offset, elementID) {
 
 // ---------------------------------------------------------------------------------------- MODAL
 
-// show modal
-function showModal(foo) {
-	if (foo) {
-		$(".modal").removeClass("hide");
-		$(".modal").addClass("show");
-	} else {
-		$(".modal").removeClass("show");
-		$(".modal").addClass("hide");
-	}
-}
+class Modal {
+	modal;
+	modalBox;
+	stacks = {};
+	activeStack;
+	dismissAction = this.hide;
 
-let dismissAction;
-function initBaseModalActions() {
-	$(".modal__dismiss-area").click((e) => {
-		if ($(e.target).attr("class") == "modal__dismiss-area") {
-			if (dismissAction != null && dismissAction instanceof Function) {
-				dismissAction();
-			} else showModal(false);
+	constructor(selector) {
+	    this.modal = $(selector == null ? ".modal" : selector);
+	    this.initDismiss();
+	}
+
+	show() {
+		this.modal.addClass("show");
+		this.modal.removeClass("hide");
+	}
+
+	hide() {
+		this.modal.addClass("hide");
+		this.modal.removeClass("show");
+	}
+
+	/**
+	 * Tapping on an empty area triggers @dismissAction. Hides the modal by default.
+	 */
+	initDismiss() {
+		this.modal.find(".modal__dismiss-area").click((e) => {
+			// check if the clicked target is actually the dismiss area and not part of the modal
+			if ($(e.target).attr("class") != null &&  
+				$(e.target).attr("class").includes("modal__dismiss-area")) {
+				if (this.dismissAction != null && this.dismissAction instanceof Function) {
+					this.dismissAction();
+				}
+			}
+		});	
+	}
+
+	/**
+	 * Hides or shows the "Dismiss" text at bottom of the modal. Commonly used with stacked modals.
+	 */
+	hideDismissMesage(boo) {
+		const dismissText = this.modal.find(".modal__dismiss-area__text");
+
+		if (boo) dismissText.css("visibility", "hidden");
+		else dismissText.css("visibility", "visible");
+	}
+
+	/**
+	 * Changes the @dismissAction. Commonly used with stacked modals, to switch back to previous stack upon clicking on an empty area.
+	 */
+	changeDismissAction(fn) {
+		//
+		this.dismissAction = fn;
+	}
+
+	/**
+	 * Resets the @dismissAction back to hide the modal. Commonly used with stacked modals, after the action is altered.
+	 */
+	resetDismissAction() {
+		//
+		this.dismissAction = this.hide;
+	}
+
+	/**
+	 * Creates and finds stack elements. 
+	 * A stack must be active, and there can only be one active stack at a time.
+	 * 
+	 * @params {string}  selector 			Selector of the stack, preferablly an id.
+ 	 * @params {boolean} isActive 			Set true, if the stack is initially visible.
+	 */
+	addStack(selector, isActive) {
+		this.stacks[selector] = {obj: $(selector), isActive: isActive};
+		this.activeStack = isActive ? selector : this.activeStack;
+
+		if (isActive) {
+			this.modalBox = this.modal.find(".modal__box");
+			this.modalBox.height(this.stacks[selector].obj.outerHeight());
+			this.modalBox.width(this.stacks[selector].obj.outerWidth());
 		}
-	});
-
-	// set stack 1's height / width to the main modal, it doesn't wrap it properly
-	// modal's h/w will be changed on changeModalStack again
-	if ($(".modal__box").hasClass("modal__stack")) {
-		$('.modal__box').height($('.modal__stack__one').outerHeight());
-		$('.modal__box').width($('.modal__stack__one').outerWidth());	
 	}
-}
 
-function disableModalDismiss(disable, hideText, fn) {
+	/**
+	 * Hides the active stack and show the given one. Requires stacks to be initialied beforehand with @addStack function.
+	 */
+	showStack(selector) {
+		this.stacks[this.activeStack].obj.addClass('hide');
+		this.stacks[this.activeStack].obj.removeClass('show');
+		this.stacks[selector].obj.addClass('show');
+		this.stacks[selector].obj.removeClass('hide');
+		this.activeStack = selector;
 
-	if (hideText != null && hideText)
-		$(".modal__dismiss-area__text").css("visibility", "hidden");
-	else $(".modal__dismiss-area__text").css("visibility", "visible");
+		this.modalBox.height(this.stacks[selector].obj.outerHeight());
+		this.modalBox.width(this.stacks[selector].obj.outerWidth());
 
-	if (fn != null) {
-		if (fn instanceof Function)
-			dismissAction = fn;
-	} else if (disable != null && disable) {
-		dismissAction = function() {};
-	} else if (disable != null && !disable) {
-		dismissAction = null;
+		/** 
+		 * Caution, if a stack is suppose to be full-page sized modalBox' width / height needs to be auto
+		 * "full-page stack" functionality is omitted intentionally, 
+		 * because smooth transition between stacks was not achived and I wanted to be able to use both stacks separately,
+		 * but transition animation would play each time modal opens, didn't want to clutter the page with that.
+		 */
 	}
-}
-
-// send selector strings
-function changeModalStack(from, to) {
-	$(from).addClass('hide');
-	$(from).removeClass('show');
-	$(to).addClass('show');
-	$(to).removeClass('hide');
-
-	$('.modal__box').height($(to).outerHeight());
-	$('.modal__box').width($(to).outerWidth());
 }

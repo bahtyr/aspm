@@ -3,6 +3,7 @@ let tracksTotal = 0;
 let tracks = [];
 let playlist = {id: "", name: "", description: "", image: "", isPublic: true};
 let isLoading = true;
+let modal = new Modal();
 
 $(function() {
 	if (!isLoggedIn()) return;
@@ -35,6 +36,8 @@ function loadTracks() {
 						$(".pagination").removeClass("disabled");
 						$(".btn-export").removeClass("disabled");
 					}, 1000);
+
+					dofn();
 				})
 				.catch((error) => {
 					console.log("err: load saved");
@@ -107,7 +110,7 @@ function createPlaylist(arr) {
 								$(".modal__playlist-desc").text(playlist.description);
 								$(".modal__text").text(`${tracks.length} songs were added to your newly created playlist.`);
 
-								showModal(true);
+								modal.show();
 							}, 1000);						
 
 						})
@@ -162,4 +165,14 @@ function initShareButtons() {
 	$(".btn-share").click(function() {
 		navigator.share({ title: '', text: '', url: 'https://open.spotify.com/playlist/' + playlist.id});
 	});
+}
+
+let artistList = [];
+function dofn() {
+	for (track in tracks) {
+		for (artist in tracks[track].artists) {
+			artistList.push(tracks[track].artists[artist].name);
+		}
+	}
+	// console.log(artistList);
 }

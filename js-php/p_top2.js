@@ -3,6 +3,7 @@ let timeRange = "short_term";
 let data;
 let isLoading = false;
 let playlist
+let modal = new Modal();
 
 $(function() {
 
@@ -144,7 +145,7 @@ function createPlaylist(arr) {
 								$(".modal__playlist-desc").text(playlist.description);
 								$(".modal__text").text(`${data.items.length} songs were added to your newly created playlist.`);
 
-								showModal(true);
+								modal.show();
 							}, 1000);						
 
 						})

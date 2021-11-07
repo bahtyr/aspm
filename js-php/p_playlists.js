@@ -7,6 +7,8 @@ let filters = {private: true, public: true, view: "large"};
 let newImage = "";
 let isImageUpdated = false;
 
+let modal = new Modal();
+
 $(function() {
 	if (!isLoggedIn()) return;
 
@@ -16,6 +18,9 @@ $(function() {
 	// //initFilterViewButtons();
 	// //listenContextActions();
 	// //listenEditActions();
+
+	modal.addStack(".modal__pl-context", true);
+	modal.addStack(".modal__pl-edit", false);
 });
 
 function loadPlaylists() {
@@ -111,7 +116,7 @@ function listenPlaylistItemClicks() {
 		selection.playlistIndex = i;
 		selection.itemIndex = i + 2;
 
-		showModal(true);
+		modal.show();
 
 		// put info on context menu
 		$(".modal__playlist-image").attr("src", playlists[selection.playlistIndex].images[0].url);
@@ -146,8 +151,9 @@ function listenContextActions() {
 				else navigator.clipboard.writeText('https://open.spotify.com/playlist/' + selection.playlistID);
 				break;
 			case "btn-edit":
-				changeModalStack(".modal__pl-context", ".modal__pl-edit");
-				disableModalDismiss(true, true, switchBackToContextModal);
+				modal.showStack(".modal__pl-edit");
+				modal.changeDismissAction(switchBackToContextModal);
+				modal.hideDismissMesage(true);
 				break;
 			case "btn-details": /*TODO*/ break;
 			case "btn-automation":
@@ -282,8 +288,9 @@ function updatePlaylistLocally() {
 
 // switch back to first modal
 function switchBackToContextModal() {
-	changeModalStack(".modal__pl-edit", ".modal__pl-context");	
-	disableModalDismiss(false);
+	modal.showStack(".modal__pl-context");
+	modal.resetDismissAction();
+	modal.hideDismissMesage(false);
 }
 
 // check if the loaded image meets Spotify's requirements
