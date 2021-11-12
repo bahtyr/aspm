@@ -80,6 +80,8 @@ function getPlaying() {
 				b.addClass("animate");
 			else if (b.width() < a.width() && b.hasClass("animate"))
 				b.removeClass("animate");
+
+			setTimeout(() => getPlaying(), 15000);
 		})
 		.catch((error) => {
 			console.log(error);

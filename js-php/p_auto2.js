@@ -38,7 +38,6 @@ $(function() {
 	// currently playing
 	getCurrentlyPlaying();
 	$(".icon-player-refresh").click(() => getCurrentlyPlaying());
-	setTimeout(() => getCurrentlyPlaying(), 15000);
 
 	// load savedPlaylists[]
 	if (localStorage.pautoSavedPlaylists != null) {
@@ -100,6 +99,7 @@ function getCurrentlyPlaying() {
 			}
 
 			findMatchingRules();
+			setTimeout(() => getCurrentlyPlaying(), 15000);
 		})
 		.catch((error) => {
 			console.log(error);
