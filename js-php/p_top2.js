@@ -50,12 +50,12 @@ function initListeners() {
 		if (isLoading) return;
 
 		if (boo) {
-			$(".swap-text__wrapper").addClass("show");
-			$(".swap-text__wrapper").removeClass("hide");
+			$(".swap-text").addClass("up");
+			$(".swap-text").removeClass("down");
 			type = "artists";			
 		} else {
-			$(".swap-text__wrapper").removeClass("show");
-			$(".swap-text__wrapper").addClass("hide");
+			$(".swap-text").removeClass("up");
+			$(".swap-text").addClass("down");
 			type = "tracks";
 		}
 		
@@ -133,17 +133,15 @@ function createPlaylist(arr) {
 					apiGetPlaylistInfo(playlist.id, 1)
 						.then((result) => {
 
-							playlist.image = result.images[2].url;
-
 							setTimeout(() => {
 
 								isLoading = false;
 	
 								// show dialog
-								$(".modal__playlist-image").attr("src", playlist.image);
-								$(".modal__playlist-name").text(playlist.name);
-								$(".modal__playlist-desc").text(playlist.description);
-								$(".modal__text").text(`${data.items.length} songs were added to your newly created playlist.`);
+								$(".modal__playlist-header img").attr("src", getAnImageFromArray(result.images, 1));
+								$(".modal__playlist-header p.primary").text(playlist.name);
+								$(".modal__playlist-header p.secondary").text(playlist.description);
+								$(".modal__message").text(`${data.items.length} songs were added to your newly created playlist.`);
 
 								modal.show();
 							}, 1000);						

@@ -241,7 +241,7 @@ function enableDarkMode(yes) {
  */
 function getAnImageFromArray(arr, priority) {
 	if (arr == null || !Array.isArray(arr) || arr.length == 0)
-		return "placeholder.jpg";
+		return "placeholder.png";
 
 	if (priority == null)
 		priority = 0;

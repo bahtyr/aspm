@@ -51,13 +51,12 @@
 	.index-user .stats,
 	.index-user .stats:nth-child(1) { margin-left: 0; } /* can't reset margin on this elm. without directly referring */
 
-	.dark .index-user .border { background-color: #495057; }
 	.index-user .border {
 		position: relative;
 		top: 53%;
 		width: 100%;
 		height: 1px;
-		background-color: #dee2e6;	
+		background-color: var(--bg-5);	
 	}
 }
 

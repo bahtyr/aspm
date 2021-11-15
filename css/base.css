@@ -4,17 +4,59 @@
 html { font-size:100%; }
 html, body { min-height: 100%; height: 100%; }
 ul { list-style: none; padding: 0; margin: 0; }
-a:link, a:visited { text-decoration: none; color: #000; }
-a > * { display: inline-block; }
+a:link, a:visited { text-decoration: none; }
 
-/* ---------------------------------------------------------------------------------------- TEXT & COLORS */
+/* ---------------------------------------------------------------------------------------- VARIABLES */
 
-a, p, input {
-	color: #343A40;
+:root {
+	--bg-1: #FFFFFF; /* page background */
+	--bg-2: #FCFCFC; /* site header, hover */
+	--bg-3: #F7F7F7; /* boxes, bars, cards */
+	--bg-4: #F2F2F2; /* border 2 */
+	--bg-5: #EDEDED; /* border */
+	--bg-10: #000000; /* 10th colors are opposite of the theme (light mode: #000, dark mode: #fff) */
+	--bg-img: #C4C4C4;
+
+	--text-color-1: #1D1D1F; /* title, body */
+	--text-color-2: #6E6E73; /* secondary */
+	--text-color-3: #86868B; /* tertiary, to be used rarely */
+	--text-color-4: #888888; /* icons, input hint */
+	--text-color-5: #CCCCCC; /* disabled */
+	--text-color-10: #BDC1C6;
+
+	--text-size-4: 1.375rem; /*22*/
+	--text-size-3: 1.125rem; /*18*/
+	--text-size-2: 1rem;     /*16*/
+	--text-size-1: 0.875rem; /*14-default */
+	--text-size--1: 0.75rem; /*12*/
+	--text-size--2: 0.625rem;/*10*/
+
+	--text-spacing-xxl: 0.037em;
+	--text-spacing-xl: 0.03em;
+	--text-spacing-l: 0.01em;
+	--text-spacing-m: 0em; /* default */
+	--text-spacing-s: -0.015em;
+	--text-spacing-xs: -0.03em;
+	--text-spacing-xxs: -0.037em;
+
+	--blue: #0066CC;
 }
 
-.dark, .dark a, .dark p, .dark input {
-	color: #B3B3B3;
+.dark {
+	--bg-1: #202124;
+	--bg-2: #222326;
+	--bg-3: #26282B;
+	--bg-4: #2B2D31;
+	--bg-5: #303236;
+	--bg-10: #FFFFFF;
+	--bg-img: #565961;
+
+	--text-color-1: #BDC1C6;
+	--text-color-2: #969BA1;
+	--text-color-3: #7B8189;
+	--text-color-4: #777C83;
+	--text-color-5: #333538;
+	--text-color-10: #1D1D1F;
 }
 
 /* ACCENT COLORS */
@@ -27,29 +69,25 @@ body.green { --accent: #2A7B60;  }
 /* ---------------------------------------------------------------------------------------- BODY */
 
 body {
-	background-color: #F6F8FA;
+	background-color: var(--bg-1);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	font-weight: lighter;
+	line-height: 1.5em;
+	letter-spacing: var(--text-spacing-m);
+	font-size: var(--text-size-1);
 }
 
+/* add padding add the end of the page */
 body > div:last-of-type { margin-bottom: 20px; }
-body:after { content: "\00a0\00a0"; } /* required for iOS Safari */
-
-body.dark {
-	background-color: #212529;
-}
+body:after { content: "\00a0\00a0"; } /* padding does not work without this on Safari */
 
 /* ---------------------------------------------------------------------------------------- SITE HEADER */
-
-.site-header-wrapper > div:nth-child(1) { display: none; }
 
 .site-header {
 	height: 36px;
 	width: 100%;
-	background-color: #F5F5F5;
-	border-bottom: solid 1px #ECECEC;
 	vertical-align: middle;
-	font-size: 0.875rem;
+	background-color: var(--bg-2);
+	border-bottom: solid 1px var(--bg-4);
 }
 
 .site-header-wrapper {
@@ -60,7 +98,57 @@ body.dark {
 	height: 100%;
 }
 
-.dark .site-header {
-	background-color: #212529;
-	border-bottom-color: #495057;
+.site-header-wrapper > div:nth-child(1) { display: none; }
+
+/* ---------------------------------------------------------------------------------------- OTHER */
+
+body {
+	overflow: overlay; /* if scrollbar appears, don't push / resize page content */
+}
+
+::-webkit-scrollbar {
+	width: 7px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+	margin: 5px;
+	background-color: var(--bg-img);
+	-webkit-border-radius: 5px;
+}
+
+::-webkit-scrollbar-button:start:decrement,
+::-webkit-scrollbar-button:end:increment {
+	height: 5px;
+	display: block;
+}
+
+/* ---------------------------------------------------------------------------------------- OTHER */
+
+body, a {
+	color: var(--text-color-1);
+}
+
+input {
+	background-color: var(--bg-3);
+}
+
+textarea,
+input[type="text"] {
+	background-color: var(--bg-3);
+	background: none;
+	border-radius: 4px;
+	border: none;
+	border: solid 1px var(--bg-5);
+	color: var(--text-color-1);
+}
+
+textarea:focus,
+input[type="text"]:focus {
+	outline-offset: -1px;
+	outline: solid 1px var(--blue);
+}
+
+img {
+	background-color: var(--bg-img);
+	object-fit: cover;
 }

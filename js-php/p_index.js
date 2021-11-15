@@ -107,7 +107,7 @@ function initLoginBtn() {
 
 function printUser_() {
 	$(".primary-box").removeClass("show-login");
-	$(".user-image").attr("src", user.image == null ? "placeholder.jpg" : user.image);
+	$(".user-image").attr("src", user.image == null ? "placeholder.png" : user.image);
 	$(".user-name").text(user.name);
 }
 
@@ -138,12 +138,12 @@ function logout_() {
 
 	$(".primary-box").addClass("show-login");
 
-	$(".user-image").attr("src", "placeholder.jpg");
+	$(".user-image").attr("src", "placeholder.png");
 	$(".user-name").text("Please sign in.");
 	$(".user-stats-1").text("0");
 	$(".user-stats-2").text("0");
 	$(".user-stats-3").text("0");
-	$(".player-image").attr("src", "placeholder.jpg");
+	$(".player-image").attr("src", "placeholder.png");
 	$(".player-image-placeholder").addClass("show");
 	$(".player-text").html(`Nothing is playing`);
 	$(".player-text").removeClass("animate");

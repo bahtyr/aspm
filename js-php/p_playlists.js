@@ -117,8 +117,8 @@ function listenPlaylistItemClicks() {
 		selection.itemIndex = i + 2;
 
 		// put info on context menu
-		$(".modal__playlist-image").attr("src", getAnImageFromArray(playlists[selection.playlistIndex].images, 1));
-		$(".modal__playlist-name").text(playlists[selection.playlistIndex].name);
+		$(".modal__playlist-header img").attr("src", getAnImageFromArray(playlists[selection.playlistIndex].images, 1));
+		$(".modal__playlist-header p.primary").text(playlists[selection.playlistIndex].name);
 
 		// put info on edit menu
 		$(".modal__pl-edit__image").attr("src", getAnImageFromArray(playlists[selection.playlistIndex].images, 1));
@@ -179,7 +179,7 @@ function listenEditActions() {
 	$(".modal__pl-edit__image").click(() => $("#input__image-picker").click());
 
 	// private / public
-	$(".modal__pl-edit__toggle").click(() => $(".modal__pl-edit__toggle").toggleClass("is-active"));
+	$(".toggle").click(() => $(".toggle").toggleClass("is-active"));
 
 	// file uploader
 	$("#input__image-picker").change(function() {
@@ -270,9 +270,9 @@ function updatePlaylistLocally() {
 		$(`.item:nth-child(${selection.itemIndex})`).toggleClass("is-public");
 
 	if (isImageUpdated)
-		$(`.modal__playlist-image`).attr("src", newImage);
+		$(`.modal__playlist-header img`).attr("src", newImage);
 	
-	$(`.modal__playlist-name`).text(name);
+	$(`.modal__playlist-header p.primary`).text(name);
 
 	playlists[selection.playlistIndex].name = name;
 	playlists[selection.playlistIndex].description = desc;

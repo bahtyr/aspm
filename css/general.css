@@ -1,8 +1,8 @@
 /* ---------------------------------------------------------------------------------------- GENERIC CLASSES */
 
+.js-template { display: none !important; }
 .is-hidden { visibility: hidden; }
 .is-gone { display: none !important; }
-.js-template { display: none !important; }
 .disabled,
 .disabled > svg { cursor: default !important; }
 
@@ -52,23 +52,21 @@ body.animate .sticky-top {
 /* ---------------------------------------------------------------------------------------- STICKY TOP */
 
 .sticky-top {
-	height: 36px;
-	width: 100%;
-	background-color: #1A1A1A;
-	display: flex;
 	align-items: center;
+	display: flex;
 	position: fixed;
 	top: 0;
 	z-index: 10;
-}
+	height: 36px;
+	width: 100%;
+	color: var(--text-color-10);
+	background-color: var(--bg-10);
 
-.sticky-top p {
-	color: #CCCCCC;
 }
 
 .sticky-top.is-hidden {
-	visibility: initial;
 	top: -36px;
+	visibility: initial;
 }
 
 /* ---------------------------------------------------------------------------------------- TOP PORGRESS BAR */
@@ -77,8 +75,8 @@ body.animate .sticky-top {
 	position: fixed;
 	top: 0;
 	z-index: 11;
-	width: 100%;
 	height: 4px;
+	width: 100%;
 }
 
 .top-progress-bar-wrapper div {
@@ -92,13 +90,15 @@ body.animate .sticky-top {
 
 /* main containers */
 
+
 .modal {
 	position: fixed;
 	top: 0;
 	left: 0;
+	z-index: 1;
 	width: 100%;
 	height: 100%;
-	z-index: 1;
+	/* background colors are addressed at modals.css */
 }
 
 .modal__dismiss-area {
@@ -107,7 +107,7 @@ body.animate .sticky-top {
 	background-color: rgb(0,0,0);
 	background-color: rgba(0,0,0,0.5);
 	display: flex;
-	flex-direction: column;
+	flex-flow: column;
 	align-items: center;
 	justify-content: center;
 }
@@ -142,12 +142,10 @@ body.animate .sticky-top {
 	cursor: default;
 	margin-top: 16px;
 	text-transform: uppercase;
-	font-size: .625rem;
+	font-size: var(--text-size--2);
 	font-weight: 500;
 	color: #fff;
 }
-
-.dark .modal__dismiss-area__text { color: #fff; }
 
 /* ---------------------------------------------------------------------------------------- MODAL ANIMATIONS */
 
@@ -206,18 +204,16 @@ body.animate .sticky-top {
 	flex-flow: row nowrap;
 	align-items: center;
 	padding: 8px 8px;
-	border-bottom: solid 1px #E6E6E6;
-	font-size: .875rem;
-	/*font-size: rem;*/
+	border-bottom: solid 1px var(--bg-5);
 }
-.dark .row { border-bottom-color: #373D42; }
+
+.row:hover:not(.header) { background-color: var(--bg-2); }
 
 .row.header {
 	font-weight: 500;
-	background-color: #F1F1F1;
+	background-color: var(--bg-3);
 	border-radius: 2px;
 }
-.dark .row.header { background-color: #343A40; }
 
 .row span { padding-right: 10px; }
 .row span:nth-child(1) { text-align: right; min-width: 42px; }
@@ -229,14 +225,13 @@ body.animate .sticky-top {
 /* bottom */
 
 .table-bottom {
+	cursor: default;
 	display: flex;
 	flex-flow: row;
-	width: 100%;
-	font-size: .875rem;
-	cursor: default;
-	padding-right: 20px;
 	align-items: center;
 	margin-top: 20px;
+	padding-right: 20px;
+	width: 100%;
 }
 
 .table-bottom .page-count {
@@ -245,15 +240,10 @@ body.animate .sticky-top {
 }
 
 .table-bottom svg { margin-top: 1px; cursor: pointer; }
-.dark .table-bottom svg path { stroke: #B3B3B3; }
+.table-bottom svg path { stroke: var(--text-color-2); }
+.table-bottom.disabled svg path { stroke: var(--text-color-5); }
 .table-bottom .icon-prev { margin-left: auto; padding-right: 6px; box-sizing: initial; }
 .table-bottom .icon-next { padding-left: 6px; box-sizing: initial; }
-/* disabled  */
-.table-bottom.disabled svg path { stroke: #CCCCCC; }
-.dark .table-bottom.disabled svg path { stroke: #343A40; }
-/* hover */
-.row:hover:not(.header) { background-color: #F6F6F6; }
-.dark .row:hover:not(.header) { background-color: #272B30; }
 
 /* ---------------------------------------------------------------------------------------- IMAGE GRID */
 
@@ -277,14 +267,12 @@ body.animate .sticky-top {
 .item .image-wrapper {
 	width: 78px;
 	height: 78px;
-	/*background: #C4C4C4;*/
 	border-radius: 4px;
 }
 
 .item img {
 	width: 100%;
 	height: 100%;
-	object-fit: cover;
 	border-radius: 4px;
 }
 
@@ -297,7 +285,6 @@ body.animate .sticky-top {
 }
 
 .item p {
-	font-size: .875rem;
 	line-height: 1rem;
 	letter-spacing: -.016em;
 	font-weight: 400;
@@ -359,7 +346,7 @@ body.animate .sticky-top {
 
   min-width: 250px;
   max-height: 78px;
-  background-color: #F1F1F1;
+  background-color: var(--bg-2);
   border-radius: 4px;
 }
 
@@ -370,13 +357,13 @@ body.animate .sticky-top {
 }
 
 .item-list.medium .item p { 
-	font-size: 1rem;
+	font-size: var(--text-size-2);
 	padding-right: 10px;
 }
 
-.dark .item-list.medium .item { 
-	color: #B3B3B3;
-	background-color: #272B30;
+.dark .item-list.medium .item {
+	/*color: #B3B3B3;*/
+	/*background-color: var(--black-bg-google-2);*/
 }
 
 
@@ -400,10 +387,10 @@ body.animate .sticky-top {
 	padding: 12px 0 12px 12px;
 	margin-bottom: 8px;
   border-radius: 4px;
-  background-color: #F1F1F1;
+  background-color: var(--bg-2);
 }
 
-.dark .item-list.multi .item .wrapper { color: #B3B3B3; background-color: #272B30; }
+/*.dark .item-list.multi .item .wrapper { background-color: var(--black-bg-google-2); }*/
 
 .item-list.multi .item .image-wrapper { 
 	flex: 1;
@@ -538,25 +525,68 @@ body.animate .sticky-top {
 	background: rgba(0,0,0, 0.5);
 }
 
+/* ---------------------------------------------------------------------------------------- TOGGLE */
+
+.toggle-wrapper {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.toggle {
+	cursor: pointer;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+	flex: 1;
+	padding: 6px 14px;
+	color: var(--text-color-5);
+	border: solid 1px var(--bg-1); /* transparent border is there to prevent layout resizing when activating a toggle */
+}
+
+.toggle.is-active { 
+	color: var(--text-color-1);
+	border-radius: 4px;
+	border: solid 1px var(--bg-5);
+}
+
+.toggle svg {
+	fill: var(--text-color-5);
+	margin-right: 4px;
+	margin-top: 1px;
+}
+
+.toggle.is-active svg {
+	fill: var(--text-color-2);
+}
+
+.toggle:active,
+.toggle.is-active:active {
+	border: solid 1px var(--blue);
+	border-radius: 4px;
+}
+
 /* ---------------------------------------------------------------------------------------- BUTTONS */
 
 .button-filled {
 	padding: 6px 18px;
-	font-size: .875rem;
 	color: #FFFFFF;
 	background-color: var(--accent);
 	cursor: pointer;
 	border-radius: 2px;
 }
 
-.button-filled.disabled { color: #343A40; background-color: #E5E5E5;}
-.dark .button-filled.disabled { color: #B3B3B3; background-color: #373D42 }
-.dark .button-filled { color: #EDEBF4; }
+.button-filled.disabled { 
+	color: #343A40;
+	color: var(--text-color-4);
+	background-color: var(--bg-3);
+}
 
 .btn-text {
 	cursor: pointer;
 	font-weight: 400;
-	font-size: .875rem;
 	color: var(--accent);
 }
 
@@ -565,7 +595,6 @@ body.animate .sticky-top {
 	padding: 8px 30px;
 	border-radius: 27px;
 	font-weight: 400;
-	font-size: .875rem;
 	text-align: center;
 	color: #fff;
 	background-color: var(--accent);
@@ -592,5 +621,5 @@ body.animate .sticky-top {
 .btn-icon span {
 	color: var(--accent);
 	font-weight: 400;
-	font-size: 1rem;
+	font-size: var(--text-size-2);
 }

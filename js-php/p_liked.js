@@ -10,7 +10,7 @@ $(function() {
 
 	loadTracks();
 	
-	$(".btn-export").click(() => { if (!isLoading) createPlaylist(tracks);	});
+	$(".btn-export").click(() => { if (!isLoading) createPlaylist(tracks); });
 	$(".icon-prev").click(() => { if (!isLoading) changePage(-20); });
 	$(".icon-next").click(() => { if (!isLoading) changePage(20); });
 
@@ -98,17 +98,15 @@ function createPlaylist(arr) {
 					apiGetPlaylistInfo(playlist.id, 1)
 						.then((data) => {
 
-							playlist.image = data.images[2].url;
-
 							setTimeout(() => {
 
 								isLoading = false;
 	
 								// show dialog
-								$(".modal__playlist-image").attr("src", playlist.image);
-								$(".modal__playlist-name").text(playlist.name);
-								$(".modal__playlist-desc").text(playlist.description);
-								$(".modal__text").text(`${tracks.length} songs were added to your newly created playlist.`);
+								$(".modal__playlist-header img").attr("src", getAnImageFromArray(data.images, 1));
+								$(".modal__playlist-header p.primary").text(playlist.name);
+								$(".modal__playlist-header p.secondary").text(playlist.description);
+								$(".modal__message").text(`${tracks.length} songs are added to your newly created playlist.`);
 
 								modal.show();
 							}, 1000);						

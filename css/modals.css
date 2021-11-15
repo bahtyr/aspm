@@ -1,19 +1,13 @@
-/* ---------------------------------------------------------------- BACKGROUND COLORS */
+/* ---------------------------------------------------------------------------------------- BACKGROUND COLORS */
 
 .modal__box,
 .modal__stack__one,
-.modal__stack__two { background-color: #FFF; }
+.modal__stack__two { background-color: var(--bg-1); }
+/* a '.modal__white'  class can be created to have a white modal, but handling text color will be necessary as well. */
+/* this feature was not cruical, therefore it got deleted */
 
-/* to be used when modal__stack is being used */
-
-.modal__bg-auto { background-color: #F6F8FA; }
-.modal__bg-dark { background-color: #212529; }
-.modal__bg-light { background-color: #F6F8FA; }
-.dark .modal__bg-auto { background-color: #212529; }
-.dark .modal__bg-dark { background-color: #212529; }
-.dark .modal__bg-light { background-color: #F6F8FA; }
-
-/* ---------------------------------------------------------------- CONTENT WRAPPERS (.modal__box) */
+/* ---------------------------------------------------------------------------------------- CONTENT WRAPPERS (.modal__box) */
+/* handle modal content alignment, background color, padding etc. */
 
 .modal__stack__one,
 .modal__stack__two {
@@ -22,58 +16,50 @@
 	top: 0;
 }
 
-.modal__share {
-	align-items: center;
+.modal__pl-context .wrapper {
+	display: flex;
+	flex-flow: column wrap;
+	min-width: 18rem;
+	padding: 16px 20px 20px 20px;
+	gap: 20px;
 }
 
-.modal__pl-context { min-width: 15.625rem; }
-
-.modal__pl-edit {
+.modal__pl-edit,
+.modal__share .wrapper {
 	display: flex;
 	flex-flow: column;
 	align-items: center;
 	padding: 20px;
-	min-width: 15.625rem;
+	min-width: 18rem;
 }
 
 .modal__new-rule {
 	padding: 20px;
 }
 
-/* ---------------------------------------------------------------- GENERAL */
+/* ---------------------------------------------------------------------------------------- GENERAL */
 
-/* -------------------------------- TEXT */
+/* -------------------------------- TEXT / TITLE */
 
 .modal__title {
 	font-weight: 600;
 }
 
-.modal__text { 
-	font-weight: 200;
-}
-
-.modal__text { color: #343A40; }
-.dark .modal__text { color: #343A40; }
-
 /* -------------------------------- INPUT TEXT */
 
 .modal__input-text {
 	width: 100%;
-	font-size: .875rem;
-	background: none;
-	background-color: #F1F1F1;
-	border: none;
 	padding: 10px;
 	margin-top: 10px;
 	resize: none;
-	color: #000;
 }
 
-.dark .modal__input-text { color: #000; }
-
-.modal__input-text:focus { outline: 1px solid #808080; }
-
 /* -------------------------------- BUTTONS */
+
+/* !! add more modal ids here, if their button layout is center aligned */
+.modal__share .btn-text {
+	margin-bottom: 12px;
+}
 
 .modal__align-buttons-right {
     display: flex;
@@ -90,128 +76,41 @@
     width: 46%;
 }
 
-/* ---------------------------------------------------------------- ELEMENTS */
+/* ---------------------------------------------------------------------------------------- PLAYLIST HEADER */
 
-/* playlist */
-.modal__playlist-image {
-	width: 78px;
-	height: 78px;
-	margin-right: 10px;
-	object-fit: cover;
-}
-
-/* playlist-name */
-.modal__playlist-name { 
-	font-size: 1rem;
-	font-weight: 600;
-	color: #343A40;
-}
-
-/* playlist-description */
-.modal__playlist-desc { 
-	font-size: .875rem;
-	font-weight: 200;
-	color: #808080;
-	margin-top: 4px;
-}
-
-.dark .modal__playlist-name { color: #343A40; }
-.dark .modal__playlist-desc { color: #808080; }
-
-.modal__share .modal__text,
-.modal__pl-context .modal__text,
-.modal__pl-edit .modal__text {
-	padding: 0 20px;
-}
-
-/* -------------------------------- playlist edit (text / iamge) */
-
-/* image */
-.modal__pl-edit__image {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-/* image upload text */
-.modal__pl-edit__upload-text {
-	font-size: .75rem;
-	line-height: 1.5rem;
-	height: 1.5rem;
-	background-color: #000;
-	color: #fff;
-	text-transform: uppercase;
-	font-weight: 500;
-	text-align: center;
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-}
-
-/* -------------------------------- playlist edit buttons (save / cancel) */
-
-.btn__pl-edit__cancel {
-	margin-left: auto;
-	margin-right: 16px;
-}
-
-.btn__pl-edit__save {
-	width: 46%;
-}
-
-/* -------------------------------- playlist edit toggle */
-
-.modal__pl-edit__toggle-wrapper {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-between;
-	gap: 8px;
-	width: 100%;
-	margin-top: 10px;
-	margin-bottom: 30px;
-}
-
-.modal__pl-edit__toggle {
-	flex: 1;
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-    justify-content: center;
-	cursor: pointer;
-	padding: 6px;
-	font-size: .875rem;
-}
-
-.modal__pl-edit__toggle svg {
-	margin-top: 1px;
-	margin-right: 4px;
-}
-
-.modal__pl-edit__toggle svg { fill: #CCCCCC; }
-.modal__pl-edit__toggle.is-active { background-color: #F1F1F1; }
-.modal__pl-edit__toggle.is-active > span,
-.dark .modal__pl-edit__toggle.is-active > span { color: #000; }
-.modal__pl-edit__toggle.is-active svg { fill: #3c3c3c; }
-
-/* ---------------------------------------------------------------- SPACING CONTAINERS */
-
-.modal__top-playlist-wrapper {
+.modal__playlist-header {
 	display: flex;
 	flex-flow: row;
 	align-items: center;
 	width: 100%;
 	padding: 20px;
-	border-bottom: solid 1px #dee2e6;
+	border-bottom: solid 1px var(--bg-5);
 }
 
-.modal__pl-context__bottom {
-	padding: 16px 20px 20px 20px;
-	display: flex;
-	flex-flow: column wrap;
-	gap: 20px;
+.modal__playlist-header img {
+	width: 78px;
+	height: 78px;
+	margin-right: 10px;
 }
 
+.modal__playlist-header .primary { 
+	color: var(--text-color-1);
+	font-size: var(--text-size-2);
+	font-weight: 600;
+}
+
+.modal__playlist-header .secondary { 
+	color: var(--text-color-2);
+	font-size: var(--text-size-1);
+	font-weight: 200;
+	margin-top: 4px;
+}
+
+/* ---------------------------------------------------------------------------------------- MODAL PLAYLIST EDIT */
+
+/* -------------------------------- playlist edit (text / iamge) */
+
+/* image wrapper */
 .modal__pl-edit__top {
 	cursor: pointer;
 	width: 110px;
@@ -220,17 +119,38 @@
 	position: relative;
 }
 
-.modal__pl-edit__bottom {
-	display: flex;
-	align-items: center;
+/* image */
+.modal__pl-edit__image {
 	width: 100%;
+	height: 100%;
 }
 
-.modal__share > p:nth-of-type(1) { margin-bottom: 30px; margin-top: 16px; }
-.modal__share > p:nth-of-type(2) { margin-bottom: 12px; }
-.modal__share > p:nth-of-type(3) { margin-bottom: 20px; }
+/* image upload text */
+.modal__pl-edit__upload-text {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 1.5rem;
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: 600;
+	line-height: 1.5rem;
+	font-size: var(--text-size--2);
+	color: var(--text-color-1);
+	background-color: var(--bg-5);
+	letter-spacing: 0.06rem;
+}
 
-/* ---------------------------------------------------------------- PLAYLIST AUTOMATION */
+/* -------------------------------- playlist edit (toggle) */
+
+.modal__pl-edit .toggle-wrapper {
+	width: 100%;
+	margin-bottom: 30px;
+	margin-top: 10px;
+}
+
+/* ---------------------------------------------------------------------------------------- MODAL PLAYLIST AUTOMATION */
 
 /*  */
 .modal__p-auto {
@@ -240,12 +160,6 @@
 	overflow: auto;
 	border-radius: 0;
 }
-
-/* need to find better solution for text coloring in modals */
-/*.modal__new-rule p,
-.modal__new-rule label,
-.dark .modal__new-rule p,
-.dark .modal__new-rule label { color: #343A40; }*/
 
 .modal__new-rule label {
 	margin-left: 6px;
