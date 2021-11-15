@@ -110,6 +110,11 @@
 	.page-top-wrapper__p-top .tab__item {
 		flex: 1;
 	}
+
+	.player {
+		width: 95%;
+		right: 2.5% !important;
+	}
 }
 
 

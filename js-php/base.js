@@ -266,6 +266,21 @@ function trimmedText(str, length) {
 	return str;
 }
 
+/**
+ * Returns a string of artists seperated by comma.
+ * 
+ * @params {array}	artists 		An array of Spotify Artists Objects
+ */
+function getArtistsAsString(artists) {
+	let str = "";
+	for (let i in artists) {
+		if (i > 0)
+			str += ", ";
+		str += artists[i].name;
+	}
+	return str;
+}
+
 // ---------------------------------------------------------------------------------------- NEW
 
 // Count requests made and wait if necessary
@@ -563,5 +578,187 @@ class Modal {
 		 * because smooth transition between stacks was not achived and I wanted to be able to use both stacks separately,
 		 * but transition animation would play each time modal opens, didn't want to clutter the page with that.
 		 */
+	}
+}
+
+// ---------------------------------------------------------------------------------------- PLAYER
+
+class Player {
+
+	obj = {
+		this: $(".player"),
+		track: $("#player__track"),
+		artist: $("#player__artist"),
+		info: $("#player__info"),
+		image: $("#player__image")};
+
+	track = {name: "", uri: "", artists: "", images: "", context: ""}
+	playlist = {id: "", name: "", images: "", description: "", ownerId: "", ownerName: "", isPublic: ""};
+
+	animator;
+	
+	requestInterval = 15000;
+
+	constructor() { }
+
+	initAnimator() {
+		this.animator = new PlayerAnimator(this);
+	}
+
+	/* || API REQUESTS */
+
+	requestTrack() {
+		apiGetCurrentlyPlayingTrack()
+			.then((data) => {
+				
+				// track
+				this.track.name = data.item.name;
+				this.track.images = data.item.album.images;
+				this.track.uri = data.item.uri;
+				this.track.artists = data.item.artists;
+
+				this.obj.track.text(this.track.name);
+				this.obj.artist.text(getArtistsAsString(this.track.artists));
+				this.obj.image.attr("src", getAnImageFromArray(this.track.images, 2));
+
+				if (this.animator != null) this.animator.update();
+
+				setTimeout(() => this.requestTrack(), this.requestInterval);
+
+				// playlist
+				if (data.context != null && data.context.type == "playlist") {
+					let uri =  data.context.uri.split(':');
+					this.playlist.id = uri[uri.length - 1];
+					this.track.context = data.context.type;
+					this.#requestPlaylist(this.playlist.id);
+				} else this.#clearPlaylist();
+			})
+			.catch((error) => {
+				this.#clearTrack();
+				console.log(error)
+			});
+	}
+
+	#requestPlaylist(id) {
+		apiGetPlaylistInfo(id)
+			.then((data) => {
+				this.playlist.id = data.id;
+				this.playlist.name = data.name;
+				this.playlist.images = data.images;
+				this.playlist.description = data.description;
+				this.playlist.ownerId = data.owner.id;
+				this.playlist.ownerName = data.owner.display_name;
+				this.playlist.isPublic = data.public;
+				if (data.owner.display_name == null || data.owner.display_name == "")
+					this.playlist.ownerName = data.owner.id;
+
+				this.obj.info.html(`${this.playlist.name}  &mdash;  ${this.playlist.ownerName}`);
+
+				if (this.animator != null) this.animator.update();
+			})
+			.catch((error) => {
+				this.#clearPlaylist();
+				console.log(error);
+			});
+	}
+
+	/* || CLEAR */
+
+	#clearTrack() {
+		for (let i in this.track)
+			this.track[i] = "";
+
+		this.obj.track.text("Player");
+		this.obj.artist.text("Artist");
+		this.obj.image.attr("src", getAnImageFromArray());
+	}
+
+	#clearPlaylist() {
+		for (let i in this.playlist)
+			this.playlist[i] = "";
+
+		this.obj.info.html(`playlist  &mdash;  n/a`);
+	}
+}
+
+class PlayerAnimator {
+	player;
+	wrapper = $(".player .wrapper");
+	line1;
+	line2;
+	ids = {track: "", playlist: ""}
+
+	constructor(player) {
+		this.player = player;
+		this.line1 = new PlayerLineAnimator(this.wrapper.outerWidth(), $(".player__line:nth-child(1)"), $("#player__track-dupe"), $("#player__artist-dupe"));
+		this.line2 = new PlayerLineAnimator(this.wrapper.outerWidth(), $(".player__line:nth-child(2)"), $("#player__info-dupe"));
+	}
+
+	update() {
+		if (this.line1 != null && this.ids.track != this.player.track.uri) {
+			this.ids.track = this.player.track.uri;
+			this.line1.setText(this.player.track.uri, this.player.track.name, getArtistsAsString(this.player.track.artists));
+		}
+
+		if (this.line2 != null && this.ids.playlist != this.player.playlist.id) {
+			this.ids.playlist = this.player.playlist.id;
+			this.line2.setText(this.player.playlist.id, `${this.player.playlist.name}  &mdash;  ${this.player.playlist.ownerName}`);
+		}
+	}
+}
+
+class PlayerLineAnimator {
+	obj;
+	dupes;
+	selector;
+	styleObj;
+	trackId;
+	w = {dupeMargin: 40, maxWidth: 0, outerWidth: 0, scrollWidth: () => {return this.obj[0].scrollWidth + this.w.dupeMargin;}};
+	anim = {duration: 14, durationSpecial: 0, delay: 4}
+
+	constructor(maxWidth, obj, ...dupes) {
+		this.maxWidth = maxWidth;
+		this.obj = obj;
+		this.selector = obj[0].className;
+		this.dupes = dupes;
+		$("head").append(`<style id="${this.selector}-style" type="text/css"></style>`);
+		this.styleObj = $(`#${this.selector}-style`);
+	}
+
+	setText(id, ...text) {	
+		this.trackId = id;
+		this.w.outerWidth = 0;
+		
+		for (let i in text) {
+			this.dupes[i].html(text[i]);
+			this.w.outerWidth += this.dupes[i].outerWidth();
+		}
+
+		this.anim.durationSpecial = parseInt(this.w.outerWidth / (this.maxWidth / this.anim.duration));
+		this.resetLine();
+
+		if (this.w.outerWidth > this.maxWidth) {
+			setTimeout(() => this.animateLine(), 500);
+		}
+	}
+
+	animateLine() {
+		this.obj.addClass("animate");
+		this.obj.css("transform", `translateX(-${this.w.scrollWidth() / 2}px)`);
+		
+		let trackId_ = this.trackId;
+		setTimeout(() => {
+			if (this.trackId != trackId_) return;
+			
+			this.resetLine();
+			setTimeout(() => this.animateLine(), 500);
+			
+		}, (this.anim.durationSpecial + this.anim.delay) * 1000);
+	}
+
+	resetLine() {
+		this.obj.removeClass("animate");
+		this.obj.css("transform", `translateX(0px)`);
+		this.styleObj.text(`.${this.selector}.animate { transition: ${this.anim.durationSpecial}s linear ${this.anim.delay}s; }`);
 	}
 }

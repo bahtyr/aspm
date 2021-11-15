@@ -623,3 +623,111 @@ body.animate .sticky-top {
 	font-weight: 400;
 	font-size: var(--text-size-2);
 }
+
+/* ---------------------------------------------------------------------------------------- PLAYER */
+
+.player {
+	position: absolute;
+	right: 0;
+	bottom: 40;
+	padding: 13.2px;
+	padding-right: 26.4px;
+	background-color: #000;
+	border-radius: 10px;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	line-height: initial;
+	width: 500px;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.player img {
+	height: 80px;
+	width: 80px;
+}
+
+.player .wrapper {
+	flex: 1;
+	margin-left: 26.4px;
+	margin-right: 13.2px;
+	overflow: hidden;
+}
+
+#player__track, #player__track-dupe {
+	font-size: 23.76px;
+	color: var(--text-color-1);
+	color: #fff;
+}
+
+#player__artist, #player__artist-dupe {
+	font-size: 19.8px;
+	vertical-align: top;
+	color: var(--text-color-2);
+	margin-left: 18.48px;
+}
+
+#player__info, #player__info-dupe {
+	text-transform: lowercase;
+	font-size: 1.5rem;
+	font-size: 15.84;
+	font-weight: 700;
+	letter-spacing: 0.08rem;
+	color: var(--text-color-4);
+	margin-top: 6px;
+	white-space: pre;
+}
+
+.player__icon-primary {
+	margin-left: 13.2px;
+	padding: 13.2px;
+	background-color: #2B2D31;
+	border-radius: 100%;
+}
+
+.player svg {
+	height: 14px;
+	width: 14px;
+}
+
+#player__refresh,
+#player__lyrics {
+	cursor: pointer;
+}
+
+/* ---------------------------------------------------------------- SIZE */
+
+/*.player { padding: 13.2px; padding-right: 26.4px; border-radius: 10px; min-width: 500px; }*/
+.player { padding: 13px; padding-right: 20px; border-radius: 10px; width: 500px; }
+.player .wrapper { margin-left: 16px; margin-right: 13.2px; }
+.player__line1 { height: 28px; }
+
+#player__image { height: 60px; width: 60px; border-radius: 4px; }
+#player__track, #player__track-dupe { font-size: 18px; }
+#player__artist, #player__artist-dupe { font-size: 14px; margin-left: 6px; }
+#player__info, #player__info-dupe { font-size: 14px; font-weight: 700; letter-spacing: 0.08rem; margin-top: 4px; }
+
+.player__icon-primary { margin-left: 13.2px; padding: 13.2px; }
+.player svg { height: 14px; width: 14px; }
+
+/* ---------------------------------------------------------------- OVERFLOW ANIMATION */
+
+#player__track-dupe, #player__info-dupe {
+	margin-left: 40px; /* !! update the PlayerLineAnimator gap var as well. */
+}
+
+.player p {
+	white-space: nowrap;
+}
+
+.player__line {
+	display: flex;
+	flex-flow: row nowrap;
+	transition: none;
+}
+
+.player__text-dupe { visibility: hidden; }
+.player__line.animate .player__text-dupe { visibility: visible; }
+
+.player__line.animate { /* handled with JS */ }
+
