@@ -29,7 +29,7 @@ $(function() {
 
 	$("#search__button").click(() => {
 		let s = $("#search__input").val().trim().toLowerCase();
-		let isDate = (s.length == 5 || s.length == 10) && s.includes("-"); //this will fail eventually ;)
+		let isDate = s.length == 10 && s.includes("-"); //this will fail eventually ;)
 		if (s.length == 0) return;
 
 		updateProgressBar(1,3);
