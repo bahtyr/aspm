@@ -22,6 +22,11 @@ $(function() {
 		nestedActions(1);
 	});
 
+	$("#search__input").keyup(function(event) {
+		if (event.keyCode === 13) //enter
+			$("#search__button").click();
+	});
+
 	$("#search__button").click(() => {
 		let s = $("#search__input").val().trim().toLowerCase();
 		let isDate = (s.length == 5 || s.length == 10) && s.includes("-"); //this will fail eventually ;)
