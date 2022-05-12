@@ -474,12 +474,12 @@
 /* table */
 
 .primary {
-	color: #B3B3B3;
-	font-weight: 700;
+	/*color: #B3B3B3;*/
+	font-weight: 600;
 }
 
 .secondary {
-	color: #999999;
+	/*color: #999999;*/
 }
 
 .table .secondary img {
@@ -500,6 +500,9 @@
 .searchtable .row span:nth-child(4) { flex: 2; }
 .searchtable .row span:nth-child(5) { flex: 2; }
 .searchtable .row span:nth-child(6) { flex: 1; }
+/* normal rows have image elmeent, therefore header and row element # is not the same */
+.searchtable .row.header span:nth-child(3) { flex: 2; }
+.searchtable .row.header span:nth-child(5) { flex: 1; }
 
 @media only screen and (max-width: 600px) { /* SMALL */
 
@@ -507,11 +510,13 @@
 	.searchtable .row > span:nth-child(4),
 	.searchtable .row > span:nth-child(5),
 	.searchtable .row > span:nth-child(6) { display: none; }
+	/*.searchtable .row.header span:nth-child(5) { flex: 1; }*/
 }
 
 @media only screen and (max-width: 768px) {  /* MEDIUM */
 
 	.searchtable .row > span:nth-child(4) { display: initial; }
+	.searchtable .row.header > span:nth-child(4),
 	.searchtable .row > span:nth-child(5),
 	.searchtable .row > span:nth-child(6) { display: none; }
 }
