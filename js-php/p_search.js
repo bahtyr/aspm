@@ -24,10 +24,12 @@ $(function() {
 
 	$("#search__button").click(() => {
 		let s = $("#search__input").val().trim().toLowerCase();
+		let isDate = (s.length == 5 || s.length == 10) && s.includes("-"); //this will fail eventually ;)
 		if (s.length == 0) return;
+
 		updateProgressBar(1,3);
-		searchSaved(s); updateProgressBar(2,3);
-		searchPlaylists(s); updateProgressBar(3,3);
+		searchSaved(s, isDate); updateProgressBar(2,3);
+		searchPlaylists(s, isDate); updateProgressBar(3,3);
 		printHelper();
 	});
 });
@@ -104,16 +106,19 @@ function actionGetPlaylistsTracks(apiNextUrl) {
 let savedTracksResults = [];
 let playlistsResults = [];
 
-function searchSaved(str) {
+function searchSaved(str, isDate) {
 	savedTracksResults = [];
 
 	savedTracks.forEach(e => {
 		let matchFound = false;
 
-		if (e.track.name.toLowerCase().includes(str) || e.track.album.name.toLowerCase().includes(str))
+		//!! we should do a better comparison, rather then just includes. ie: 03-02 (mm-dd) will find 2003-02;
+		if (isDate && compareDates(e.added_at, str))
+			matchFound = true;
+		if (!isDate && e.track.name.toLowerCase().includes(str) || e.track.album.name.toLowerCase().includes(str))
 			matchFound = true;
 		e.track.artists.forEach(artist => {
-			if (artist.name.toLowerCase().includes(str)) matchFound = true;
+			if (!isDate && artist.name.toLowerCase().includes(str)) matchFound = true;
 		});
 
 		if (matchFound)
@@ -121,7 +126,7 @@ function searchSaved(str) {
 	});
 }
 
-function searchPlaylists(str) {
+function searchPlaylists(str, isDate) {
 	playlistsResults = [];
 
 	playlists.forEach(playlist => {
@@ -132,10 +137,12 @@ function searchPlaylists(str) {
 			if (e.track == null) return;
 
 			//search
-			if (e.track.name.toLowerCase().includes(str) || e.track.album.name.toLowerCase().includes(str))
+			if (isDate && compareDates(e.added_at, str))
+				matchFound = true;
+			if (!isDate && e.track.name.toLowerCase().includes(str) || e.track.album.name.toLowerCase().includes(str))
 				matchFound = true;
 			e.track.artists.forEach(artist => {
-				if (artist.name.toLowerCase().includes(str)) matchFound = true;
+				if (!isDate && artist.name.toLowerCase().includes(str)) matchFound = true;
 			});
 
 			//add
@@ -334,4 +341,36 @@ function getCurrentlyPlaying(mode) {
 		.catch((error) => {
 			console.log(error);
 		});
+}
+
+/**
+ * Compares two given dates, factors in wildcard search as well.
+ * spotifyDate: added_at: 2022-05-12T20:39:12Z
+ * searchDate :           YYYY-MM-DD, put * (s) to skip
+**/
+function compareDates(spotifyDate, searchDate) {
+	// console.log(spotifyDate +"----------------"+ searchDate);
+	let yy = searchDate.slice(0,4);
+	let mm = searchDate.slice(5,7);
+	let dd = searchDate.slice(8,10);
+	
+	let match = null;
+
+	if (yy == "0000") {}
+	else if (spotifyDate.slice(0,4) == yy) match = true;
+	else match = false;
+
+	if (match == null || match) {
+		if (mm == "00") {}
+		else if (spotifyDate.slice(5,7) == mm) match = true;
+		else match = false;
+	}
+
+	if (match == null || match) {
+		if (dd == "00") {}
+		else if (spotifyDate.slice(8,10) == dd) match = true;
+		else match = false;
+	}
+
+	return match;
 }

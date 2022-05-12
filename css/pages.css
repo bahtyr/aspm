@@ -459,16 +459,21 @@
 #search__button path { stroke: var(--text-color-4); }
 
 .search__helper__buttons:nth-child(2) { margin-left: 40px; }
-.search__helper__buttons:nth-child(2) { margin-right: 10px; }
-.search__helper__buttons:nth-child(3) { margin-right: 10px; }
+/*.search__helper__buttons:nth-child(2) { margin-right: 10px; }*/
+/*.search__helper__buttons:nth-child(3) { margin-right: 10px; }*/
 
 .search__helper__buttons {
 	cursor: pointer;
-	margin-right: 20px;
+	margin-right: 10px;
 	text-transform: lowercase;
 	font-weight: 500;
 	font-style: italic;
 	letter-spacing: 0.3px;
+}
+
+.search__helper__buttons.date {
+	cursor: help;
+	color: var(--text-color-3);
 }
 
 /* table */
