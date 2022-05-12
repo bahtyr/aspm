@@ -23,9 +23,11 @@ $(function() {
 	});
 
 	$("#search__button").click(() => {
+		let s = $("#search__input").val().trim().toLowerCase();
+		if (s.length == 0) return;
 		updateProgressBar(1,3);
-		searchSaved($("#search__input").val().toLowerCase()); updateProgressBar(2,3);
-		searchPlaylists($("#search__input").val().toLowerCase()); updateProgressBar(3,3);
+		searchSaved(s); updateProgressBar(2,3);
+		searchPlaylists(s); updateProgressBar(3,3);
 		printHelper();
 	});
 });
@@ -35,6 +37,9 @@ $(function() {
 let savedTracks = [];
 let playlists = [];
 
+/*
+* the following functions run succesively: calling nestedActions(1) will run 2,3.. afterwards.
+*/
 function nestedActions(no) {
 	countRequestsAndWait();
 	switch (no) {
@@ -101,51 +106,50 @@ let playlistsResults = [];
 
 function searchSaved(str) {
 	savedTracksResults = [];
-	for (let i = 0; i < savedTracks.length; i++) {
-		let foundMatch = false;
 
-		if (savedTracks[i].track.name.toLowerCase().includes(str)) foundMatch = true;
-		if (savedTracks[i].track.album.name.toLowerCase().includes(str)) foundMatch = true;
-		for (let a in savedTracks[i].track.artists)
-			if (savedTracks[i].track.artists[a].name.toLowerCase().includes(str)) foundMatch = true;
+	savedTracks.forEach(e => {
+		let matchFound = false;
 
-		if (foundMatch) {
-			savedTracksResults.push(savedTracks[i]);
-		}
+		if (e.track.name.toLowerCase().includes(str) || e.track.album.name.toLowerCase().includes(str))
+			matchFound = true;
+		e.track.artists.forEach(artist => {
+			if (artist.name.toLowerCase().includes(str)) matchFound = true;
+		});
 
-	}
+		if (matchFound)
+			savedTracksResults.push(e);
+	});
 }
 
 function searchPlaylists(str) {
 	playlistsResults = [];
-	for (let p = 0; p < playlists.length; p++) {
 
-		let foundMatchPlaylist = false;
+	playlists.forEach(playlist => {
+		playlistMatchFound = false;
 
-		for (let i = 0; i < playlists[p].items.length; i++) {
-			if (playlists[p].items[i].track == null) continue;
+		playlist.items.forEach(e => {
+			matchFound = false;
+			if (e.track == null) return;
 
-			let foundMatchTrack = false;
+			//search
+			if (e.track.name.toLowerCase().includes(str) || e.track.album.name.toLowerCase().includes(str))
+				matchFound = true;
+			e.track.artists.forEach(artist => {
+				if (artist.name.toLowerCase().includes(str)) matchFound = true;
+			});
 
-			// LOOK FOR A MATCH
-			if (playlists[p].items[i].track.name.toLowerCase().includes(str)) foundMatchTrack = true;
-			if (playlists[p].items[i].track.album.name.toLowerCase().includes(str)) foundMatchTrack = true;
-			for (let a in playlists[p].items[i].track.artists)
-				if (playlists[p].items[i].track.artists[a].name.toLowerCase().includes(str)) foundMatch = true;
-
-			// SAVE RESULTS
+			//add
 			// if this track is a match, and this playlist was not saved yet, create the playlist first
-			if (foundMatchTrack && !foundMatchPlaylist) {
-				playlistsResults.push(Object.assign({}, playlists[p]));
+			if (matchFound && !playlistMatchFound) {
+				playlistsResults.push(Object.assign({}, playlist));
 				playlistsResults[playlistsResults.length - 1].items = [];
-				foundMatchPlaylist = true;
+				playlistMatchFound = true;
 			}
-
-			if (foundMatchTrack) {
-				playlistsResults[playlistsResults.length - 1].items.push(playlists[p].items[i]);
+			if (matchFound) {
+				playlistsResults[playlistsResults.length - 1].items.push(e);
 			}
-		}
-	}
+		})
+	});
 }
 
 
