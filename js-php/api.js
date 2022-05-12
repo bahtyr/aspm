@@ -313,3 +313,44 @@ function apiGetCurrentlyPlayingTrack() {
 		});
 	});
 }
+
+
+/*
+ * DELETE ALL PLAYLISTS
+ */
+let count = 0;
+function s() {
+	if (count == 100) {
+		console.log(100);
+		return;
+	}
+	count++;
+	setTimeout(function(){
+		    del(get100());
+		    s();
+		}, 2000);
+}
+
+
+let x = 0;
+function get100() {
+	let arr = [];
+	for (let i = x; i < x + 50; i++)
+		arr.push(tracks[i].id);
+	x += 50;
+	return arr;
+}
+
+function del(arr) {
+	return new Promise((resolve, reject) => {
+		$.ajax({
+			method: "DELETE",
+			url: `https://api.spotify.com/v1/me/tracks`,
+			contentType: "application/json",
+			data: JSON.stringify({ids: arr}),
+			headers: {"Authorization": "Bearer " + spotify.accessToken},
+			success: (data, status) => resolve(data),
+			error: (jqXHR, textStatus, errorThrown) => resolve(jqXHR)
+		});
+	});
+}
