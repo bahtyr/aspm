@@ -137,6 +137,7 @@ function logout_() {
 	localStorage.removeItem("user");
 
 	$(".primary-box").addClass("show-login");
+	$(".primary-box .login").removeClass("is-gone");
 
 	$(".user-image").attr("src", "placeholder.png");
 	$(".user-name").text("Please sign in.");

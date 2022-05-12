@@ -33,24 +33,24 @@
 .index-icons li:nth-child(2) a { color: #F8DAE1; }
 .index-icons li:nth-child(3) a { color: #FFF8F3; }
 .index-icons li:nth-child(4) a { color: #E7F3F1; }
-.index-icons li:nth-child(5) a { color: #E3E3E4; }
-.index-icons li:nth-child(6) a { color: #EBF6FF; }
+.index-icons li:nth-child(5) a { color: #EBF6FF; }
+.index-icons li:nth-child(6) a { color: #E3E3E4; }
 .index-icons li:nth-child(7) a { color: #E3E3E4; }
 
 .index-icons li:nth-child(1) svg path { stroke: #EDEBF4; }
 .index-icons li:nth-child(2) svg path { stroke: #F8DAE1; }
 .index-icons li:nth-child(3) svg path { stroke: #FFF8F3; }
 .index-icons li:nth-child(4) svg path { stroke: #E7F3F1; }
-.index-icons li:nth-child(5) svg path { stroke: #E3E3E4; }
-.index-icons li:nth-child(6) svg path { stroke: #DBF0FF; }
+.index-icons li:nth-child(5) svg path { stroke: #DBF0FF; }
+.index-icons li:nth-child(6) svg path { stroke: #E3E3E4; }
 .index-icons li:nth-child(7) svg path { stroke: #E3E3E4; }
 
 .index-icons li:nth-child(1) a { background: rgb(171,161,204); background: linear-gradient(135deg, rgba(171,161,204,1) 0%, rgba(71,52,127,1) 100%); }
 .index-icons li:nth-child(2) a { background: rgb(234,147,167); background: linear-gradient(135deg, rgba(234,147,167,1) 0%, rgba(169,57,83,1) 100%); }
 .index-icons li:nth-child(3) a { background: rgb(252,194,163); background: linear-gradient(135deg, rgba(252,194,163,1) 0%, rgba(243,115,53,1) 100%); }
 .index-icons li:nth-child(4) a { background: rgb(134,186,174); background: linear-gradient(135deg, rgba(134,186,174,1) 0%, rgba(42,123,96,1) 100%); }
-.index-icons li:nth-child(5) a { background: rgb(156,156,159); background: linear-gradient(135deg, rgba(156,156,159,1) 0%, rgba(73,77,88,1) 100%); }
-.index-icons li:nth-child(6) a { background: rgb(156,156,159); background: linear-gradient(135deg, rgba(138,182,214,1) 0%, rgba(0,97,168,1) 100%); }
+.index-icons li:nth-child(5) a { background: rgb(156,156,159); background: linear-gradient(135deg, rgba(138,182,214,1) 0%, rgba(0,97,168,1) 100%); }
+.index-icons li:nth-child(6) a { background: rgb(156,156,159); background: linear-gradient(135deg, rgba(156,156,159,1) 0%, rgba(73,77,88,1) 100%); }
 .index-icons li:nth-child(7) a { background: rgb(156,156,159); background: linear-gradient(135deg, rgba(156,156,159,1) 0%, rgba(73,77,88,1) 100%); }
 
 /* ---------------------------------------------------------------------------------------- INDEX */
